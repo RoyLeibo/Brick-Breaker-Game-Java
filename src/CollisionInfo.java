@@ -1,20 +1,43 @@
+/**
+ * The type Collision info.
+ */
 public class CollisionInfo {
 
-    Point collisionPoint;
-    Collidable collidableObject;
+    /**
+     * The Collision point.
+     */
+    private Point collisionPoint;
+    /**
+     * The Collidable object.
+     */
+    private Collidable collidableObject;
 
-    CollisionInfo(Point collisionPoint, Collidable collidableObject){
+    /**
+     * Instantiates a new Collision info.
+     *
+     * @param collisionPoint   the collision point
+     * @param collidableObject the collidable object
+     */
+    CollisionInfo(Point collisionPoint, Collidable collidableObject) {
         this.collisionPoint = collisionPoint;
         this.collidableObject = collidableObject;
     }
 
-    // the point at which the collision occurs.
-    public Point collisionPoint(){
+    /**
+     * Collision point point.
+     *
+     * @return the point
+     */
+    public Point collisionPoint() {
         return this.collisionPoint;
     }
 
-    // the collidable object involved in the collision.
-    public Collidable collisionObject(){
+    /**
+     * Collision object collidable.
+     *
+     * @return the collidable
+     */
+    public Collidable collisionObject() {
         return this.collidableObject;
     }
 }

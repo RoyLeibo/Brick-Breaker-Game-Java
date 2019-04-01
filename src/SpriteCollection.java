@@ -2,27 +2,50 @@ import biuoop.DrawSurface;
 
 import java.util.ArrayList;
 
+/**
+ * The Sprite collection class.
+ *
+ * @author Roy Leibovitz.
+ */
 public class SpriteCollection {
 
-    ArrayList<Sprite> spritesList;
+    /**
+     * The Sprites list.
+     */
+    private ArrayList<Sprite> spritesList;
 
-    public SpriteCollection(){
+    /**
+     * Instantiates a new Sprite collection.
+     */
+    public SpriteCollection() {
         this.spritesList = new ArrayList<Sprite>();
     }
-    public void addSprite(Sprite s){
+
+    /**
+     * Add sprite.
+     *
+     * @param s the new Sprite
+     */
+    public void addSprite(Sprite s) {
         this.spritesList.add(s);
     }
 
-    // call timePassed() on all sprites.
-    public void notifyAllTimePassed(){
-        for (Sprite sprite: this.spritesList) {
+    /**
+     * Notify all Sprites in the list that time passed.
+     */
+    public void notifyAllTimePassed() {
+        for (Sprite sprite : this.spritesList) {
             sprite.timePassed();
         }
     }
 
-    // call drawOn(d) on all sprites.
-    public void drawAllOn(DrawSurface d){
-        for (Sprite sprite: this.spritesList) {
+    /**
+     * Draw all sprites in the list.
+     *
+     * @param d the draw surface
+     */
+    public void drawAllOn(DrawSurface d) {
+        for (Sprite sprite : this.spritesList) {
             sprite.drawOn(d);
         }
     }

@@ -92,31 +92,14 @@ public class Line {
      */
     public boolean isIntersecting(Line other) {
         // the next 12 lines defines a variables for the calculation
-        double otherStartX = other.start.getX();
-        double otherStartY = other.start.getY();
-        double otherEndX = other.end.getX();
-        double otherEndY = other.end.getY();
-        if ((otherStartX - this.start.getX() <= 10) && (this.start.getX() - otherStartX <= 10)){
-            otherStartX = (int) Math.round(otherEndX / 100.0) * 100;
-        }
-        if ((otherStartY - this.start.getY() <= 10) && (this.start.getY() - otherStartY <= 10)) {
-            otherStartY = (int) Math.round(otherStartX / 100.0) * 100;
-        }
-        if ((otherEndX - this.end.getX() <= 10) && (this.end.getX() - otherEndX <= 10)) {
-            otherEndX = (int) Math.round(otherStartX / 100.0) * 100;
-        }
-        if((otherEndY - this.end.getY() <= 10) && (this.end.getY() - otherEndY <= 10)) {
-            otherEndY = (int) Math.round(otherEndY / 100.0) * 100;
-        }
-        Line roundedLine = new Line(new Point(otherStartX, otherStartY), new Point(otherEndX, otherEndY));
         double l1StartX = this.start.getX();
         double l1StartY = this.start.getY();
         double l1EndX = this.end.getX();
         double l1EndY = this.end.getY();
-        double l2StartX = roundedLine.start.getX();
-        double l2StartY = roundedLine.start.getY();
-        double l2EndX = roundedLine.end.getX();
-        double l2EndY = roundedLine.end.getY();
+        double l2StartX = other.start.getX();
+        double l2StartY = other.start.getY();
+        double l2EndX = other.end.getX();
+        double l2EndY = other.end.getY();
         double l1X = l1StartX - l1EndX;
         double l1Y = l1StartY - l1EndY;
         double l2X = l2StartX - l2EndX;
@@ -133,29 +116,6 @@ public class Line {
             return true;
         }
         return false;
-
-//
-//        if (other.end().getX() - radius <= frame.getStartPoint().getX()) {
-//            //setVelocity((-1) * velocity.getDx(), velocity.getDy());
-//            return true; // Collision detected
-//        } else if (other.end().getX()+ radius >= this.frame.getWidth() + frame.getStartPoint().getX())  {
-//            // if the ball's x is outside the edge of the frame, change it's
-//            // x velocity to it's opposite direction
-//            //setVelocity((-1) * velocity.getDx(), velocity.getDy());
-//            return true; // Collision detected
-//        }
-//        // if the ball's y is outside the start point of the frame, change it's
-//        // y velocity to it's opposite direction
-//        if (other.end().getY()- radius <= frame.getStartPoint().getY()) {
-//            //setVelocity(velocity.getDx(), (-1) * velocity.getDy());
-//            return true; // Collision detected
-//        } else if (other.end().getY() + radius >= this.frame.getHeight() + frame.getStartPoint().getX())  {
-//            // if the ball's y is outside the edge of the frame, change it's
-//            // y velocity to it's opposite direction
-//            //setVelocity(velocity.getDx(), (-1) * velocity.getDy());
-//            return true; // Collision detected
-//        }
-//        return false; // No collision
     }
 
     /**
@@ -165,14 +125,7 @@ public class Line {
      * @param other the other line
      * @return the point of the intersection
      */
-// Returns the intersection point if the lines intersect,
-    // and null otherwise.
     public Point intersectionWith(Line other) {
-        // if there is an intersection
-        double otherStartX = other.start.getX();
-        double otherStartY = other.start.getY();
-        double otherEndX = other.end.getX();
-        double otherEndY = other.end.getY();
         if (isIntersecting(other)) {
             // calculate the intersection point "x" and "y" using this formula
             double x = this.end.getX() + (this.t * (this.start.getX() - this.end.getX()));
@@ -230,10 +183,10 @@ public class Line {
         }
     }
 
-    public java.util.List<Point> clearNullIntersections(List<Point> list){
+    public java.util.List<Point> clearNullIntersections(List<Point> list) {
         List<Point> newList = new ArrayList<Point>();
-        for (Point p:list) {
-            if(p != null){
+        for (Point p : list) {
+            if (p != null) {
                 newList.add(p);
             }
         }
@@ -242,6 +195,7 @@ public class Line {
 
     /**
      * Checks if a point is on the line itself (in the interval).
+     *
      * @param p the point we want to check if its on the line
      * @return true if the point is on the line, false otherwise
      */
@@ -260,7 +214,7 @@ public class Line {
         return true;
     }
 
-    public void setRadius(double radius){
+    public void setRadius(double radius) {
         this.radius = radius;
     }
 }

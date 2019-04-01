@@ -22,7 +22,7 @@ public class Block implements Collidable, Sprite {
      */
     Block(Rectangle blockRectangle) {
         this.blockRectangle = blockRectangle;
-        this.hitsLeft = "1";
+        this.hitsLeft = "5";
         this.color = Color.CYAN;
     }
 
@@ -114,7 +114,7 @@ public class Block implements Collidable, Sprite {
             surface.setColor(Color.BLACK);
             surface.drawRectangle((int) blockRectangle.getUpperLeft().getX(), (int) blockRectangle.getUpperLeft().getY(),
                     (int) blockRectangle.getWidth(), (int) blockRectangle.getHeight());
-            // draw the block it's self using the color received by input (or the default)
+            // draw the block it self using the color received by input (or the default)
             surface.setColor(this.color);
             surface.fillRectangle((int) blockRectangle.getUpperLeft().getX(), (int) blockRectangle.getUpperLeft().getY(),
                     (int) blockRectangle.getWidth(), (int) blockRectangle.getHeight());

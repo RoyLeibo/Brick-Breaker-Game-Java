@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -13,7 +12,7 @@ public class GameEnvironment {
     /**
      * The Collidables list.
      */
-   private ArrayList<Collidable> collidablesList;
+    private ArrayList<Collidable> collidablesList;
 
     /**
      * Instantiates a new Game environment.
@@ -56,12 +55,19 @@ public class GameEnvironment {
         for (int i = 0; i < this.collidablesList.size(); i++) {
             collisionPointsList.add(trajectory.closestIntersectionToStartOfLine(this.collidablesList.get(i).getCollisionRectangle()));
         }
+        // when there is no collision, the function returns null.
+        // to avoid null exception, this function calls clearNullIntersections function.
         List<Point> collisionPointsListWithoutNull = trajectory.clearNullIntersections(collisionPointsList);
+        // if there is no collision
         if (collisionPointsListWithoutNull.size() == 0) {
             return null;
         } else {
+            // this function received a list of collision points and finds the closest one
+            // between them.
             closestCollisionPoint = trajectory.start().findClosestPoint(collisionPointsListWithoutNull);
             collisionIndex = 0;
+            // run throw all the collision points (include the null) to find the index of the
+            // collision point found. this index will be the blocks index that the collision occur.
             for (int i = 0; i < collisionPointsList.size(); i++) {
                 if ((collisionPointsList.get(i) != null) && closestCollisionPoint.equals(collisionPointsList.get(i))) {
                     collisionIndex = i;
@@ -69,6 +75,8 @@ public class GameEnvironment {
                 }
             }
         }
+        // returns a CollisionInfo object which is composed from the collision point and the
+        // block that this point is on.
         return new CollisionInfo(closestCollisionPoint, this.collidablesList.get(collisionIndex));
     }
 }

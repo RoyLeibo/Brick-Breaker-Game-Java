@@ -48,6 +48,7 @@ public class Velocity {
 
     /**
      * a getter to the dx.
+     *
      * @return the dx
      */
 
@@ -57,14 +58,21 @@ public class Velocity {
 
     /**
      * a getter to the dy.
+     *
      * @return the dy
      */
     public double getDy() {
         return dy;
     }
 
-    public void setVelocity(double dx, double dy){
-        this.dx = dx;
-        this.dy = dy;
+    /**
+     * Sets velocity.
+     *
+     * @param dx1 the dx
+     * @param dy1 the dy
+     */
+    public void setVelocity(double dx1, double dy1) {
+        this.dx = dx1;
+        this.dy = dy1;
     }
 }

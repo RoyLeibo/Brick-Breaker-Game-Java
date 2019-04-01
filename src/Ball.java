@@ -1,17 +1,16 @@
 import biuoop.DrawSurface;
 
 import java.awt.Color;
-import java.util.List;
 
 /**
  * This class define a Ball.
  */
 public class Ball implements Sprite {
-    private static final int NoCollision = 0;
-    private static final int XCollisionRight = 1;
-    private static final int XCollisionLeft = 2;
-    private static final int YCollisionUp = 3;
-    private static final int YCollisionDown = 4;
+    private static final int NOCOLLISION = 0;
+    private static final int XCOLLISIONRIGHT = 1;
+    private static final int XCOLLISIONLEFT = 2;
+    private static final int YCOLLISIONUP = 3;
+    private static final int YCOLLISIONDOWN = 4;
 
     /**
      * The point of the ball's center.
@@ -47,10 +46,11 @@ public class Ball implements Sprite {
     /**
      * Instantiates a new Ball.
      *
-     * @param center is the ball's center
-     * @param r      is the ball's radius
-     * @param color  is the ball's color
-     * @param frame  is the ball's frame
+     * @param center              is the ball's center
+     * @param r                   is the ball's radius
+     * @param color               is the ball's color
+     * @param frame               is the ball's frame
+     * @param thisGameEnvironment this game environment
      */
     public Ball(Point center, int r, Color color, Frame frame, GameEnvironment thisGameEnvironment) {
         this.center = center;
@@ -63,11 +63,12 @@ public class Ball implements Sprite {
     /**
      * Instantiates a new Ball.
      *
-     * @param x     is the ball's x center
-     * @param y     is the ball's y center
-     * @param r     is the ball's radius
-     * @param color is the ball's color
-     * @param frame is the ball's frame
+     * @param x                   is the ball's x center
+     * @param y                   is the ball's y center
+     * @param r                   is the ball's radius
+     * @param color               is the ball's color
+     * @param frame               is the ball's frame
+     * @param thisGameEnvironment the this game environment
      */
     public Ball(int x, int y, int r, Color color, Frame frame, GameEnvironment thisGameEnvironment) {
         this.center = new Point(x, y);
@@ -75,7 +76,7 @@ public class Ball implements Sprite {
         this.color = color;
         this.frame = frame;
         this.thisGameEnvironment = thisGameEnvironment;
-        this.velocity = new Velocity(5,5);
+        this.velocity = new Velocity(5, 5);
     }
 
     /**
@@ -83,7 +84,6 @@ public class Ball implements Sprite {
      *
      * @return the int
      */
-// accessors
     public int getX() {
         return (int) this.center.getX();
     }
@@ -163,12 +163,12 @@ public class Ball implements Sprite {
         trajectory.setRadius(this.radius);
         CollisionInfo collisionInfo = this.thisGameEnvironment.getClosestCollision(trajectory);
         if (collisionInfo != null) {
-            Velocity newVelocity = new Velocity(
-                    0.75*(collisionInfo.collisionPoint().getX() - this.center.getX() - this.velocity.getDx()),
-                    0.75*(collisionInfo.collisionPoint().getY() - this.center.getY() - this.velocity.getDy()));
-            this.center = newVelocity.applyToPoint(this.center);
+//            Velocity newVelocity = new Velocity(
+//                    0.75 * (collisionInfo.collisionPoint().getX() - this.center.getX() - this.velocity.getDx()),
+//                    0.75 * (collisionInfo.collisionPoint().getY() - this.center.getY() - this.velocity.getDy()));
             Velocity currentVelocity = collisionInfo.collisionObject().hit(collisionInfo.collisionPoint(), this.velocity);
             this.setVelocity(currentVelocity);
+            this.center = currentVelocity.applyToPoint(this.center);
         } else {
             // The next 4 conditions checks if the balls position after the step is
             // inside the frame boundaries
@@ -204,7 +204,10 @@ public class Ball implements Sprite {
         return this.frame;
     }
 
-    public void timePassed(){
+    /**
+     * The timePassed method.
+     */
+    public void timePassed() {
         moveOneStep();
     }
 }

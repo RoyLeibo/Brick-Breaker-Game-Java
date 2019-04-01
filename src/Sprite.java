@@ -1,8 +1,22 @@
 import biuoop.DrawSurface;
 
+
+/**
+ * The interface Sprite.
+ *
+ * @author Roy Leibovitz
+ */
 public interface Sprite {
-    // draw the sprite to the screen
+
+    /**
+     * Draw on function.
+     *
+     * @param surface the surface
+     */
     void drawOn(DrawSurface surface);
-    // notify the sprite that time has passed
+
+    /**
+     * Time passed function.
+     */
     void timePassed();
 }

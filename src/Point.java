@@ -3,6 +3,8 @@ import java.util.List;
 
 /**
  * This class represent a point.
+ *
+ * @author Roy Leibovitz
  */
 public class Point {
     /**
@@ -31,7 +33,6 @@ public class Point {
      * @param other the other
      * @return the double
      */
-// distance -- return the distance of this point to the other point
     public double distance(Point other) {
         return Math.sqrt(Math.pow(this.x - other.getX(), 2) + Math.pow(this.y - other.getY(), 2));
     }
@@ -42,7 +43,6 @@ public class Point {
      * @param other the other
      * @return the boolean
      */
-// equals -- return true is the points are equal, false otherwise
     public boolean equals(Point other) {
         if ((this.x == other.getX()) && (this.y == other.getY())) {
             return true;
@@ -55,7 +55,6 @@ public class Point {
      *
      * @return the x
      */
-// Return the x and y values of this point
     public double getX() {
         return this.x;
     }
@@ -69,15 +68,21 @@ public class Point {
         return this.y;
     }
 
-    public Point findClosestPoint(List<Point> pointsList){
+    /**
+     * This function calculate which point from the pointList is the closest to this point
+     *
+     * @param pointsList list of points.
+     * @return the closest point from the list
+     */
+    public Point findClosestPoint(List<Point> pointsList) {
         double min = Double.POSITIVE_INFINITY;
         int index = 0;
         List<Double> distanceList = new ArrayList<Double>();
-        for (int i = 0 ; i < pointsList.size(); i++){
+        for (int i = 0; i < pointsList.size(); i++) {
             distanceList.add(this.distance(pointsList.get(i)));
         }
-        for (int i = 0 ; i < pointsList.size(); i++){
-            if (distanceList.get(i) < min ){
+        for (int i = 0; i < pointsList.size(); i++) {
+            if (distanceList.get(i) < min) {
                 min = distanceList.get(i);
                 index = i;
             }
@@ -85,11 +90,22 @@ public class Point {
         return pointsList.get(index);
     }
 
-    public void setX(double x){
-        this.x = x;
+    /**
+     * x value setter
+     *
+     * @param newX the new x value
+     */
+
+    public void setX(double newX) {
+        this.x = newX;
     }
 
-    public void setY(double y){
-        this.y = y;
+    /**
+     * y value setter
+     *
+     * @param newY the new x value
+     */
+    public void setY(double newY) {
+        this.y = newY;
     }
 }
