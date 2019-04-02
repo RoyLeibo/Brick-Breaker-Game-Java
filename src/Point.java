@@ -69,7 +69,7 @@ public class Point {
     }
 
     /**
-     * This function calculate which point from the pointList is the closest to this point
+     * This function calculate which point from the pointList is the closest to this point.
      *
      * @param pointsList list of points.
      * @return the closest point from the list
@@ -91,7 +91,7 @@ public class Point {
     }
 
     /**
-     * x value setter
+     * x value setter.
      *
      * @param newX the new x value
      */
@@ -101,7 +101,7 @@ public class Point {
     }
 
     /**
-     * y value setter
+     * y value setter.
      *
      * @param newY the new x value
      */

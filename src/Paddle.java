@@ -18,7 +18,7 @@ public class Paddle implements Collidable, Sprite {
     private static final int REGION5 = 4;
 
     private Rectangle paddleRectangle;
-    private biuoop.KeyboardSensor keyboard;
+    private GUI gui;
     private Color color;
 
     /**
@@ -29,7 +29,7 @@ public class Paddle implements Collidable, Sprite {
      */
     Paddle(Rectangle paddleRectangle, GUI gui) {
         this.paddleRectangle = paddleRectangle;
-        this.keyboard = gui.getKeyboardSensor();
+        this.gui = gui;
     }
 
     /**
@@ -42,7 +42,7 @@ public class Paddle implements Collidable, Sprite {
     Paddle(Rectangle blockRectangle, GUI gui, Color color) {
         this.paddleRectangle = blockRectangle;
         this.color = color;
-        this.keyboard = gui.getKeyboardSensor();
+        this.gui = gui;
     }
 
     /**
@@ -76,13 +76,14 @@ public class Paddle implements Collidable, Sprite {
             case REGION2:
                 return Velocity.fromAngleAndSpeed(330, speed);
             case REGION3:
-                return Velocity.fromAngleAndSpeed(360, speed);
+                return new Velocity(currentVelocity.getDx(), (-1) * currentVelocity.getDx());
             case REGION4:
-                return Velocity.fromAngleAndSpeed(390, speed);
+                return Velocity.fromAngleAndSpeed(30, speed);
             case REGION5:
-                return Velocity.fromAngleAndSpeed(420, speed);
+                return Velocity.fromAngleAndSpeed(60, speed);
+            default:
+                return new Velocity(currentVelocity.getDx(), currentVelocity.getDy());
         }
-        return new Velocity(currentVelocity.getDx(), currentVelocity.getDy());
     }
 
     /**
@@ -137,10 +138,13 @@ public class Paddle implements Collidable, Sprite {
      * Move left function.
      */
     public void moveLeft() {
+        biuoop.KeyboardSensor keyboard = this.gui.getKeyboardSensor();
         // if the left key is pressed
-        if (this.keyboard.isPressed(keyboard.LEFT_KEY)) {
+        if (keyboard.isPressed(keyboard.LEFT_KEY)) {
             // set a new location of the paddle when it's x value is -10 than it was.
-            this.paddleRectangle.setNewLocation(-10);
+            if (this.paddleRectangle.getUpperLeft().getX() - 10 >= 50) {
+                this.paddleRectangle.setNewLocation(-10);
+            }
         }
     }
 
@@ -148,10 +152,15 @@ public class Paddle implements Collidable, Sprite {
      * Move right function.
      */
     public void moveRight() {
+        biuoop.KeyboardSensor keyboard = this.gui.getKeyboardSensor();
         // if the right key is pressed
-        if (this.keyboard.isPressed(keyboard.RIGHT_KEY)) {
+        if (keyboard.isPressed(keyboard.RIGHT_KEY)) {
             // set a new location of the paddle when it's x value is +10 than it was.
-            this.paddleRectangle.setNewLocation(10);
+            DrawSurface d = this.gui.getDrawSurface();
+            double width = d.getWidth() - 50;
+            if (this.paddleRectangle.getUpperRight().getX() + 10 <= width) {
+                this.paddleRectangle.setNewLocation(10);
+            }
         }
     }
 

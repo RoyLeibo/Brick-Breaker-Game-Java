@@ -58,9 +58,9 @@ public class Block implements Collidable, Sprite {
      * @return new velocity after change.
      */
     public Velocity hit(Point collisionPoint, Velocity currentVelocity) {
-        if (!this.isBlockAlive) {
-            return currentVelocity;
-        }
+//        if (!this.isBlockAlive) {
+//            return currentVelocity;
+//        }
         // the next 4 line creates each line of the block's rectangle.
         Line l1 = new Line(this.blockRectangle.getUpperLeft(), this.blockRectangle.getUpperRight());
         Line l2 = new Line(this.blockRectangle.getDownLeft(), this.blockRectangle.getDownRight());
@@ -68,38 +68,30 @@ public class Block implements Collidable, Sprite {
         Line l4 = new Line(this.blockRectangle.getUpperRight(), this.blockRectangle.getDownRight());
         // checks if the collision is in the top/bottom line
         if ((l1.isPointOnInterval(collisionPoint)) || (l2.isPointOnInterval(collisionPoint))) {
-            // if the block hit count is not finished
-            if (this.isBlockAlive) {
-                // if there are more then 1 hit left
-                if (Integer.parseInt(hitsLeft) > 1) {
-                    // decrease the count by 1
-                    this.hitsLeft = String.valueOf((Integer.parseInt(hitsLeft) - 1));
-                } else { // if it doesn't, change the hitsLeft to X
-                    this.hitsLeft = "X";
-                    this.isBlockAlive = false;
-                }
+            // if there are more then 1 hit left
+            if ((hitsLeft != "X") && (Integer.parseInt(hitsLeft) > 1)) {
+                // decrease the count by 1
+                this.hitsLeft = String.valueOf((Integer.parseInt(hitsLeft) - 1));
+            } else { // if it doesn't, change the hitsLeft to X
+                this.hitsLeft = "X";
+                this.isBlockAlive = false;
             }
             // change the y's velocity into it's negative
             return new Velocity(currentVelocity.getDx(), (-1) * currentVelocity.getDy());
         } else if ((l3.isPointOnInterval(collisionPoint)) || (l4.isPointOnInterval(collisionPoint))) {
             // checks if the collision is in the right/left line
-            // if the block hit count is not finished
-            if (this.isBlockAlive) {
-                // if there are more then 1 hit left
-                if (Integer.parseInt(hitsLeft) > 1) {
-                    // decrease the count by 1
-                    this.hitsLeft = String.valueOf((Integer.parseInt(hitsLeft) - 1));
-                } else { // if it doesn't, change the hitsLeft to X
-                    this.hitsLeft = "X";
-                    this.isBlockAlive = false;
-                }
-            }
-            // change the x's velocity into it's negative
+            // if there are more then 1 hit left
+            if ((hitsLeft != "X") && (Integer.parseInt(hitsLeft) > 1)) {
+                // decrease the count by 1
+                this.hitsLeft = String.valueOf((Integer.parseInt(hitsLeft) - 1));
+            } else { // if it doesn't, change the hitsLeft to X
+                this.hitsLeft = "X";
+                this.isBlockAlive = false;
+            }            // change the x's velocity into it's negative
             return new Velocity((-1) * currentVelocity.getDx(), currentVelocity.getDy());
-        } else {
             // if it didn't hit any of the 4 lines (which never happens), return the same velocity
-            return currentVelocity;
         }
+        return currentVelocity;
     }
 
     /**
@@ -109,21 +101,21 @@ public class Block implements Collidable, Sprite {
      */
     public void drawOn(DrawSurface surface) {
         // if the block is still alive, sets the drawing color and shapes
-        if (this.isBlockAlive) {
-            // draw a frame in color Black.
-            surface.setColor(Color.BLACK);
-            surface.drawRectangle((int) blockRectangle.getUpperLeft().getX(), (int) blockRectangle.getUpperLeft().getY(),
-                    (int) blockRectangle.getWidth(), (int) blockRectangle.getHeight());
-            // draw the block it self using the color received by input (or the default)
-            surface.setColor(this.color);
-            surface.fillRectangle((int) blockRectangle.getUpperLeft().getX(), (int) blockRectangle.getUpperLeft().getY(),
-                    (int) blockRectangle.getWidth(), (int) blockRectangle.getHeight());
-            // draw the number of hitsLeft in black
-            surface.setColor(Color.BLACK);
-            surface.drawText((int) blockRectangle.getUpperLeft().getX() + (int) (0.5 * this.blockRectangle.getWidth()),
-                    (int) blockRectangle.getUpperLeft().getY() + (int) (0.5 * this.blockRectangle.getHeight()),
-                    hitsLeft, 20);
-        }
+//        if (this.isBlockAlive) {
+        // draw a frame in color Black.
+        surface.setColor(Color.BLACK);
+        surface.drawRectangle((int) blockRectangle.getUpperLeft().getX(), (int) blockRectangle.getUpperLeft().getY(),
+                (int) blockRectangle.getWidth(), (int) blockRectangle.getHeight());
+        // draw the block it self using the color received by input (or the default)
+        surface.setColor(this.color);
+        surface.fillRectangle((int) blockRectangle.getUpperLeft().getX(), (int) blockRectangle.getUpperLeft().getY(),
+                (int) blockRectangle.getWidth(), (int) blockRectangle.getHeight());
+        // draw the number of hitsLeft in black
+        surface.setColor(Color.BLACK);
+        surface.drawText((int) blockRectangle.getUpperLeft().getX() + (int) (0.5 * this.blockRectangle.getWidth()),
+                (int) blockRectangle.getUpperLeft().getY() + (int) (0.5 * this.blockRectangle.getHeight()),
+                hitsLeft, 20);
+//        }
     }
 
     /**

@@ -53,7 +53,8 @@ public class GameEnvironment {
         // for each collidable from the list, the loop adds to the collisionPointsList
         // the closest collision to the start of the list.
         for (int i = 0; i < this.collidablesList.size(); i++) {
-            collisionPointsList.add(trajectory.closestIntersectionToStartOfLine(this.collidablesList.get(i).getCollisionRectangle()));
+            collisionPointsList.add(trajectory.closestIntersectionToStartOfLine(
+                    this.collidablesList.get(i).getCollisionRectangle()));
         }
         // when there is no collision, the function returns null.
         // to avoid null exception, this function calls clearNullIntersections function.

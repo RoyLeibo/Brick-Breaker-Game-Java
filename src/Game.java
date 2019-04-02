@@ -2,7 +2,7 @@ import biuoop.DrawSurface;
 import biuoop.GUI;
 import biuoop.Sleeper;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.Random;
 
 /**
@@ -50,15 +50,15 @@ public class Game {
         // calling a method to create a frame of blocks.
         createFrame();
         // calling a method to create blocks.
-        addMultipleBlocksPartialLine(5, 100, 40);
+        addMultipleBlocksPartialLine(5, 80, 30);
         // create a paddle and add it into each list needed.
-        Rectangle a1 = new Rectangle(new Point(250, 550), 200, 50);
+        Rectangle a1 = new Rectangle(new Point(250, 500), 200, 50);
         Paddle p = new Paddle(a1, gui, Color.BLACK);
         this.environment.addCollidable(p);
         this.sprites.addSprite(p);
         // creates a ball.
         Frame frame = new Frame(600, 1000, new Point(0, 0));
-        this.sprites.addSprite(new Ball(150, 550, 20, java.awt.Color.BLACK, frame, this.environment));
+        this.sprites.addSprite(new Ball(150, 350, 5, java.awt.Color.BLACK, frame, this.environment));
     }
 
     /**
@@ -77,8 +77,8 @@ public class Game {
         for (int i = 0; i < numberOfRows; i++) {
             Color color = new Color(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255));
             upperLeft = new Point(0, height * i + 200);
-            for (int j = 0; j < numberOfBlocks - i; j++) {
-                Point blockUpperLeft = new Point(screenWidth - 50 - j * width, upperLeft.getY());
+            for (int j = 0; j < numberOfBlocks - i - 3; j++) {
+                Point blockUpperLeft = new Point(screenWidth - 30 - j * width, upperLeft.getY());
                 Block tempBlock;
                 if (i == 0) {
                     tempBlock = new Block(new Rectangle(blockUpperLeft, width, height), color, "2");
@@ -153,12 +153,15 @@ public class Game {
         double width = d.getWidth();
         double height = d.getHeight();
         FrameBlocks fm1 = new FrameBlocks(new Rectangle(new Point(0, 0), width, 50));
-        FrameBlocks fm2 = new FrameBlocks(new Rectangle(new Point(0, 0), 50, height));
-        FrameBlocks fm3 = new FrameBlocks(new Rectangle(new Point(width - 50, 0), 50, height));
-        this.sprites.addSprite(fm2);
-        this.environment.addCollidable(fm2);
+        FrameBlocks fm2 = new FrameBlocks(new Rectangle(new Point(0, 50), 50, height - 100));
+        FrameBlocks fm3 = new FrameBlocks(new Rectangle(new Point(width - 50, 50), 50, height - 100));
+        FrameBlocks fm4 = new FrameBlocks(new Rectangle(new Point(0, height - 50), width, 50));
+        this.sprites.addSprite(fm4);
+        this.environment.addCollidable(fm4);
         this.sprites.addSprite(fm3);
         this.environment.addCollidable(fm3);
+        this.sprites.addSprite(fm2);
+        this.environment.addCollidable(fm2);
         this.sprites.addSprite(fm1);
         this.environment.addCollidable(fm1);
     }

@@ -1,6 +1,6 @@
 import biuoop.DrawSurface;
 
-import java.awt.*;
+import java.awt.Color;
 
 /**
  * The type FrameBlock.
@@ -74,15 +74,18 @@ public class FrameBlocks implements Collidable, Sprite {
     public void drawOn(DrawSurface surface) {
         // draw a frame in color Black.
         surface.setColor(Color.BLACK);
-        surface.drawRectangle((int) frameBlockRectangle.getUpperLeft().getX(), (int) frameBlockRectangle.getUpperLeft().getY(),
+        surface.drawRectangle((int) frameBlockRectangle.getUpperLeft().getX(),
+                (int) frameBlockRectangle.getUpperLeft().getY(),
                 (int) frameBlockRectangle.getWidth(), (int) frameBlockRectangle.getHeight());
         // draw the block it's self using the color received by input (or the default)
         surface.setColor(Color.GRAY);
-        surface.fillRectangle((int) frameBlockRectangle.getUpperLeft().getX(), (int) frameBlockRectangle.getUpperLeft().getY(),
-                (int) frameBlockRectangle.getWidth(), (int) frameBlockRectangle.getHeight());
+        surface.fillRectangle((int) frameBlockRectangle.getUpperLeft().getX(),
+                (int) frameBlockRectangle.getUpperLeft().getY(), (int) frameBlockRectangle.getWidth(),
+                (int) frameBlockRectangle.getHeight());
         // draw the number of hitsLeft in black
         surface.setColor(Color.BLACK);
-        surface.drawText((int) frameBlockRectangle.getUpperLeft().getX() + (int) (0.5 * this.frameBlockRectangle.getWidth()),
+        surface.drawText((int) frameBlockRectangle.getUpperLeft().getX()
+                        + (int) (0.5 * this.frameBlockRectangle.getWidth()),
                 (int) frameBlockRectangle.getUpperLeft().getY() + (int) (0.5 * this.frameBlockRectangle.getHeight()),
                 "X", 20);
     }

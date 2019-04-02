@@ -119,4 +119,21 @@ public class Rectangle {
         this.downLeft = new Point(upperLeft.getX(), upperLeft.getY() + height);
         this.upperRight = new Point(upperLeft.getX() + width, upperLeft.getY());
     }
+
+    /**
+     * check if a point is inside of the rectangle.
+     *
+     * @param p the point to check if its inside
+     * @return the boolean answer
+     */
+    public boolean insideOf(Point p) {
+        double e = 0.0001;
+        //check if it contains the x and y values that are withing the rect.
+        Line bottomSide = new Line(downLeft, downRight);
+        Line leftSide = new Line(upperLeft, downLeft);
+        if ((bottomSide.contains(p, "x")) && (leftSide.contains(p, "y"))) {
+            return true;
+        }
+        return false;
+    }
 }

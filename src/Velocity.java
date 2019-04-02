@@ -41,8 +41,9 @@ public class Velocity {
      * @return the velocity
      */
     public static Velocity fromAngleAndSpeed(double angle, double speed) {
-        double dx = speed * Math.cos(Math.toRadians(angle));
-        double dy = speed * Math.sin(Math.toRadians(angle));
+        double angleToRad = Math.toRadians(angle);
+        double dx = Math.sin(angleToRad) * speed;
+        double dy = Math.cos(angleToRad) * speed * (-1);
         return new Velocity(dx, dy);
     }
 

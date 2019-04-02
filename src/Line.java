@@ -164,9 +164,12 @@ public class Line {
         return new Line(x1, y1, x2, y2);
     }
 
-    // If this line does not intersect with the rectangle, return null.
-    // Otherwise, return the closest intersection point to the
-    // start of the line.
+    /**
+     * This function calculates the closest intersection to the start of this line
+     * with the rectangle recevied.
+     * @param rect the collision rectangle
+     * @return the closest collision point to start of the line
+     */
     public Point closestIntersectionToStartOfLine(Rectangle rect) {
         List<Point> intersectionsList = rect.intersectionPoints(this);
         int index = 0;
@@ -183,6 +186,11 @@ public class Line {
         }
     }
 
+    /**
+     * this function clear all the null value from a list of points.
+     * @param list a points list
+     * @return the same list without null values
+     */
     public java.util.List<Point> clearNullIntersections(List<Point> list) {
         List<Point> newList = new ArrayList<Point>();
         for (Point p : list) {
@@ -214,7 +222,45 @@ public class Line {
         return true;
     }
 
-    public void setRadius(double radius) {
-        this.radius = radius;
+    /**
+     * This function is a radius setter.
+     * @param newRadius the new radius
+     */
+    public void setRadius(double newRadius) {
+        this.radius = newRadius;
+    }
+
+    /**
+     * the function check if there is an x or y value with the values of the line.
+     *
+     * @param p    the point to check its value of x or y
+     * @param xOrY a parameter to know which one to check x or y
+     * @return true if the line contain the value or false if its not
+     */
+    public boolean contains(Point p, String xOrY) {
+        //epsilon to check deviation
+        double e = 0.0001;
+        //x and y values of the edges of the line
+        double x1 = this.start.getX();
+        double x2 = this.end.getX();
+        double y1 = this.start.getY();
+        double y2 = this.end.getY();
+        //x and y values of the point received
+        double xp = p.getX();
+        double yp = p.getY();
+        //check if the y of the point is within the y values of the line.
+        if (xOrY == "y") {
+            if ((yp < (y1 + e) && yp > (y2 - e)) || (yp > (y1 - e) && yp < (y2 + e)) || (yp == y1) || (yp == y2)) {
+                return true;
+            }
+        }
+        //check if the x of the point is withing the x values of the line.
+        if (xOrY == "x") {
+            if ((xp < (x1 + e) && xp > (x2 - e)) || (xp > (x1 - e) && xp < (x2 + e)) || (xp == x1) || (xp == x2)) {
+                return true;
+            }
+        }
+        //if they are not return false
+        return false;
     }
 }
