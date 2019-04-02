@@ -58,6 +58,7 @@ public class Ball implements Sprite {
         this.color = color;
         this.frame = frame;
         this.thisGameEnvironment = thisGameEnvironment;
+        this.velocity = new Velocity(3, 3);
     }
 
     /**
@@ -76,7 +77,7 @@ public class Ball implements Sprite {
         this.color = color;
         this.frame = frame;
         this.thisGameEnvironment = thisGameEnvironment;
-        this.velocity = new Velocity(5, 5);
+        this.velocity = new Velocity(7, 7);
     }
 
     /**
@@ -160,40 +161,12 @@ public class Ball implements Sprite {
      */
     public void moveOneStep() {
 //        Line trajectory = new Line(this.center, this.getVelocity().applyToPoint(this.center));
-//        trajectory.setRadius(this.radius);
 //        CollisionInfo collisionInfo = this.thisGameEnvironment.getClosestCollision(trajectory);
 //        if (collisionInfo != null) {
-//            Velocity newVelocity = new Velocity(
-//                    0.75 * (collisionInfo.collisionPoint().getX() - this.center.getX() - this.velocity.getDx()),
-//                    0.75 * (collisionInfo.collisionPoint().getY() - this.center.getY() - this.velocity.getDy()));
-//            newVelocity = collisionInfo.collisionObject().hit(collisionInfo.collisionPoint(), this.velocity);
-//            this.setVelocity(newVelocity);
-//            this.center = newVelocity.applyToPoint(this.center);
-//        } else {
-//            // The next 4 conditions checks if the balls position after the step is
-//            // inside the frame boundaries
-//
-//            // if the ball's x is outside the start point of the frame, change it's
-//            // x velocity to it's opposite direction
-//            if (trajectory.end().getX() - radius <= frame.getStartPoint().getX()) {
-//                setVelocity((-1) * velocity.getDx(), velocity.getDy());
-//            } else if (trajectory.end().getX() + radius >= this.frame.getWidth() + frame.getStartPoint().getX()) {
-//                // if the ball's x is outside the edge of the frame, change it's
-//                // x velocity to it's opposite direction
-//                setVelocity((-1) * velocity.getDx(), velocity.getDy());
-//            }
-//            // if the ball's y is outside the start point of the frame, change it's
-//            // y velocity to it's opposite direction
-//            if (trajectory.end().getY() - radius <= frame.getStartPoint().getY()) {
-//                setVelocity(velocity.getDx(), (-1) * velocity.getDy());
-//            } else if (trajectory.end().getY() + radius >= this.frame.getHeight() + frame.getStartPoint().getY()) {
-//                // if the ball's y is outside the edge of the frame, change it's
-//                // y velocity to it's opposite direction
-//                setVelocity(velocity.getDx(), (-1) * velocity.getDy());
-//            }
-//            this.center = trajectory.end();
+//            this.setVelocity(collisionInfo.collisionObject().hit(collisionInfo.collisionPoint(), this.velocity));
 //        }
-
+//        this.center = this.getVelocity().applyToPoint(this.center);
+//    }
         // variables with values of the ball parameters.
         double dx = this.velocity.getDx();
         double dy = this.velocity.getDy();

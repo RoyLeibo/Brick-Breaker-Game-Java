@@ -69,25 +69,30 @@ public class Block implements Collidable, Sprite {
         // checks if the collision is in the top/bottom line
         if ((l1.isPointOnInterval(collisionPoint)) || (l2.isPointOnInterval(collisionPoint))) {
             // if there are more then 1 hit left
-            if ((hitsLeft != "X") && (Integer.parseInt(hitsLeft) > 1)) {
-                // decrease the count by 1
-                this.hitsLeft = String.valueOf((Integer.parseInt(hitsLeft) - 1));
-            } else { // if it doesn't, change the hitsLeft to X
-                this.hitsLeft = "X";
-                this.isBlockAlive = false;
+            if (this.isBlockAlive) {
+                if (Integer.parseInt(hitsLeft) > 1) {
+                    // decrease the count by 1
+                    this.hitsLeft = String.valueOf((Integer.parseInt(hitsLeft) - 1));
+                } else { // if it doesn't, change the hitsLeft to X
+                    this.hitsLeft = "X";
+                    this.isBlockAlive = false;
+                }
             }
             // change the y's velocity into it's negative
             return new Velocity(currentVelocity.getDx(), (-1) * currentVelocity.getDy());
         } else if ((l3.isPointOnInterval(collisionPoint)) || (l4.isPointOnInterval(collisionPoint))) {
             // checks if the collision is in the right/left line
             // if there are more then 1 hit left
-            if ((hitsLeft != "X") && (Integer.parseInt(hitsLeft) > 1)) {
-                // decrease the count by 1
-                this.hitsLeft = String.valueOf((Integer.parseInt(hitsLeft) - 1));
-            } else { // if it doesn't, change the hitsLeft to X
-                this.hitsLeft = "X";
-                this.isBlockAlive = false;
-            }            // change the x's velocity into it's negative
+            if (this.isBlockAlive) {
+                if (Integer.parseInt(hitsLeft) > 1) {
+                    // decrease the count by 1
+                    this.hitsLeft = String.valueOf((Integer.parseInt(hitsLeft) - 1));
+                } else { // if it doesn't, change the hitsLeft to X
+                    this.hitsLeft = "X";
+                    this.isBlockAlive = false;
+                }
+            }
+            // change the x's velocity into it's negative
             return new Velocity((-1) * currentVelocity.getDx(), currentVelocity.getDy());
             // if it didn't hit any of the 4 lines (which never happens), return the same velocity
         }
@@ -111,7 +116,7 @@ public class Block implements Collidable, Sprite {
         surface.fillRectangle((int) blockRectangle.getUpperLeft().getX(), (int) blockRectangle.getUpperLeft().getY(),
                 (int) blockRectangle.getWidth(), (int) blockRectangle.getHeight());
         // draw the number of hitsLeft in black
-        surface.setColor(Color.BLACK);
+        surface.setColor(Color.WHITE);
         surface.drawText((int) blockRectangle.getUpperLeft().getX() + (int) (0.5 * this.blockRectangle.getWidth()),
                 (int) blockRectangle.getUpperLeft().getY() + (int) (0.5 * this.blockRectangle.getHeight()),
                 hitsLeft, 20);

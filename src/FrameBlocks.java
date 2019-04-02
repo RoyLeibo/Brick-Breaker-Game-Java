@@ -83,7 +83,7 @@ public class FrameBlocks implements Collidable, Sprite {
                 (int) frameBlockRectangle.getUpperLeft().getY(), (int) frameBlockRectangle.getWidth(),
                 (int) frameBlockRectangle.getHeight());
         // draw the number of hitsLeft in black
-        surface.setColor(Color.BLACK);
+        surface.setColor(Color.WHITE);
         surface.drawText((int) frameBlockRectangle.getUpperLeft().getX()
                         + (int) (0.5 * this.frameBlockRectangle.getWidth()),
                 (int) frameBlockRectangle.getUpperLeft().getY() + (int) (0.5 * this.frameBlockRectangle.getHeight()),

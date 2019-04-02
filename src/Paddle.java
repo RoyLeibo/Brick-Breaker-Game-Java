@@ -65,25 +65,32 @@ public class Paddle implements Collidable, Sprite {
      */
     public Velocity hit(Point collisionPoint, Velocity currentVelocity) {
         // the next line creates the top line of the paddle.
-        Line l1 = new Line(this.paddleRectangle.getUpperLeft(), this.paddleRectangle.getUpperRight());
+        Line up = new Line(this.paddleRectangle.getUpperLeft(), this.paddleRectangle.getUpperRight());
+        Line left = new Line(this.paddleRectangle.getUpperLeft(), this.paddleRectangle.getDownLeft());
+        Line right = new Line(this.paddleRectangle.getUpperRight(), this.paddleRectangle.getDownRight());
         // calling a function to calculate the collision spot one the paddle
-        int collisionSpot = checkCollisionSpot(l1, collisionPoint);
+        int collisionSpot = checkCollisionSpot(up, collisionPoint);
         double speed = Math.sqrt(Math.pow(currentVelocity.getDx(), 2) + Math.pow(currentVelocity.getDy(), 2));
         // for each collision region create a proper velocity as required.
-        switch (collisionSpot) {
-            case REGION1:
-                return Velocity.fromAngleAndSpeed(300, speed);
-            case REGION2:
-                return Velocity.fromAngleAndSpeed(330, speed);
-            case REGION3:
-                return new Velocity(currentVelocity.getDx(), (-1) * currentVelocity.getDx());
-            case REGION4:
-                return Velocity.fromAngleAndSpeed(30, speed);
-            case REGION5:
-                return Velocity.fromAngleAndSpeed(60, speed);
-            default:
-                return new Velocity(currentVelocity.getDx(), currentVelocity.getDy());
+        if (up.isPointOnInterval(collisionPoint)) {
+            switch (collisionSpot) {
+                case REGION1:
+                    return Velocity.fromAngleAndSpeed(300, speed);
+                case REGION2:
+                    return Velocity.fromAngleAndSpeed(330, speed);
+                case REGION3:
+                    return new Velocity(currentVelocity.getDx(), (-1) * currentVelocity.getDx());
+                case REGION4:
+                    return Velocity.fromAngleAndSpeed(30, speed);
+                case REGION5:
+                    return Velocity.fromAngleAndSpeed(60, speed);
+                default:
+                    return new Velocity(currentVelocity.getDx(), currentVelocity.getDy());
+            }
+        } else if ((left.isPointOnInterval(collisionPoint)) || (right.isPointOnInterval(collisionPoint))) {
+            return new Velocity((-1) * currentVelocity.getDx(), currentVelocity.getDy());
         }
+        return currentVelocity;
     }
 
     /**
@@ -142,7 +149,7 @@ public class Paddle implements Collidable, Sprite {
         // if the left key is pressed
         if (keyboard.isPressed(keyboard.LEFT_KEY)) {
             // set a new location of the paddle when it's x value is -10 than it was.
-            if (this.paddleRectangle.getUpperLeft().getX() - 10 >= 50) {
+            if (this.paddleRectangle.getUpperLeft().getX() - 10 >= 30) {
                 this.paddleRectangle.setNewLocation(-10);
             }
         }
@@ -157,7 +164,7 @@ public class Paddle implements Collidable, Sprite {
         if (keyboard.isPressed(keyboard.RIGHT_KEY)) {
             // set a new location of the paddle when it's x value is +10 than it was.
             DrawSurface d = this.gui.getDrawSurface();
-            double width = d.getWidth() - 50;
+            double width = d.getWidth() - 30;
             if (this.paddleRectangle.getUpperRight().getX() + 10 <= width) {
                 this.paddleRectangle.setNewLocation(10);
             }

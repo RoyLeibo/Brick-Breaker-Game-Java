@@ -50,15 +50,15 @@ public class Game {
         // calling a method to create a frame of blocks.
         createFrame();
         // calling a method to create blocks.
-        addMultipleBlocksPartialLine(5, 80, 30);
+        addMultipleBlocksPartialLine(6, 60, 30);
         // create a paddle and add it into each list needed.
-        Rectangle a1 = new Rectangle(new Point(250, 500), 200, 50);
-        Paddle p = new Paddle(a1, gui, Color.BLACK);
+        Rectangle a1 = new Rectangle(new Point(250, 545), 100, 25);
+        Paddle p = new Paddle(a1, gui, Color.ORANGE);
         this.environment.addCollidable(p);
         this.sprites.addSprite(p);
         // creates a ball.
         Frame frame = new Frame(600, 1000, new Point(0, 0));
-        this.sprites.addSprite(new Ball(150, 350, 5, java.awt.Color.BLACK, frame, this.environment));
+        this.sprites.addSprite(new Ball(150, 350, 5, Color.WHITE, frame, this.environment));
     }
 
     /**
@@ -70,15 +70,37 @@ public class Game {
      */
     public void addMultipleBlocksPartialLine(int numberOfRows, double width, double height) {
         DrawSurface d = this.gui.getDrawSurface();
-        double screenWidth = d.getWidth() - 100;
+        double screenWidth = d.getWidth();
         Random rand = new Random();
         Point upperLeft;
-        double numberOfBlocks = (screenWidth) / width; // number of block in each row;
+        double numberOfBlocks = 12; // number of block in each row;
+        Color color;
         for (int i = 0; i < numberOfRows; i++) {
-            Color color = new Color(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255));
-            upperLeft = new Point(0, height * i + 200);
-            for (int j = 0; j < numberOfBlocks - i - 3; j++) {
-                Point blockUpperLeft = new Point(screenWidth - 30 - j * width, upperLeft.getY());
+            switch (i) {
+                case 0:
+                    color = Color.GRAY;
+                    break;
+                case 1:
+                    color = Color.RED;
+                    break;
+                case 2:
+                    color = Color.YELLOW;
+                    break;
+                case 3:
+                    color = Color.BLUE;
+                    break;
+                case 4:
+                    color = Color.pink;
+                    break;
+                case 5:
+                    color = Color.green;
+                    break;
+                default:
+                    color = new Color(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255));
+            }
+            upperLeft = new Point(0, height * i + 150);
+            for (int j = 0; j < numberOfBlocks - i; j++) {
+                Point blockUpperLeft = new Point(screenWidth - 90 - j * width, upperLeft.getY());
                 Block tempBlock;
                 if (i == 0) {
                     tempBlock = new Block(new Rectangle(blockUpperLeft, width, height), color, "2");
@@ -105,16 +127,22 @@ public class Game {
         Point upperLeft;
         double numberOfBlocks = (screenWidth) / width; // number of block in each row
         // this loop is running for each row of blocks
+        Color black = new Color(0, 0, 0);
+        Color darkBlue = new Color(0, 0, 153);
         for (int i = 0; i < numberOfRows; i++) {
             // random a block color for each row
             Color color = new Color(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255));
-            upperLeft = new Point(50, height * i + 50);
-            // this loop is creating the block for each row
-            for (int j = 0; j < numberOfBlocks; j++) {
-                Point blockUpperLeft = new Point(screenWidth - 50 - j * width, upperLeft.getY());
-                Block tempBlock = new Block(new Rectangle(blockUpperLeft, width, height), color, "3");
-                this.sprites.addSprite(tempBlock);
-                this.environment.addCollidable(tempBlock);
+            if ((color != black) && (color != darkBlue)) {
+                upperLeft = new Point(50, height * i + 50);
+                // this loop is creating the block for each row
+                for (int j = 0; j < numberOfBlocks; j++) {
+                    Point blockUpperLeft = new Point(screenWidth - 50 - j * width, upperLeft.getY());
+                    Block tempBlock = new Block(new Rectangle(blockUpperLeft, width, height), color, "3");
+                    this.sprites.addSprite(tempBlock);
+                    this.environment.addCollidable(tempBlock);
+                }
+            } else {
+                i--;
             }
         }
     }
@@ -132,6 +160,8 @@ public class Game {
         while (true) {
             long startTime = System.currentTimeMillis(); // timing
             DrawSurface d = gui.getDrawSurface();
+            d.setColor(new Color(0, 0, 153));
+            d.fillRectangle(0, 0, 1000, 600);
             this.sprites.drawAllOn(d);
             gui.show(d);
             this.sprites.notifyAllTimePassed();
@@ -152,10 +182,10 @@ public class Game {
         DrawSurface d = gui.getDrawSurface();
         double width = d.getWidth();
         double height = d.getHeight();
-        FrameBlocks fm1 = new FrameBlocks(new Rectangle(new Point(0, 0), width, 50));
-        FrameBlocks fm2 = new FrameBlocks(new Rectangle(new Point(0, 50), 50, height - 100));
-        FrameBlocks fm3 = new FrameBlocks(new Rectangle(new Point(width - 50, 50), 50, height - 100));
-        FrameBlocks fm4 = new FrameBlocks(new Rectangle(new Point(0, height - 50), width, 50));
+        FrameBlocks fm1 = new FrameBlocks(new Rectangle(new Point(0, 0), width, 30));
+        FrameBlocks fm2 = new FrameBlocks(new Rectangle(new Point(0, 30), 30, height - 60));
+        FrameBlocks fm3 = new FrameBlocks(new Rectangle(new Point(width - 30, 30), 30, height - 60));
+        FrameBlocks fm4 = new FrameBlocks(new Rectangle(new Point(0, height - 30), width, 30));
         this.sprites.addSprite(fm4);
         this.environment.addCollidable(fm4);
         this.sprites.addSprite(fm3);
