@@ -15,6 +15,8 @@ public class Game {
     private SpriteCollection sprites;
     private GameEnvironment environment;
     private GUI gui;
+    private Counter counter;
+    private BlockRemover blockRemover;
 
     /**
      * Instantiates a new Game.
@@ -22,6 +24,8 @@ public class Game {
     public Game() {
         this.sprites = new SpriteCollection();
         this.environment = new GameEnvironment();
+        this.counter = new Counter();
+        this.blockRemover = new BlockRemover(this, this.counter);
     }
 
     /**
@@ -52,7 +56,7 @@ public class Game {
         // calling a method to create blocks.
         addMultipleBlocksPartialLine(6, 60, 30);
         // create a paddle and add it into each list needed.
-        Rectangle a1 = new Rectangle(new Point(250, 545), 100, 25);
+        Rectangle a1 = new Rectangle(new Point(100, 545), 200, 25);
         Paddle p = new Paddle(a1, gui, Color.ORANGE);
         this.environment.addCollidable(p);
         this.sprites.addSprite(p);
@@ -109,6 +113,7 @@ public class Game {
                 }
                 this.sprites.addSprite(tempBlock);
                 this.environment.addCollidable(tempBlock);
+                tempBlock.addHitListener(this.blockRemover);
             }
         }
     }
@@ -140,6 +145,7 @@ public class Game {
                     Block tempBlock = new Block(new Rectangle(blockUpperLeft, width, height), color, "3");
                     this.sprites.addSprite(tempBlock);
                     this.environment.addCollidable(tempBlock);
+                    tempBlock.addHitListener(this.blockRemover);
                 }
             } else {
                 i--;
@@ -194,5 +200,21 @@ public class Game {
         this.environment.addCollidable(fm2);
         this.sprites.addSprite(fm1);
         this.environment.addCollidable(fm1);
+    }
+
+    public void removeCollidable(Collidable c){
+        this.environment.removeCollidable(c);
+    }
+
+    public void removeSprite(Sprite s){
+        this.sprites.removeSprite(s);
+    }
+
+    public SpriteCollection getSpriteCollection(){
+        return this.sprites;
+    }
+
+    public GameEnvironment getGameEnvironment(){
+        return this.environment;
     }
 }

@@ -63,7 +63,7 @@ public class Paddle implements Collidable, Sprite {
      * @param currentVelocity the current velocity
      * @return new velocity after change.
      */
-    public Velocity hit(Point collisionPoint, Velocity currentVelocity) {
+    public Velocity hit(Ball hitter, Point collisionPoint, Velocity currentVelocity) {
         // the next line creates the top line of the paddle.
         Line up = new Line(this.paddleRectangle.getUpperLeft(), this.paddleRectangle.getUpperRight());
         Line left = new Line(this.paddleRectangle.getUpperLeft(), this.paddleRectangle.getDownLeft());
@@ -77,11 +77,13 @@ public class Paddle implements Collidable, Sprite {
                 case REGION1:
                     return Velocity.fromAngleAndSpeed(300, speed);
                 case REGION2:
-                    return Velocity.fromAngleAndSpeed(330, speed);
+                    Velocity v = Velocity.fromAngleAndSpeed(330, speed);
+                    return v;
                 case REGION3:
-                    return new Velocity(currentVelocity.getDx(), (-1) * currentVelocity.getDx());
+                    return new Velocity(currentVelocity.getDx(), (-1) * currentVelocity.getDy());
                 case REGION4:
-                    return Velocity.fromAngleAndSpeed(30, speed);
+                    Velocity v1 = Velocity.fromAngleAndSpeed(30, speed);
+                    return v1;
                 case REGION5:
                     return Velocity.fromAngleAndSpeed(60, speed);
                 default:

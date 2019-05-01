@@ -77,7 +77,7 @@ public class Ball implements Sprite {
         this.color = color;
         this.frame = frame;
         this.thisGameEnvironment = thisGameEnvironment;
-        this.velocity = new Velocity(7, 7);
+        this.velocity = new Velocity(4, 4);
     }
 
     /**
@@ -205,7 +205,7 @@ public class Ball implements Sprite {
             this.center = new Point(x, y);
             nextCenter = new Point(x + (dx), y + (dy));
             //set new velocity with the collidable hit function.
-            this.setVelocity(col.hit(colPoint, this.velocity));
+            this.setVelocity(col.hit(this, colPoint, this.velocity));
             //check if the ball is inside the rectangle and if it is make him go out
             if (col.getCollisionRectangle().insideOf(this.center)) {
                 this.center = this.velocity.applyToPoint(this.center);

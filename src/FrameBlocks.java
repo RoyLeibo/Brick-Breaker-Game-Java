@@ -46,7 +46,7 @@ public class FrameBlocks implements Collidable, Sprite {
      * @param currentVelocity the current velocity
      * @return new velocity after change.
      */
-    public Velocity hit(Point collisionPoint, Velocity currentVelocity) {
+    public Velocity hit(Ball hitter, Point collisionPoint, Velocity currentVelocity) {
         // the next 4 line creates each line of the block's rectangle.
         Line l1 = new Line(this.frameBlockRectangle.getUpperLeft(), this.frameBlockRectangle.getUpperRight());
         Line l2 = new Line(this.frameBlockRectangle.getDownLeft(), this.frameBlockRectangle.getDownRight());

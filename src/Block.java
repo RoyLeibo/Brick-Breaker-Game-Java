@@ -1,6 +1,8 @@
 import biuoop.DrawSurface;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -9,11 +11,11 @@ import java.awt.Color;
  *
  * @author Roy Leibovitz.
  */
-public class Block implements Collidable, Sprite {
+public class Block implements Collidable, Sprite, HitNotifier {
     private Rectangle blockRectangle;
     private Color color;
     private String hitsLeft;
-    private boolean isBlockAlive = true;
+    private List<HitListener> hitListeners;
 
     /**
      * Instantiates a new Block.
@@ -24,6 +26,7 @@ public class Block implements Collidable, Sprite {
         this.blockRectangle = blockRectangle;
         this.hitsLeft = "5";
         this.color = Color.CYAN;
+        this.hitListeners = new ArrayList<HitListener>();
     }
 
     /**
@@ -37,6 +40,7 @@ public class Block implements Collidable, Sprite {
         this.blockRectangle = blockRectangle;
         this.color = color;
         this.hitsLeft = hitsLeft;
+        this.hitListeners = new ArrayList<HitListener>();
     }
 
     /**
@@ -55,9 +59,10 @@ public class Block implements Collidable, Sprite {
      *
      * @param collisionPoint  the collision point
      * @param currentVelocity the current velocity
+     * @param hitter          the block hitter
      * @return new velocity after change.
      */
-    public Velocity hit(Point collisionPoint, Velocity currentVelocity) {
+    public Velocity hit(Ball hitter, Point collisionPoint, Velocity currentVelocity) {
 //        if (!this.isBlockAlive) {
 //            return currentVelocity;
 //        }
@@ -68,34 +73,16 @@ public class Block implements Collidable, Sprite {
         Line l4 = new Line(this.blockRectangle.getUpperRight(), this.blockRectangle.getDownRight());
         // checks if the collision is in the top/bottom line
         if ((l1.isPointOnInterval(collisionPoint)) || (l2.isPointOnInterval(collisionPoint))) {
-            // if there are more then 1 hit left
-            if (this.isBlockAlive) {
-                if (Integer.parseInt(hitsLeft) > 1) {
-                    // decrease the count by 1
-                    this.hitsLeft = String.valueOf((Integer.parseInt(hitsLeft) - 1));
-                } else { // if it doesn't, change the hitsLeft to X
-                    this.hitsLeft = "X";
-                    this.isBlockAlive = false;
-                }
-            }
             // change the y's velocity into it's negative
+            this.notifyHit(hitter);
             return new Velocity(currentVelocity.getDx(), (-1) * currentVelocity.getDy());
         } else if ((l3.isPointOnInterval(collisionPoint)) || (l4.isPointOnInterval(collisionPoint))) {
-            // checks if the collision is in the right/left line
-            // if there are more then 1 hit left
-            if (this.isBlockAlive) {
-                if (Integer.parseInt(hitsLeft) > 1) {
-                    // decrease the count by 1
-                    this.hitsLeft = String.valueOf((Integer.parseInt(hitsLeft) - 1));
-                } else { // if it doesn't, change the hitsLeft to X
-                    this.hitsLeft = "X";
-                    this.isBlockAlive = false;
-                }
-            }
             // change the x's velocity into it's negative
+            this.notifyHit(hitter);
             return new Velocity((-1) * currentVelocity.getDx(), currentVelocity.getDy());
             // if it didn't hit any of the 4 lines (which never happens), return the same velocity
         }
+        this.notifyHit(hitter);
         return currentVelocity;
     }
 
@@ -164,5 +151,34 @@ public class Block implements Collidable, Sprite {
      */
     public String getHitsLeft() {
         return this.hitsLeft;
+    }
+
+    /**
+     * Remove from game.
+     *
+     * @param game the game
+     */
+    public void removeFromGame(Game game) {
+        game.removeCollidable(this);
+        game.removeSprite(this);
+    }
+
+    // Add hl as a listener to hit events.
+    public void addHitListener(HitListener hl) {
+        this.hitListeners.add(hl);
+    }
+
+    // Remove hl from the list of listeners to hit events.
+    public void removeHitListener(HitListener hl) {
+        this.hitListeners.remove(hl);
+    }
+
+    private void notifyHit(Ball hitter) {
+        // Make a copy of the hitListeners before iterating over them.
+        List<HitListener> listeners = new ArrayList<HitListener>(this.hitListeners);
+        // Notify all listeners about a hit event:
+        for (HitListener hl : listeners) {
+            hl.hitEvent(this, hitter);
+        }
     }
 }

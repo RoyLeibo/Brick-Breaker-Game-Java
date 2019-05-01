@@ -80,4 +80,8 @@ public class GameEnvironment {
         // block that this point is on.
         return new CollisionInfo(closestCollisionPoint, this.collidablesList.get(collisionIndex));
     }
+
+    public void removeCollidable(Collidable c){
+        this.collidablesList.remove(c);
+    }
 }

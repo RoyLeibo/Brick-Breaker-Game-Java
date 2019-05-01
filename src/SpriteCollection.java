@@ -49,4 +49,15 @@ public class SpriteCollection {
             sprite.drawOn(d);
         }
     }
+
+    /**
+     * Gets sprites list.
+     */
+    public ArrayList<Sprite> getSpritesList() {
+        return this.spritesList;
+    }
+
+    public void removeSprite(Sprite s){
+        this.spritesList.remove(s);
+    }
 }
