@@ -6,12 +6,6 @@ import java.awt.Color;
  * This class define a Ball.
  */
 public class Ball implements Sprite {
-    private static final int NOCOLLISION = 0;
-    private static final int XCOLLISIONRIGHT = 1;
-    private static final int XCOLLISIONLEFT = 2;
-    private static final int YCOLLISIONUP = 3;
-    private static final int YCOLLISIONDOWN = 4;
-
     /**
      * The point of the ball's center.
      */
@@ -28,10 +22,6 @@ public class Ball implements Sprite {
      * The ball's Velocity.
      */
     private Velocity velocity;
-    /**
-     * The ball's Frame.
-     */
-    private Frame frame;
 
     /**
      * The GameEnvironment.
@@ -49,14 +39,12 @@ public class Ball implements Sprite {
      * @param center              is the ball's center
      * @param r                   is the ball's radius
      * @param color               is the ball's color
-     * @param frame               is the ball's frame
      * @param thisGameEnvironment this game environment
      */
-    public Ball(Point center, int r, Color color, Frame frame, GameEnvironment thisGameEnvironment) {
+    public Ball(Point center, int r, Color color, GameEnvironment thisGameEnvironment) {
         this.center = center;
         this.radius = r;
         this.color = color;
-        this.frame = frame;
         this.thisGameEnvironment = thisGameEnvironment;
         this.velocity = new Velocity(3, 3);
     }
@@ -68,14 +56,12 @@ public class Ball implements Sprite {
      * @param y                   is the ball's y center
      * @param r                   is the ball's radius
      * @param color               is the ball's color
-     * @param frame               is the ball's frame
      * @param thisGameEnvironment the this game environment
      */
-    public Ball(int x, int y, int r, Color color, Frame frame, GameEnvironment thisGameEnvironment) {
+    public Ball(int x, int y, int r, Color color, GameEnvironment thisGameEnvironment) {
         this.center = new Point(x, y);
         this.radius = r;
         this.color = color;
-        this.frame = frame;
         this.thisGameEnvironment = thisGameEnvironment;
         this.velocity = new Velocity(4, 4);
     }
@@ -216,15 +202,6 @@ public class Ball implements Sprite {
                 }
             }
         }
-    }
-
-    /**
-     * Gets frame.
-     *
-     * @return the frame
-     */
-    public Frame getFrame() {
-        return this.frame;
     }
 
     /**

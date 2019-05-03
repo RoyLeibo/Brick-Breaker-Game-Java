@@ -9,10 +9,8 @@ public class ScoreTrackingListener implements HitListener {
     public void hitEvent(Block beingHit, Ball hitter) {
         if (Integer.parseInt(beingHit.getHitsLeft()) == 1) {
             this.scoreCounter.increase(10);
-            this.scoreBlock.setHitsLeft("Score: " + this.scoreCounter.getValue());
         } else {
             this.scoreCounter.increase(5);
-            this.scoreBlock.setHitsLeft("Score: " + this.scoreCounter.getValue());
         }
     }
 

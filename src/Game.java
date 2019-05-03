@@ -19,6 +19,8 @@ public class Game {
     private BallRemover ballRemover;
     private ScoreTrackingListener scoreTracker;
     private int blocksInStage;
+    private ScoreIndicator scoreIndicator;
+    private Counter numberOfLivesLeft;
 
     /**
      * Instantiates a new Game.
@@ -28,7 +30,11 @@ public class Game {
         this.environment = new GameEnvironment();
         this.blockRemover = new BlockRemover(this, new Counter());
         this.ballRemover = new BallRemover(this, new Counter());
-        this.scoreTracker = new ScoreTrackingListener(new Counter());
+        Counter scoreTrackerCounter = new Counter();
+        this.scoreTracker = new ScoreTrackingListener(scoreTrackerCounter);
+        this.scoreIndicator = new ScoreIndicator(scoreTrackerCounter);
+        this.numberOfLivesLeft = new Counter();
+        this.numberOfLivesLeft.increase(4);
     }
 
     /**
@@ -59,13 +65,10 @@ public class Game {
         // calling a method to create blocks.
         addMultipleBlocksPartialLine(6, 60, 30);
         // create a paddle and add it into each list needed.
-        Rectangle a1 = new Rectangle(new Point(100, 574.9), 200, 25);
+        Rectangle a1 = new Rectangle(new Point(300, 574.9), 200, 25);
         Paddle p = new Paddle(a1, gui, Color.ORANGE);
         this.environment.addCollidable(p);
         this.sprites.addSprite(p);
-        // creates a ball.
-        Frame frame = new Frame(600, 1000, new Point(0, 0));
-        this.sprites.addSprite(new Ball(150, 250, 5, Color.WHITE, frame, this.environment));
     }
 
     /**
@@ -161,7 +164,7 @@ public class Game {
     /**
      * Run the game after the initialization.
      */
-    public void run() {
+    public boolean playOneTurn() {
         //...
         int framesPerSecond = 60;
         int millisecondsPerFrame = 1000 / framesPerSecond;
@@ -183,8 +186,30 @@ public class Game {
             if (milliSecondLeftToSleep > 0) {
                 sleeper.sleepFor(milliSecondLeftToSleep);
             }
-            if(this.blocksInStage == blockLeftCounter.getValue()){
+            if (this.blocksInStage == blockLeftCounter.getValue()) {
                 this.scoreTracker.getScoreCounter().increase(100);
+                return true;
+            }
+            if (ballRemover.getBallsRemoved() == 2) {
+                ballRemover.setBallsRemoved(0);
+                return false;
+            }
+        }
+    }
+
+    public void run() {
+        initialize();
+        boolean isStageCompleted = true;
+        while (isStageCompleted) {
+            createBalls(2);
+            isStageCompleted = playOneTurn();
+            if (!isStageCompleted) {
+                this.numberOfLivesLeft.decrease(1);
+                if (this.numberOfLivesLeft.getValue() == 0) {
+                    return;
+                }
+            } else {
+                addMultipleBlocksPartialLine(6, 60, 30);
             }
         }
     }
@@ -212,7 +237,7 @@ public class Game {
         fm4.setHitsLeft("");
         fm1.setFontColor(Color.WHITE);
         fm2.setFontColor(Color.WHITE);
-        fm2.setFontColor(Color.WHITE);
+        fm3.setFontColor(Color.WHITE);
         this.sprites.addSprite(fm4);
         this.environment.addCollidable(fm4);
         this.sprites.addSprite(fm3);
@@ -221,32 +246,55 @@ public class Game {
         this.environment.addCollidable(fm2);
         this.sprites.addSprite(fm1);
         this.environment.addCollidable(fm1);
-        Block scoreBlock = new Block(new Rectangle(new Point(0,0), width, 25));
-        scoreBlock.setBackgroundColor(Color.WHITE);
-        scoreBlock.setFontColor(Color.BLACK);
-        this.environment.addCollidable(scoreBlock);
-        this.sprites.addSprite(scoreBlock);
-        scoreBlock.setHitsLeft("Score: 0");
-        this.scoreTracker.setScoreBlock(scoreBlock);
+        this.sprites.addSprite(this.scoreIndicator);
     }
 
-    public void removeCollidable(Collidable c){
+    public void removeCollidable(Collidable c) {
         this.environment.removeCollidable(c);
     }
 
-    public void removeSprite(Sprite s){
+    public void removeSprite(Sprite s) {
         this.sprites.removeSprite(s);
     }
 
-    public SpriteCollection getSpriteCollection(){
+    public SpriteCollection getSpriteCollection() {
         return this.sprites;
     }
 
-    public GameEnvironment getGameEnvironment(){
+    public GameEnvironment getGameEnvironment() {
         return this.environment;
     }
 
-    public void removeBall(Ball b){
+    public void removeBall(Ball b) {
         this.sprites.removeSprite(b);
+    }
+
+    public void createBalls(int numberOfBalls) {
+        Random r = new Random();
+        Color color = Color.WHITE;
+        for (int i = 0; i < numberOfBalls; i++) {
+            switch (r.nextInt(6)) {
+                case 0:
+                    color = Color.BLACK;
+                    break;
+                case 1:
+                    color = Color.RED;
+                    break;
+                case 2:
+                    color = Color.YELLOW;
+                    break;
+                case 3:
+                    color = Color.BLUE;
+                    break;
+                case 4:
+                    color = Color.pink;
+                    break;
+                case 5:
+                    color = Color.green;
+                    break;
+            }
+            this.sprites.addSprite(new Ball(r.nextInt(700) + 100, r.nextInt(150) + 100
+                    , 5, color, this.environment));
+        }
     }
 }
