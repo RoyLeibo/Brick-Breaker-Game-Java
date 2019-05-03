@@ -15,8 +15,10 @@ public class Game {
     private SpriteCollection sprites;
     private GameEnvironment environment;
     private GUI gui;
-    private Counter counter;
     private BlockRemover blockRemover;
+    private BallRemover ballRemover;
+    private ScoreTrackingListener scoreTracker;
+    private int blocksInStage;
 
     /**
      * Instantiates a new Game.
@@ -24,8 +26,9 @@ public class Game {
     public Game() {
         this.sprites = new SpriteCollection();
         this.environment = new GameEnvironment();
-        this.counter = new Counter();
-        this.blockRemover = new BlockRemover(this, this.counter);
+        this.blockRemover = new BlockRemover(this, new Counter());
+        this.ballRemover = new BallRemover(this, new Counter());
+        this.scoreTracker = new ScoreTrackingListener(new Counter());
     }
 
     /**
@@ -50,19 +53,19 @@ public class Game {
      * Initialize all the objects required to run the game.
      */
     public void initialize() {
-        this.gui = new GUI("", 1000, 600);
+        this.gui = new GUI("", 800, 600);
         // calling a method to create a frame of blocks.
         createFrame();
         // calling a method to create blocks.
         addMultipleBlocksPartialLine(6, 60, 30);
         // create a paddle and add it into each list needed.
-        Rectangle a1 = new Rectangle(new Point(100, 545), 200, 25);
+        Rectangle a1 = new Rectangle(new Point(100, 574.9), 200, 25);
         Paddle p = new Paddle(a1, gui, Color.ORANGE);
         this.environment.addCollidable(p);
         this.sprites.addSprite(p);
         // creates a ball.
         Frame frame = new Frame(600, 1000, new Point(0, 0));
-        this.sprites.addSprite(new Ball(150, 350, 5, Color.WHITE, frame, this.environment));
+        this.sprites.addSprite(new Ball(150, 250, 5, Color.WHITE, frame, this.environment));
     }
 
     /**
@@ -77,7 +80,7 @@ public class Game {
         double screenWidth = d.getWidth();
         Random rand = new Random();
         Point upperLeft;
-        double numberOfBlocks = 12; // number of block in each row;
+        double numberOfBlocks = 10; // number of block in each row;
         Color color;
         for (int i = 0; i < numberOfRows; i++) {
             switch (i) {
@@ -113,9 +116,11 @@ public class Game {
                 }
                 this.sprites.addSprite(tempBlock);
                 this.environment.addCollidable(tempBlock);
+                tempBlock.addHitListener(this.scoreTracker);
                 tempBlock.addHitListener(this.blockRemover);
             }
         }
+        this.blocksInStage = 45;
     }
 
     /**
@@ -161,6 +166,7 @@ public class Game {
         int framesPerSecond = 60;
         int millisecondsPerFrame = 1000 / framesPerSecond;
         Sleeper sleeper = new Sleeper();
+        Counter blockLeftCounter = this.blockRemover.getRemainingBlocks();
         // and infinite loop that drawing each object and calling the timePassed function in
         // each one of them.
         while (true) {
@@ -177,6 +183,9 @@ public class Game {
             if (milliSecondLeftToSleep > 0) {
                 sleeper.sleepFor(milliSecondLeftToSleep);
             }
+            if(this.blocksInStage == blockLeftCounter.getValue()){
+                this.scoreTracker.getScoreCounter().increase(100);
+            }
         }
     }
 
@@ -188,10 +197,22 @@ public class Game {
         DrawSurface d = gui.getDrawSurface();
         double width = d.getWidth();
         double height = d.getHeight();
-        FrameBlocks fm1 = new FrameBlocks(new Rectangle(new Point(0, 0), width, 30));
-        FrameBlocks fm2 = new FrameBlocks(new Rectangle(new Point(0, 30), 30, height - 60));
-        FrameBlocks fm3 = new FrameBlocks(new Rectangle(new Point(width - 30, 30), 30, height - 60));
-        FrameBlocks fm4 = new FrameBlocks(new Rectangle(new Point(0, height - 30), width, 30));
+        Block fm1 = new Block(new Rectangle(new Point(0, 25), width, 30));
+        Block fm2 = new Block(new Rectangle(new Point(0, 55), 30, height - 55.1));
+        Block fm3 = new Block(new Rectangle(new Point(width - 30, 55), 30, height - 55.1));
+        Block fm4 = new Block(new Rectangle(new Point(0, height - 0.1), width, 0.1));
+        fm1.setBackgroundColor(Color.GRAY);
+        fm2.setBackgroundColor(Color.GRAY);
+        fm3.setBackgroundColor(Color.GRAY);
+        fm4.setBackgroundColor(Color.GRAY);
+        fm4.addHitListener(this.ballRemover);
+        fm1.setHitsLeft("X");
+        fm2.setHitsLeft("X");
+        fm3.setHitsLeft("X");
+        fm4.setHitsLeft("");
+        fm1.setFontColor(Color.WHITE);
+        fm2.setFontColor(Color.WHITE);
+        fm2.setFontColor(Color.WHITE);
         this.sprites.addSprite(fm4);
         this.environment.addCollidable(fm4);
         this.sprites.addSprite(fm3);
@@ -200,6 +221,13 @@ public class Game {
         this.environment.addCollidable(fm2);
         this.sprites.addSprite(fm1);
         this.environment.addCollidable(fm1);
+        Block scoreBlock = new Block(new Rectangle(new Point(0,0), width, 25));
+        scoreBlock.setBackgroundColor(Color.WHITE);
+        scoreBlock.setFontColor(Color.BLACK);
+        this.environment.addCollidable(scoreBlock);
+        this.sprites.addSprite(scoreBlock);
+        scoreBlock.setHitsLeft("Score: 0");
+        this.scoreTracker.setScoreBlock(scoreBlock);
     }
 
     public void removeCollidable(Collidable c){
@@ -216,5 +244,9 @@ public class Game {
 
     public GameEnvironment getGameEnvironment(){
         return this.environment;
+    }
+
+    public void removeBall(Ball b){
+        this.sprites.removeSprite(b);
     }
 }

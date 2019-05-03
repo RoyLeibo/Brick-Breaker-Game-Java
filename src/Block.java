@@ -13,7 +13,8 @@ import java.util.List;
  */
 public class Block implements Collidable, Sprite, HitNotifier {
     private Rectangle blockRectangle;
-    private Color color;
+    private Color backgroundColor;
+    private Color fontColor;
     private String hitsLeft;
     private List<HitListener> hitListeners;
 
@@ -25,8 +26,9 @@ public class Block implements Collidable, Sprite, HitNotifier {
     Block(Rectangle blockRectangle) {
         this.blockRectangle = blockRectangle;
         this.hitsLeft = "5";
-        this.color = Color.CYAN;
+        this.backgroundColor = Color.CYAN;
         this.hitListeners = new ArrayList<HitListener>();
+        this.setFontColor(Color.BLACK);
     }
 
     /**
@@ -38,9 +40,10 @@ public class Block implements Collidable, Sprite, HitNotifier {
      */
     Block(Rectangle blockRectangle, Color color, String hitsLeft) {
         this.blockRectangle = blockRectangle;
-        this.color = color;
+        this.backgroundColor = color;
         this.hitsLeft = hitsLeft;
         this.hitListeners = new ArrayList<HitListener>();
+        this.setFontColor(Color.BLACK);
     }
 
     /**
@@ -99,13 +102,13 @@ public class Block implements Collidable, Sprite, HitNotifier {
         surface.drawRectangle((int) blockRectangle.getUpperLeft().getX(), (int) blockRectangle.getUpperLeft().getY(),
                 (int) blockRectangle.getWidth(), (int) blockRectangle.getHeight());
         // draw the block it self using the color received by input (or the default)
-        surface.setColor(this.color);
+        surface.setColor(this.backgroundColor);
         surface.fillRectangle((int) blockRectangle.getUpperLeft().getX(), (int) blockRectangle.getUpperLeft().getY(),
                 (int) blockRectangle.getWidth(), (int) blockRectangle.getHeight());
         // draw the number of hitsLeft in black
-        surface.setColor(Color.WHITE);
+        surface.setColor(this.fontColor);
         surface.drawText((int) blockRectangle.getUpperLeft().getX() + (int) (0.5 * this.blockRectangle.getWidth()),
-                (int) blockRectangle.getUpperLeft().getY() + (int) (0.5 * this.blockRectangle.getHeight()),
+                (int) blockRectangle.getUpperLeft().getY() + (int) (0.8 * this.blockRectangle.getHeight()),
                 hitsLeft, 20);
 //        }
     }
@@ -122,8 +125,8 @@ public class Block implements Collidable, Sprite, HitNotifier {
      *
      * @return the color
      */
-    public Color getColor() {
-        return this.color;
+    public Color getBackgroundColor() {
+        return this.backgroundColor;
     }
 
     /**
@@ -131,8 +134,12 @@ public class Block implements Collidable, Sprite, HitNotifier {
      *
      * @param color1 the color.
      */
-    public void setColor(Color color1) {
-        this.color = color1;
+    public void setBackgroundColor(Color color1) {
+        this.backgroundColor = color1;
+    }
+
+    public void setFontColor(Color color1){
+        this.fontColor = color1;
     }
 
     /**

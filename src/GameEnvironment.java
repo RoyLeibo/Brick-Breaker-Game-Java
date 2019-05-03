@@ -82,6 +82,12 @@ public class GameEnvironment {
     }
 
     public void removeCollidable(Collidable c){
-        this.collidablesList.remove(c);
+        ArrayList<Collidable> newCollidableList = new ArrayList<>();
+        for (Collidable cl: collidablesList) {
+            if(cl != c){
+                newCollidableList.add(cl);
+            }
+        }
+        this.collidablesList = newCollidableList;
     }
 }

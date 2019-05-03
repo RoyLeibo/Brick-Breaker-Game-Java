@@ -233,4 +233,8 @@ public class Ball implements Sprite {
     public void timePassed() {
         moveOneStep();
     }
+
+    public void removeFromGame(Game g){
+        g.removeBall(this);
+    }
 }

@@ -58,6 +58,12 @@ public class SpriteCollection {
     }
 
     public void removeSprite(Sprite s){
-        this.spritesList.remove(s);
+        ArrayList<Sprite> newSpriteList = new ArrayList<>();
+        for (Sprite sp: spritesList) {
+            if(sp != s){
+                newSpriteList.add(sp);
+            }
+        }
+        this.spritesList  = newSpriteList;
     }
 }
