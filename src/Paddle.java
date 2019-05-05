@@ -190,4 +190,8 @@ public class Paddle implements Collidable, Sprite {
     public void setColor(Color color1) {
         this.color = color1;
     }
+
+    public void setPaddleRectangle(Rectangle paddleRectangle){
+        this.paddleRectangle = paddleRectangle;
+    }
 }

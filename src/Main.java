@@ -10,7 +10,6 @@ public class Main {
         // write your code here
 
         Game g = new Game();
-        g.initialize();
         g.run();
 //        Frame frame = new Frame(300, 300, new Point(0, 0));
 //        GUI gui = new GUI("שומן קטן ויפה", 600, 600);

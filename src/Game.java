@@ -21,6 +21,7 @@ public class Game {
     private int blocksInStage;
     private ScoreIndicator scoreIndicator;
     private Counter numberOfLivesLeft;
+    private Paddle paddle;
 
     /**
      * Instantiates a new Game.
@@ -63,12 +64,11 @@ public class Game {
         // calling a method to create a frame of blocks.
         createFrame();
         // calling a method to create blocks.
-        addMultipleBlocksPartialLine(6, 60, 30);
+        addMultipleBlocksPartialLine(1, 60, 30);
         // create a paddle and add it into each list needed.
-        Rectangle a1 = new Rectangle(new Point(300, 574.9), 200, 25);
-        Paddle p = new Paddle(a1, gui, Color.ORANGE);
-        this.environment.addCollidable(p);
-        this.sprites.addSprite(p);
+        this.paddle = new Paddle(new Rectangle(new Point(300, 574.9), 200, 25), gui, Color.ORANGE);
+        this.environment.addCollidable(this.paddle);
+        this.sprites.addSprite(this.paddle);
     }
 
     /**
@@ -123,7 +123,7 @@ public class Game {
                 tempBlock.addHitListener(this.blockRemover);
             }
         }
-        this.blocksInStage = 45;
+        this.blocksInStage = 10;
     }
 
     /**
@@ -188,10 +188,11 @@ public class Game {
             }
             if (this.blocksInStage == blockLeftCounter.getValue()) {
                 this.scoreTracker.getScoreCounter().increase(100);
+                blockLeftCounter.setCounter(0);
                 return true;
             }
-            if (ballRemover.getBallsRemoved() == 2) {
-                ballRemover.setBallsRemoved(0);
+            if (ballRemover.getRemainingBalls().getValue() == 6) {
+                ballRemover.getRemainingBalls().setCounter(0);
                 return false;
             }
         }
@@ -199,17 +200,26 @@ public class Game {
 
     public void run() {
         initialize();
+        int numberOfBalls = 6;
+        int numberOfBallsToCreate = numberOfBalls;
         boolean isStageCompleted = true;
         while (isStageCompleted) {
-            createBalls(2);
+            createBalls(numberOfBallsToCreate);
             isStageCompleted = playOneTurn();
             if (!isStageCompleted) {
                 this.numberOfLivesLeft.decrease(1);
                 if (this.numberOfLivesLeft.getValue() == 0) {
                     return;
                 }
+                else {
+                    numberOfBallsToCreate = numberOfBalls;
+                    isStageCompleted = true;
+                    this.paddle.setPaddleRectangle(new Rectangle(new Point(300, 574.9), 200, 25));
+                }
             } else {
-                addMultipleBlocksPartialLine(6, 60, 30);
+                addMultipleBlocksPartialLine(1, 60, 30);
+                numberOfBallsToCreate = this.ballRemover.getRemainingBalls().getValue();
+                this.ballRemover.getRemainingBalls().setCounter(0);
             }
         }
     }
@@ -293,7 +303,7 @@ public class Game {
                     color = Color.green;
                     break;
             }
-            this.sprites.addSprite(new Ball(r.nextInt(700) + 100, r.nextInt(150) + 100
+            this.sprites.addSprite(new Ball(r.nextInt(500) + 100, 100
                     , 5, color, this.environment));
         }
     }

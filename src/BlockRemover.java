@@ -11,10 +11,10 @@ public class BlockRemover implements HitListener {
         if(Integer.parseInt(beingHit.getHitsLeft()) == 1) {
             beingHit.removeHitListener(this);
             beingHit.removeFromGame(game);
+            this.remainingBlocks.increase(1);
         }
         else {
             beingHit.setHitsLeft(String.valueOf(Integer.parseInt(beingHit.getHitsLeft())-1));
-            this.remainingBlocks.decrease(1);
         }
     }
 
