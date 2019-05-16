@@ -1,6 +1,7 @@
 package rungame;
 
 import animations.EndScreen;
+import animations.PauseScreen;
 import biuoop.DrawSurface;
 import biuoop.GUI;
 import biuoop.Sleeper;
@@ -9,7 +10,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
+import animations.CountdownAnimation;
 import gamesprites.Paddle;
 import gamesprites.Block;
 import gamesprites.Ball;
@@ -106,6 +107,7 @@ public class Game implements Animation {
         this.environment.addCollidable(this.paddle);
         this.sprites.addSprite(this.paddle);
         createBalls(this.numberOfBallsInGame);
+        this.animationRunner.run(new CountdownAnimation(2, 3, this.sprites));
     }
 
     /**
@@ -217,6 +219,9 @@ public class Game implements Animation {
             this.isStageCompleted = false;
             this.isStageFinished();
         }
+        if (this.animationRunner.getGui().getKeyboardSensor().isPressed("p")) {
+            this.animationRunner.run(new PauseScreen(this.animationRunner.getGui().getKeyboardSensor()));
+        }
     }
 
     public boolean shouldStop() {
@@ -237,7 +242,6 @@ public class Game implements Animation {
             numberOfLivesLeft.decrease(1);
             if (numberOfLivesLeft.getValue() == 0) {
                 new EndScreen().printEndScreen(this.animationRunner.getGui());
-                this.isRunning = false;
             } else {
                 this.numberOfBallsToCreate = this.numberOfBallsInGame;
                 this.isStageCompleted = true;

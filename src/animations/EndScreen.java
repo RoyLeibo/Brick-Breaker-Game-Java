@@ -12,5 +12,6 @@ public class EndScreen {
         d.drawText(100, 300, "GAME OVER!", 100);
         gui.show(d);//
         while(!keyboardSensor.isPressed(keyboardSensor.SPACE_KEY)){}
+        return;
     }
 }

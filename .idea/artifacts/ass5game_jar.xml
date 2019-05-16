@@ -3,9 +3,9 @@
     <output-path>$PROJECT_DIR$/out/artifacts/ass5game_jar</output-path>
     <root id="archive" name="ass3.jar">
       <element id="directory" name="META-INF">
-        <element id="file-copy" path="$PROJECT_DIR$/../ass4/src/main/resources/META-INF/MANIFEST.MF" />
+        <element id="file-copy" path="$USER_HOME$/ass4/src/main/resources/META-INF/MANIFEST.MF" />
       </element>
-      <element id="module-output" name="ass3" />
+      <element id="module-output" name="ass6" />
       <element id="extracted-dir" path="$PROJECT_DIR$/src/biuoop-1.4.jar" path-in-jar="/" />
     </root>
   </artifact>
