@@ -1,7 +1,10 @@
 package gamesprites;
+
 import biuoop.DrawSurface;
 import biuoop.GUI;
+
 import java.awt.Color;
+
 import others.Velocity;
 import interfaces.Sprite;
 import interfaces.Collidable;
@@ -26,6 +29,8 @@ public class Paddle implements Collidable, Sprite {
     private Rectangle paddleRectangle;
     private GUI gui;
     private Color color;
+    private double paddleSpeed;
+    private double frameWidth;
 
     /**
      * Instantiates a new Paddle.
@@ -36,6 +41,8 @@ public class Paddle implements Collidable, Sprite {
     public Paddle(Rectangle paddleRectangle, GUI gui) {
         this.paddleRectangle = paddleRectangle;
         this.gui = gui;
+        this.paddleSpeed = 10;
+        this.frameWidth = 10;
     }
 
     /**
@@ -45,10 +52,12 @@ public class Paddle implements Collidable, Sprite {
      * @param gui            the gui
      * @param color          the color
      */
-    public Paddle(Rectangle blockRectangle, GUI gui, Color color) {
+    public Paddle(Rectangle blockRectangle, GUI gui, Color color, double paddleSpeed, double frameWidth) {
         this.paddleRectangle = blockRectangle;
         this.color = color;
         this.gui = gui;
+        this.paddleSpeed = paddleSpeed;
+        this.frameWidth = frameWidth;
     }
 
     /**
@@ -65,7 +74,7 @@ public class Paddle implements Collidable, Sprite {
      * from which side of the block's rectangle the ball hit using the collisionPoint.
      * The method will create a new velocity depend of the hit location on the paddle.
      *
-     * @param hitter the ball that hit
+     * @param hitter          the ball that hit
      * @param collisionPoint  the collision point
      * @param currentVelocity the current velocity
      * @return new velocity after change.
@@ -158,8 +167,8 @@ public class Paddle implements Collidable, Sprite {
         // if the left key is pressed
         if (keyboard.isPressed(keyboard.LEFT_KEY)) {
             // set a new location of the paddle when it's x value is -10 than it was.
-            if (this.paddleRectangle.getUpperLeft().getX() - 10 >= 30) {
-                this.paddleRectangle.setNewLocation(-10);
+            if (this.paddleRectangle.getUpperLeft().getX() >= frameWidth) {
+                this.paddleRectangle.setNewLocation((-1) * this.paddleSpeed);
             }
         }
     }
@@ -173,9 +182,9 @@ public class Paddle implements Collidable, Sprite {
         if (keyboard.isPressed(keyboard.RIGHT_KEY)) {
             // set a new location of the paddle when it's x value is +10 than it was.
             DrawSurface d = this.gui.getDrawSurface();
-            double width = d.getWidth() - 30;
-            if (this.paddleRectangle.getUpperRight().getX() + 10 <= width) {
-                this.paddleRectangle.setNewLocation(10);
+            double width = d.getWidth() - frameWidth;
+            if (this.paddleRectangle.getUpperRight().getX() <= width) {
+                this.paddleRectangle.setNewLocation(this.paddleSpeed);
             }
         }
     }

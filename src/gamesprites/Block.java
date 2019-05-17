@@ -12,7 +12,7 @@ import interfaces.HitListener;
 import geometryprimitives.Rectangle;
 import geometryprimitives.Point;
 import geometryprimitives.Line;
-import rungame.Game;
+import rungame.GameLevel;
 
 /**
  * The type Block.
@@ -175,13 +175,13 @@ public class Block implements Collidable, Sprite, HitNotifier {
     }
 
     /**
-     * Remove from game.
+     * Remove from gameLevel.
      *
-     * @param game the game
+     * @param gameLevel the gameLevel
      */
-    public void removeFromGame(Game game) {
-        game.removeCollidable(this);
-        game.removeSprite(this);
+    public void removeFromGame(GameLevel gameLevel) {
+        gameLevel.removeCollidable(this);
+        gameLevel.removeSprite(this);
     }
 
     /**

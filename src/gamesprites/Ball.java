@@ -11,7 +11,7 @@ import interfaces.Collidable;
 import geometryprimitives.Point;
 import geometryprimitives.Line;
 import rungame.GameEnvironment;
-import rungame.Game;
+import rungame.GameLevel;
 
 /**
  * This class define a Ball.
@@ -229,7 +229,7 @@ public class Ball implements Sprite {
      *
      * @param g game
      */
-    public void removeFromGame(Game g) {
+    public void removeFromGame(GameLevel g) {
         g.removeBall(this);
     }
 

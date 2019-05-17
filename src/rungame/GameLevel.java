@@ -10,6 +10,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
 import animations.CountdownAnimation;
 import gamesprites.Paddle;
 import gamesprites.Block;
@@ -17,6 +18,7 @@ import gamesprites.Ball;
 import geometryprimitives.Rectangle;
 import geometryprimitives.Point;
 import interfaces.Animation;
+import interfaces.LevelInformation;
 import removers.BlockRemover;
 import removers.BallRemover;
 import scorecontrollers.ScoreTrackingListener;
@@ -28,12 +30,12 @@ import interfaces.Sprite;
 import interfaces.Collidable;
 
 /**
- * The type Game.
+ * The type GameLevel.
  * This class controls the game itself, initiate the objects and run all together.
  *
  * @author Roy Leibovitz.
  */
-public class Game implements Animation {
+public class GameLevel implements Animation {
     private SpriteCollection sprites;
     private GameEnvironment environment;
     private GUI gui;
@@ -51,11 +53,12 @@ public class Game implements Animation {
     private boolean isRunning;
     private boolean isStageCompleted;
     private int numberOfBallsToCreate;
+    private LevelInformation levelInformation;
 
     /**
-     * Instantiates a new Game.
+     * Instantiates a new GameLevel.
      */
-    public Game() {
+    public GameLevel(LevelInformation levelInformation) {
         this.sprites = new SpriteCollection();
         this.environment = new GameEnvironment();
         this.blockRemover = new BlockRemover(this, new Counter());
@@ -68,11 +71,8 @@ public class Game implements Animation {
         this.livesListener = new LivesListener(numberOfLivesLeft);
         this.livesIndicator.getLivesCounter().setCounter(4);
         this.listBalls = new ArrayList<>();
+        this.levelInformation = levelInformation;
         this.animationRunner = new AnimationRunner(60);
-        this.numberOfBallsInGame = 2;
-        this.isStageCompleted = true;
-        this.numberOfBallsToCreate = 0;
-        this.isRunning = true;
     }
 
     /**
@@ -97,17 +97,22 @@ public class Game implements Animation {
      * Initialize all the objects required to run the game.
      */
     public void initialize() {
+        this.sprites.addSprite(this.levelInformation.getBackground());
+        this.numberOfBallsInGame = this.levelInformation.numberOfBalls();
+        this.isStageCompleted = true;
+        this.numberOfBallsToCreate = 0;
+        this.isRunning = true;
         // calling a method to create a frame of blocks.
-        createFrame();
+        createGameConfiguration(0.1, 0.1, "", Color.BLACK);
         // calling a method to create blocks.
-        addMultipleBlocksPartialLine(1, 60, 30);
+        this.addBlocksToGame(this.levelInformation.blocks());
+        this.blocksInStage = this.levelInformation.numberOfBlocksToRemove();
+//        addMultipleBlocksPartialLine(1, 60, 30);
         // create a paddle and add it into each list needed.
-        this.paddle = new Paddle(new Rectangle(new Point(300, 574.9), 200, 25),
-                this.animationRunner.getGui(), Color.ORANGE);
-        this.environment.addCollidable(this.paddle);
-        this.sprites.addSprite(this.paddle);
         createBalls(this.numberOfBallsInGame);
-        this.animationRunner.run(new CountdownAnimation(2, 3, this.sprites));
+//        this.animationRunner.setSleepFor(1);
+//        this.animationRunner.run(new CountdownAnimation(2, 3, this.sprites));
+//        this.animationRunner.setSleepFor(0);
     }
 
     /**
@@ -249,7 +254,8 @@ public class Game implements Animation {
             }
         } else {
             this.blocksInStage = 0;
-            addMultipleBlocksPartialLine(i, 60, 30);
+            this.addBlocksToGame(this.levelInformation.blocks());
+//            addMultipleBlocksPartialLine(i, 60, 30);
             if (i < 7) {
                 i++;
             }
@@ -274,22 +280,22 @@ public class Game implements Animation {
      * This function creates 3 block that defines the game frame.
      */
 
-    private void createFrame() {
+    private void createGameConfiguration(double width, double height, String text, Color color) {
         DrawSurface d = this.animationRunner.getGui().getDrawSurface();
-        double width = d.getWidth();
-        double height = d.getHeight();
-        Block fm1 = new Block(new Rectangle(new Point(0, 25), width, 30));
-        Block fm2 = new Block(new Rectangle(new Point(0, 55), 30, height - 55.1));
-        Block fm3 = new Block(new Rectangle(new Point(width - 30, 55), 30, height - 55.1));
-        Block fm4 = new Block(new Rectangle(new Point(0, height - 0.1), width, 0.1));
-        fm1.setBackgroundColor(Color.GRAY);
-        fm2.setBackgroundColor(Color.GRAY);
-        fm3.setBackgroundColor(Color.GRAY);
-        fm4.setBackgroundColor(Color.GRAY);
+        double dWidth = d.getWidth();
+        double dHeight = d.getHeight();
+        Block fm1 = new Block(new Rectangle(new Point(0, 25), dWidth, height));
+        Block fm2 = new Block(new Rectangle(new Point(0, 25 + height), width, dHeight - 25 - height - 0.1));
+        Block fm3 = new Block(new Rectangle(new Point(dWidth - height, 25+height), width, dHeight - 25 - height - 0.1));
+        Block fm4 = new Block(new Rectangle(new Point(0, dHeight - 0.1), dWidth, 0.1));
+        fm1.setBackgroundColor(color);
+        fm2.setBackgroundColor(color);
+        fm3.setBackgroundColor(color);
+        fm4.setBackgroundColor(color);
         fm4.addHitListener(this.ballRemover);
-        fm1.setHitsLeft("X");
-        fm2.setHitsLeft("X");
-        fm3.setHitsLeft("X");
+        fm1.setHitsLeft(text);
+        fm2.setHitsLeft(text);
+        fm3.setHitsLeft(text);
         fm4.setHitsLeft("");
         fm1.setFontColor(Color.WHITE);
         fm2.setFontColor(Color.WHITE);
@@ -304,6 +310,11 @@ public class Game implements Animation {
         this.environment.addCollidable(fm1);
         this.sprites.addSprite(this.scoreIndicator);
         this.sprites.addSprite(this.livesIndicator);
+        int x = 400 - this.levelInformation.paddleWidth() / 2;
+        this.paddle = new Paddle(new Rectangle(new Point(x, 574.9), this.levelInformation.paddleWidth()
+                , 25), this.animationRunner.getGui(), Color.MAGENTA, this.levelInformation.paddleSpeed(), 0.1);
+        this.environment.addCollidable(this.paddle);
+        this.sprites.addSprite(this.paddle);
     }
 
     /**
@@ -360,28 +371,29 @@ public class Game implements Animation {
         Random r = new Random();
         Color color = Color.WHITE;
         for (int i = 0; i < numberOfBalls; i++) {
-            switch (r.nextInt(6)) {
-                case 0:
-                    color = Color.BLACK;
-                    break;
-                case 1:
-                    color = Color.RED;
-                    break;
-                case 2:
-                    color = Color.YELLOW;
-                    break;
-                case 3:
-                    color = Color.BLUE;
-                    break;
-                case 4:
-                    color = Color.pink;
-                    break;
-                case 5:
-                    color = Color.green;
-                    break;
-                default:
-                    break;
-            }
+//            switch (r.nextInt(6)) {
+//                case 0:
+//                    color = Color.BLACK;
+//                    break;
+//                case 1:
+//                    color = Color.RED;
+//                    break;
+//                case 2:
+//                    color = Color.YELLOW;
+//                    break;
+//                case 3:
+//                    color = Color.BLUE;
+//                    break;
+//                case 4:
+//                    color = Color.pink;
+//                    break;
+//                case 5:
+//                    color = Color.green;
+//                    break;
+//                default:
+//                    break;
+//            }
+            color = Color.YELLOW;
             Ball b = new Ball(r.nextInt(500) + 100, 100
                     , 5, color, this.environment);
             this.sprites.addSprite(b);
@@ -391,5 +403,15 @@ public class Game implements Animation {
 
     public AnimationRunner getAnimationRunner() {
         return animationRunner;
+    }
+
+    public void addBlocksToGame(List<Block> blocksList) {
+        for (Block b : blocksList) {
+            this.sprites.addSprite(b);
+            this.environment.addCollidable(b);
+            b.addHitListener(this.scoreTracker);
+            b.addHitListener(this.blockRemover);
+
+        }
     }
 }

@@ -20,7 +20,7 @@ public class GameEnvironment {
     private ArrayList<Collidable> collidablesList;
 
     /**
-     * Instantiates a new Game environment.
+     * Instantiates a new GameLevel environment.
      */
     public GameEnvironment() {
         this.collidablesList = new ArrayList<Collidable>();

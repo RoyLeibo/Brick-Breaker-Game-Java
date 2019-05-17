@@ -3,25 +3,25 @@ import others.Counter;
 import interfaces.HitListener;
 import gamesprites.Block;
 import gamesprites.Ball;
-import rungame.Game;
+import rungame.GameLevel;
 
 /**
- * This class is the ball remover listener, which is in charge of remove a ball from the game when notify.
+ * This class is the ball remover listener, which is in charge of remove a ball from the gameLevel when notify.
  *
  * @author Roy Leibovitz.
  */
 public class BallRemover implements HitListener {
-    private Game game;
+    private GameLevel gameLevel;
     private Counter remainingBalls;
 
     /**
      * Instantiates a new Ball remover.
      *
-     * @param game         the game
+     * @param gameLevel         the gameLevel
      * @param removedBalls the removed balls
      */
-    public BallRemover(Game game, Counter removedBalls) {
-        this.game = game;
+    public BallRemover(GameLevel gameLevel, Counter removedBalls) {
+        this.gameLevel = gameLevel;
         this.remainingBalls = removedBalls;
     }
 
@@ -31,7 +31,7 @@ public class BallRemover implements HitListener {
      * @param hitter the ball which hit it
      */
     public void hitEvent(Block beingHit, Ball hitter) {
-        hitter.removeFromGame(this.game);
+        hitter.removeFromGame(this.gameLevel);
         remainingBalls.increase(1);
     }
 
