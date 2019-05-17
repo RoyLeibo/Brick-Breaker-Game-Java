@@ -208,8 +208,6 @@ public class GameLevel implements Animation {
     public void doOneFrame(DrawSurface d) {
         Counter blockLeftCounter = this.blockRemover.getRemainingBlocks();
         Counter ballRemoved = this.ballRemover.getRemainingBalls();
-        d.setColor(new Color(0, 0, 153));
-        d.fillRectangle(0, 0, 1000, 600);
         this.sprites.drawAllOn(d);
         this.sprites.notifyAllTimePassed();
         // timing
@@ -369,32 +367,9 @@ public class GameLevel implements Animation {
      */
     public void createBalls(int numberOfBalls) {
         Random r = new Random();
-        Color color = Color.WHITE;
+        Color color = this.levelInformation.getBallsColor();
         for (int i = 0; i < numberOfBalls; i++) {
-//            switch (r.nextInt(6)) {
-//                case 0:
-//                    color = Color.BLACK;
-//                    break;
-//                case 1:
-//                    color = Color.RED;
-//                    break;
-//                case 2:
-//                    color = Color.YELLOW;
-//                    break;
-//                case 3:
-//                    color = Color.BLUE;
-//                    break;
-//                case 4:
-//                    color = Color.pink;
-//                    break;
-//                case 5:
-//                    color = Color.green;
-//                    break;
-//                default:
-//                    break;
-//            }
-            color = Color.YELLOW;
-            Ball b = new Ball(r.nextInt(500) + 100, 100
+            Ball b = new Ball(r.nextInt(500) + 100, 50
                     , 5, color, this.environment);
             this.sprites.addSprite(b);
             this.listBalls.add(b);
