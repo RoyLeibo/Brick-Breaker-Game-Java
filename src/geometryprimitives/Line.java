@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * This class define a Line.
  *
- * @author Roy Leibovitz
+ * @author Roy Leibovitz <royleibo212@gmail.com> Roy Leibovitz
  */
 public class Line {
     /**

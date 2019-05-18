@@ -1,7 +1,6 @@
 package levels;
 
 import backgrounds.CirclesBackground;
-import backgrounds.LinesBackground;
 import gamesprites.Block;
 import geometryprimitives.Point;
 import geometryprimitives.Rectangle;
@@ -9,12 +8,13 @@ import interfaces.LevelInformation;
 import interfaces.Sprite;
 import others.Velocity;
 
-import java.awt.*;
-import java.lang.invoke.SwitchPoint;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
+/**
+ * The type Full lines.
+ */
 public class FullLines implements LevelInformation {
 
     private int numberOfBalls;
@@ -22,75 +22,112 @@ public class FullLines implements LevelInformation {
     private int paddleSpeed;
     private int paddleWidth;
     private String levelName;
-    private Sprite Background;
+    private Sprite background;
     private List<Block> blocks;
     private int numberOfBlocksToRemove;
     private Color ballsColor;
 
+    /**
+     * Number of balls in game.
+     *
+     * @return number of balls
+     */
     public int numberOfBalls() {
-        this.numberOfBalls = 3;
-        return 3;
+        this.numberOfBalls = 4;
+        return 4;
     }
 
+    /**
+     * Initialize the balls velocities.
+     *
+     * @return a velocity list.
+     */
     public List<Velocity> initialBallVelocities() {
         List<Velocity> velocityList = new ArrayList<>();
         for (int i = 0; i < this.numberOfBalls; i++) {
-            velocityList.add(new Velocity(6, 6));
+            velocityList.add(new Velocity(4, 4));
         }
         this.ballsVelocities = velocityList;
         return velocityList;
     }
+
+    /**
+     * Paddle speed getter.
+     *
+     * @return paddle speed.
+     */
 
     public int paddleSpeed() {
         this.paddleSpeed = 12;
         return 12;
     }
 
+    /**
+     * Paddle speed getter.
+     *
+     * @return paddle speed.
+     */
     public int paddleWidth() {
         this.paddleWidth = 200;
         return 200;
     }
 
+    /**
+     * Level name getter.
+     *
+     * @return the level's name.
+     */
     public String levelName() {
         this.levelName = "Full Lines";
         return "Full Lines";
     }
 
+    /**
+     * Creates the level's background as a Sprite.
+     *
+     * @return the level's background.
+     */
     public Sprite getBackground() {
-        this.Background = createBackground();
-        return this.Background;
+        this.background = new CirclesBackground();
+        return this.background;
     }
 
+    /**
+     * Creates the level's block.
+     *
+     * @return the blocks list.
+     */
     public List<Block> blocks() {
         this.blocks = createBlocks();
         return this.blocks;
     }
 
+    /**
+     * Number of block to remove getter.
+     *
+     * @return number of block to remove.
+     */
     public int numberOfBlocksToRemove() {
         return this.numberOfBlocksToRemove;
     }
 
-    public Sprite createBackground() {
-        this.Background = new CirclesBackground();
-        return this.Background;
-    }
-
+    /**
+     * Create blocks list.
+     *
+     * @return the list
+     */
     public List<Block> createBlocks() {
         int width = 60;
         int height = 30;
         List blocksList = new ArrayList<Block>();
         double screenWidth = 800;
-        Random rand = new Random();
         double numberOfBlocks = 11; // number of block in each row;
         Color color;
         // this loop is running for each row of blocks
-        Color black = new Color(0, 0, 0);
-        Color darkBlue = new Color(0, 0, 153);
         for (int i = 0; i < 8; i++) {
-            if(i % 2 == 0) {
+            if (i % 2 == 0) {
                 color = Color.WHITE;
-            }
-            else {
+            } else {
                 color = Color.GREEN;
             }
             // this loop is creating the block for each row
@@ -104,6 +141,11 @@ public class FullLines implements LevelInformation {
         return blocksList;
     }
 
+    /**
+     * Color of balls getter.
+     *
+     * @return color of balls
+     */
     public Color getBallsColor() {
         return ballsColor;
     }

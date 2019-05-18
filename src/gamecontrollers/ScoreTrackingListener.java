@@ -1,4 +1,4 @@
-package scorecontrollers;
+package gamecontrollers;
 import others.Counter;
 import interfaces.HitListener;
 import gamesprites.Ball;
@@ -6,7 +6,7 @@ import gamesprites.Block;
 /**
  * This class is the score listener, which is in charge of maintaining the score when notify.
  *
- * @author Roy Leibovitz.
+ * @author Roy Leibovitz <royleibo212@gmail.com>
  */
 public class ScoreTrackingListener implements HitListener {
     private Counter scoreCounter;

@@ -4,7 +4,7 @@ import biuoop.DrawSurface;
 /**
  * The interface Sprite.
  *
- * @author Roy Leibovitz
+ * @author Roy Leibovitz <royleibo212@gmail.com> Roy Leibovitz
  */
 public interface Sprite {
 

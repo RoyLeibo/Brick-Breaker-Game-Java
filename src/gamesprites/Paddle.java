@@ -16,7 +16,7 @@ import geometryprimitives.Point;
  * The type Paddle.
  * This is the Paddle class which implements the Collidable and Sprite interfaces and defines a Paddle.
  *
- * @author Roy Leibovitz.
+ * @author Roy Leibovitz <royleibo212@gmail.com>
  */
 public class Paddle implements Collidable, Sprite {
 
@@ -51,6 +51,8 @@ public class Paddle implements Collidable, Sprite {
      * @param blockRectangle the block rectangle
      * @param gui            the gui
      * @param color          the color
+     * @param paddleSpeed    the paddle speed
+     * @param frameWidth     the frame width
      */
     public Paddle(Rectangle blockRectangle, GUI gui, Color color, double paddleSpeed, double frameWidth) {
         this.paddleRectangle = blockRectangle;

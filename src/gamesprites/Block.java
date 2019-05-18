@@ -18,7 +18,7 @@ import rungame.GameLevel;
  * The type Block.
  * This is the Block class which implements the Collidable and Sprite interfaces and defines a Block.
  *
- * @author Roy Leibovitz.
+ * @author Roy Leibovitz <royleibo212@gmail.com>
  */
 public class Block implements Collidable, Sprite, HitNotifier {
     private Rectangle blockRectangle;

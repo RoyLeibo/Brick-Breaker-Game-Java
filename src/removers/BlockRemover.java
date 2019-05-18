@@ -8,7 +8,7 @@ import rungame.GameLevel;
 /**
  * The type Block remover.
  *
- * @author Roy Leibovitz
+ * @author Roy Leibovitz <royleibo212@gmail.com> Roy Leibovitz
  */
 public class BlockRemover implements HitListener {
     private GameLevel gameLevel;

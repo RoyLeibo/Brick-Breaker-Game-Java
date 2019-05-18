@@ -7,12 +7,13 @@ import levels.DirectHit;
 import levels.FullLines;
 import levels.PartialLines;
 import levels.Pyramid;
+import rungame.GameFlow;
 import rungame.GameLevel;
 
 /**
  * This class runs the game.
  *
- * @author Roy Leibovitz
+ * @author Roy Leibovitz <royleibo212@gmail.com> Roy Leibovitz
  */
 public class Ass5Game {
 
@@ -23,18 +24,21 @@ public class Ass5Game {
      * @param args the input arguments
      */
     public static void main(String[] args) {
-//        DirectHit drb = new DirectHit();
+        DirectHit drb = new DirectHit();
 //        PartialLines pl = new PartialLines();
 //        CirclesBackground cb = new CirclesBackground();
-        Emoji e = new Emoji();
-        GUI g = new GUI("שומן יפה וקטן", 800,600);
-        DrawSurface d = g.getDrawSurface();
-        e.drawOn(d);
-        g.show(d);
+//        Emoji e = new Emoji();
+//        GUI g = new GUI("שומן יפה וקטן", 800,600);
+//        DrawSurface d = g.getDrawSurface();
+//        e.drawOn(d);
+//        g.show(d);
 //        Pyramid fl = new Pyramid();
+//        FullLines fl = new FullLines();
 //        GameLevel g = new GameLevel(fl);
 //        g.initialize();
 //        g.getAnimationRunner().run(g);
+        GameFlow gl = new GameFlow();
+        gl.runLevels();
 //        GUI g = new GUI("blabla", 800,600);
 //        DrawSurface d = g.getDrawSurface();
 //        drb.drawOn(d);

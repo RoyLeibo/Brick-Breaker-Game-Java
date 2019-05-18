@@ -13,65 +13,110 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * The type Partial lines.
+ */
 public class PartialLines implements LevelInformation {
     private int numberOfBalls;
     private List<Velocity> ballsVelocities;
     private int paddleSpeed;
     private int paddleWidth;
     private String levelName;
-    private Sprite Background;
+    private Sprite background;
     private List<Block> blocks;
     private int numberOfBlocksToRemove;
     private Color ballsColor;
 
+
+    /**
+     * Number of balls in game.
+     *
+     * @return number of balls
+     */
     public int numberOfBalls() {
         this.numberOfBalls = 3;
         return 3;
     }
 
+    /**
+     * Initialize the balls velocities.
+     *
+     * @return a velocity list
+     */
     public List<Velocity> initialBallVelocities() {
         List<Velocity> velocityList = new ArrayList<>();
         for (int i = 0; i < this.numberOfBalls; i++) {
-            velocityList.add(new Velocity(6, 6));
+            velocityList.add(new Velocity(4, 4));
         }
         this.ballsVelocities = velocityList;
         return velocityList;
     }
+
+    /**
+     * Paddle speed getter.
+     *
+     * @return paddle speed.
+     */
 
     public int paddleSpeed() {
         this.paddleSpeed = 12;
         return 12;
     }
 
+    /**
+     * Paddle width getter.
+     *
+     * @return paddle width.
+     */
     public int paddleWidth() {
         this.paddleWidth = 200;
         return 200;
     }
 
+    /**
+     * Level name getter.
+     *
+     * @return the level's name.
+     */
     public String levelName() {
         this.levelName = "Partial Line";
         return "Partial Line";
     }
 
+    /**
+     * Creates the level's background as a Sprite.
+     *
+     * @return the level's background.
+     */
     public Sprite getBackground() {
-        this.Background = createBackground();
-        return this.Background;
+        this.background = new LinesBackground();
+        return this.background;
     }
 
+    /**
+     * Creates the level's block.
+     *
+     * @return the blocks list.
+     */
     public List<Block> blocks() {
         this.blocks = createBlocks();
         return this.blocks;
     }
 
+    /**
+     * Number of block to remove getter.
+     *
+     * @return number of block to remove.
+     */
     public int numberOfBlocksToRemove() {
         return this.numberOfBlocksToRemove;
     }
 
-    public Sprite createBackground() {
-        this.Background = new LinesBackground();
-        return this.Background;
-    }
-
+    /**
+     * Create blocks list.
+     *
+     * @return the list
+     */
     public List<Block> createBlocks() {
         int width = 60;
         int height = 30;
@@ -80,7 +125,9 @@ public class PartialLines implements LevelInformation {
         Random rand = new Random();
         double numberOfBlocks = 10; // number of block in each row;
         Color color;
-        for (int i = 0; i < 7 ; i++) {
+        // first loop indicate which line is creating
+        for (int i = 0; i < 7; i++) {
+            // switch case determine different color for each line
             switch (i) {
                 case 0:
                     color = Color.GRAY;
@@ -103,6 +150,7 @@ public class PartialLines implements LevelInformation {
                 default:
                     color = new Color(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255));
             }
+            // second loop creates each line blocks depending on the line number
             for (int j = 0; j < numberOfBlocks - i; j++) {
                 Point blockUpperLeft = new Point(screenWidth - 140 - j * width, height * i + 150);
                 Block tempBlock;
@@ -119,6 +167,11 @@ public class PartialLines implements LevelInformation {
         return blocksList;
     }
 
+    /**
+     * Color of balls getter.
+     *
+     * @return color of balls
+     */
     public Color getBallsColor() {
         return ballsColor;
     }

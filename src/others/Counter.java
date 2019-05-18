@@ -2,7 +2,7 @@ package others;
 /**
  * The type Counter.
  *
- * @author Roy Leibovitz
+ * @author Roy Leibovitz <royleibo212@gmail.com> Roy Leibovitz
  */
 public class Counter {
     private int counter;

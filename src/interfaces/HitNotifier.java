@@ -3,7 +3,7 @@ package interfaces;
 /**
  * The interface Hit notifier.
  *
- * * @author Roy Leibovitz
+ * @author Roy Leibovitz <royleibo212@gmail.com> Roy Leibovitz
  */
 public interface HitNotifier {
     /**

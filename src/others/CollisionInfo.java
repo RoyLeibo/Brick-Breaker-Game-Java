@@ -5,7 +5,7 @@ import interfaces.Collidable;
 /**
  * The type Collision info.
  *
- * @author Roy Leibovitz
+ * @author Roy Leibovitz <royleibo212@gmail.com> Roy Leibovitz
  */
 public class CollisionInfo {
 

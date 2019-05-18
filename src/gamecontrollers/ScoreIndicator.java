@@ -1,4 +1,4 @@
-package scorecontrollers;
+package gamecontrollers;
 import biuoop.DrawSurface;
 import java.awt.Color;
 import others.Counter;
@@ -7,7 +7,7 @@ import interfaces.Sprite;
 /**
  * This class is the score indicator, which is in charge of drawing the score on screen.
  *
- * @author Roy Leibovitz.
+ * @author Roy Leibovitz <royleibo212@gmail.com>
  */
 public class ScoreIndicator implements Sprite {
     private Counter scoreTrackerCounter;
@@ -33,7 +33,7 @@ public class ScoreIndicator implements Sprite {
         // draw the score
         surface.fillRectangle(0, 0, 800, 25);
         surface.setColor(Color.BLACK);
-        surface.drawText(350, 18, "Score: " + this.scoreTrackerCounter.getValue(), 20);
+        surface.drawText(350, 23, "Score: " + this.scoreTrackerCounter.getValue(), 20);
     }
 
     /**

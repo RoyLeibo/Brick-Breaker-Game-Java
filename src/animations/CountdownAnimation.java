@@ -1,10 +1,14 @@
 package animations;
 
 import biuoop.DrawSurface;
-import biuoop.Sleeper;
 import interfaces.Animation;
 import rungame.SpriteCollection;
 
+/**
+ * The type Countdown animation.
+ *
+ * @author Roy Leibovitz <royleibo212@gmail.com>
+ */
 public class CountdownAnimation implements Animation {
     private double numOfSeconds;
     private int countFrom;
@@ -12,6 +16,13 @@ public class CountdownAnimation implements Animation {
     private SpriteCollection gameScreen;
     private boolean stop;
 
+    /**
+     * Instantiates a new Countdown animation.
+     *
+     * @param numOfSeconds the num of seconds
+     * @param countFrom    the count from
+     * @param gameScreen   the game screen
+     */
     public CountdownAnimation(double numOfSeconds, int countFrom, SpriteCollection gameScreen) {
         this.numOfSeconds = numOfSeconds;
         this.countFrom = countFrom;
@@ -20,19 +31,29 @@ public class CountdownAnimation implements Animation {
         this.originalCountFrom = countFrom;
     }
 
+    /**
+     * The function draws the count down.
+     *
+     * @param d the d
+     */
     public void doOneFrame(DrawSurface d) {
         String string = "";
         if (this.countFrom == 0) {
             string = "GO!";
-            d.drawText(350, 290, string, 32);
+            d.drawText(350, 70, string, 50);
             this.stop = false;
         } else {
             string = this.countFrom + "...";
-            d.drawText(350, 290, string, 32);
+            d.drawText(350, 70, string, 50);
             this.countFrom--;
         }
     }
 
+    /**
+     * should stop getter.
+     *
+     * @return is the game stopped
+     */
     public boolean shouldStop() {
         return stop;
     }

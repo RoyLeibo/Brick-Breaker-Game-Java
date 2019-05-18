@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * The class Rectangle.
  *
- * @author Roy Leibovitz.
+ * @author Roy Leibovitz <royleibo212@gmail.com>
  */
 public class Rectangle {
     private double width;

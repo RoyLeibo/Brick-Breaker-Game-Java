@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * This class represent a point.
  *
- * @author Roy Leibovitz
+ * @author Roy Leibovitz <royleibo212@gmail.com> Roy Leibovitz
  */
 public class Point {
     /**

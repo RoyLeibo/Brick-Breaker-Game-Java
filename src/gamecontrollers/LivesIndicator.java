@@ -1,4 +1,4 @@
-package livescontrollers;
+package gamecontrollers;
 import biuoop.DrawSurface;
 import java.awt.Color;
 import others.Counter;
@@ -7,7 +7,7 @@ import interfaces.Sprite;
 /**
  * This class is the lives indicator, which is in charge of drawing the lives left on screen.
  *
- * @author Roy Leibovitz.
+ * @author Roy Leibovitz <royleibo212@gmail.com>
  */
 public class LivesIndicator implements Sprite {
     private Counter livesCounter;

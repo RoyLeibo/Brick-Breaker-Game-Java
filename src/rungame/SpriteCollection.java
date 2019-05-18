@@ -9,7 +9,7 @@ import interfaces.Sprite;
 /**
  * The Sprite collection class.
  *
- * @author Roy Leibovitz.
+ * @author Roy Leibovitz <royleibo212@gmail.com>
  */
 public class SpriteCollection {
 

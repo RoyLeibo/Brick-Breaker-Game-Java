@@ -8,7 +8,7 @@ import rungame.GameLevel;
 /**
  * This class is the ball remover listener, which is in charge of remove a ball from the gameLevel when notify.
  *
- * @author Roy Leibovitz.
+ * @author Roy Leibovitz <royleibo212@gmail.com>
  */
 public class BallRemover implements HitListener {
     private GameLevel gameLevel;

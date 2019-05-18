@@ -7,7 +7,7 @@ import geometryprimitives.Point;
 /**
  * The interface Collidable.
  *
- * @author Roy Leibovitz.
+ * @author Roy Leibovitz <royleibo212@gmail.com>
  */
 public interface Collidable {
 

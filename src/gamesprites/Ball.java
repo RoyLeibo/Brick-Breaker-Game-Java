@@ -16,7 +16,7 @@ import rungame.GameLevel;
 /**
  * This class define a Ball.
  *
- * @author Roy Leibovitz
+ * @author Roy Leibovitz <royleibo212@gmail.com> Roy Leibovitz
  */
 public class Ball implements Sprite {
     /**

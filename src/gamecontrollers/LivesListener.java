@@ -1,4 +1,4 @@
-package livescontrollers;
+package gamecontrollers;
 import others.Counter;
 import interfaces.HitListener;
 import gamesprites.Ball;
@@ -7,7 +7,7 @@ import gamesprites.Block;
 /**
  * This class is the lives listener, which is in charge of maintaining the lives left when notify.
  *
- * @author Roy Leibovitz.
+ * @author Roy Leibovitz <royleibo212@gmail.com>
  */
 public class LivesListener implements HitListener {
     private Counter livesCounter;
@@ -29,5 +29,15 @@ public class LivesListener implements HitListener {
      */
     public void hitEvent(Block beingHit, Ball hitter) {
         livesCounter.decrease(1);
+    }
+
+
+    /**
+     * Gets lives counter.
+     *
+     * @return the lives counter
+     */
+    public Counter getLivesCounter() {
+        return livesCounter;
     }
 }

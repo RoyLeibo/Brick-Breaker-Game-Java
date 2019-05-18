@@ -10,7 +10,7 @@ import geometryprimitives.Line;
  * The type GameEnvironment.
  * This is the GameEnvironment class.
  *
- * @author Roy Leibovitz.
+ * @author Roy Leibovitz <royleibo212@gmail.com>
  */
 public class GameEnvironment {
 

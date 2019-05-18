@@ -3,7 +3,7 @@ import geometryprimitives.Point;
 /**
  * The type Velocity.
  *
- * @author Roy Leibovitz
+ * @author Roy Leibovitz <royleibo212@gmail.com> Roy Leibovitz
  */
 public class Velocity {
     /**
