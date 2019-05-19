@@ -39,6 +39,7 @@ public class Ass5Game {
 //        g.getAnimationRunner().run(g);
         GameFlow gl = new GameFlow();
         gl.runLevels();
+        System.out.println("program finished");
 //        GUI g = new GUI("blabla", 800,600);
 //        DrawSurface d = g.getDrawSurface();
 //        drb.drawOn(d);

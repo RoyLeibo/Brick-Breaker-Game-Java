@@ -1,6 +1,7 @@
 package rungame;
 
 import animations.CountdownAnimation;
+import animations.KeyPressStoppableAnimation;
 import animations.PauseScreen;
 import biuoop.DrawSurface;
 
@@ -143,7 +144,8 @@ public class GameLevel implements Animation {
         }
         // if the "p" button is pressed, pause the game.
         if (this.animationRunner.getGui().getKeyboardSensor().isPressed("p")) {
-            this.animationRunner.run(new PauseScreen(this.animationRunner.getGui().getKeyboardSensor()));
+            this.animationRunner.run(new KeyPressStoppableAnimation(this.animationRunner.getGui().getKeyboardSensor(),
+                    "SPACE_KEY", new PauseScreen()));
         }
     }
 

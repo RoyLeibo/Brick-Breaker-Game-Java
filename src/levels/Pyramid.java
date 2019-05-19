@@ -79,8 +79,8 @@ public class Pyramid implements LevelInformation {
      * @return the level's name.
      */
     public String levelName() {
-        this.levelName = "Direct Hit";
-        return "Direct Hit";
+        this.levelName = "Pyramid";
+        return "Pyramid";
     }
 
     /**
