@@ -37,14 +37,11 @@ public class CountdownAnimation implements Animation {
      * @param d the d
      */
     public void doOneFrame(DrawSurface d) {
-        String string = "";
-        if (this.countFrom == 0) {
-            string = "GO!";
-            d.drawText(350, 70, string, 50);
+        String string = this.countFrom + "...";
+        d.drawText(350, 70, string, 50);
+        if (this.countFrom == 1) {
             this.stop = false;
         } else {
-            string = this.countFrom + "...";
-            d.drawText(350, 70, string, 50);
             this.countFrom--;
         }
     }

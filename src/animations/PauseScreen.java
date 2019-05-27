@@ -1,7 +1,6 @@
 package animations;
 
 import biuoop.DrawSurface;
-import biuoop.KeyboardSensor;
 import interfaces.Animation;
 
 /**

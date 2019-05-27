@@ -47,7 +47,7 @@ public class AnimationRunner {
                 sleeper.sleepFor(milliSecondLeftToSleep);
             }
             if (sleepFor > 0) {
-                sleeper.sleepFor((long) this.sleepFor * 1000);
+                sleeper.sleepFor((long) (this.sleepFor * 1000));
             }
         }
         return;

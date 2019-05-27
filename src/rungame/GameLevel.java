@@ -108,7 +108,7 @@ public class GameLevel implements Animation {
         this.numberOfBallsToCreate = 0;
         this.isRunning = true;
         // Countdown animation
-        this.animationRunner.setSleepFor(1);
+        this.animationRunner.setSleepFor(2.0 / 3.0);
         this.animationRunner.run(new CountdownAnimation(2, 3, this.sprites));
         this.animationRunner.setSleepFor(0);
         createGameConfiguration(0.1, 0.1, "", Color.BLACK);
@@ -185,7 +185,7 @@ public class GameLevel implements Animation {
                 // if there is more lives left
                 this.numberOfBallsToCreate = this.numberOfBallsInGame;
                 this.isStageCompleted = true;
-                this.paddle.setPaddleRectangle(new Rectangle(new Point(300, 574.9), 200, 25));
+                this.paddle.setPaddleRectangle(new Rectangle(new Point(300, 565), 200, 25));
                 createBalls(this.numberOfBallsToCreate);
             }
         } else {
@@ -198,10 +198,10 @@ public class GameLevel implements Animation {
     /**
      * Creates the game configurations: frame and upper bar information.
      *
-     * @param width screen width
+     * @param width  screen width
      * @param height screen height
-     * @param text text on frame
-     * @param color color for frame
+     * @param text   text on frame
+     * @param color  color for frame
      */
     private void createGameConfiguration(double width, double height, String text, Color color) {
         DrawSurface d = this.animationRunner.getGui().getDrawSurface();
