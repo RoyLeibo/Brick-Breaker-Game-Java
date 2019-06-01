@@ -11,9 +11,7 @@ import levels.DirectHit;
 import levels.FullLines;
 import levels.PartialLines;
 import levels.Pyramid;
-import rungame.AnimationRunner;
-import rungame.GameFlow;
-import rungame.GameLevel;
+import rungame.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,8 +30,9 @@ public class Ass6Game {
      * @param args the input arguments
      */
     public static void main(String[] args) {
-        GameFlow gl = new GameFlow(args);
-        gl.runLevels();
+        RunGame run = new RunGame(args, 3);
+//        GameFlow gl = new GameFlow(args, new HighScoresTable(3));
+//        gl.runLevels();
 //        HighScoresTable HST = new HighScoresTable(3);
 //        HST.add(new ScoreInfo("rotem", 10));
 //        HST.add(new ScoreInfo("roy", 20));

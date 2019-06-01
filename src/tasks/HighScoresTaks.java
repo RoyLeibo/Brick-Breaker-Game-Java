@@ -16,7 +16,7 @@ public class HighScoresTaks<T> implements Task<T> {
     }
 
     public T run() {
-        this.animationRunner.run(highScoresAnimation);
+        this.animationRunner.run(this.highScoresAnimation);
         return null;
     }
 }

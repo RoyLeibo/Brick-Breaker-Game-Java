@@ -10,6 +10,7 @@ public class HighScoresAnimation implements Animation {
     private boolean isRunning;
 
     public HighScoresAnimation(HighScoresTable hst){
+        this.isRunning = true;
         this.hst = hst;
     }
 

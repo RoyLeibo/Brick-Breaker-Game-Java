@@ -12,9 +12,9 @@ import java.util.Comparator;
 import java.util.List;
 
 public class HighScoresTable {
-
     private List<ScoreInfo> scoreInfoList;
     private int size;
+    private File fileName;
 
     public HighScoresTable(int size) {
         this.scoreInfoList = new ArrayList<>();
@@ -100,6 +100,7 @@ public class HighScoresTable {
     // Load table data from file.
     // Current table data is cleared.
     public void load(File filename) throws IOException {
+        this.fileName = filename;
         List<String> fileLines = Files.readAllLines(filename.toPath());
         List<String> lineData = new ArrayList();
         for (String line: fileLines) {
@@ -110,7 +111,13 @@ public class HighScoresTable {
 
     // Save table data to the specified file.
     public void save(File filename) throws IOException {
-        FileWriter FW = new FileWriter(filename.getName(), true);
+        FileWriter FW;
+        if(fileName.getName() == "") {
+            FW = new FileWriter(this.fileName, true);
+        }
+        else {
+            FW = new FileWriter(fileName.getName(), true);
+        }
         for (int i = 0; i < this.scoreInfoList.size(); i++) {
             FW.write(this.scoreInfoList.get(i).getName() + "$" + this.scoreInfoList.get(i).getScore() + "$");
             FW.write(System.lineSeparator());
@@ -119,6 +126,8 @@ public class HighScoresTable {
     }
 
     public void createFile(String fileName) throws IOException {
+        this.fileName = new File(fileName);
         FileWriter FW = new FileWriter(fileName, true);
+        this.load(this.fileName);
     }
 }

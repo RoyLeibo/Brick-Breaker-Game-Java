@@ -2,8 +2,10 @@ package animations;
 
 import biuoop.DrawSurface;
 import interfaces.Menu;
+import interfaces.Task;
 import others.MenuItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MenuAnimation<T> implements Menu<T> {
@@ -11,6 +13,9 @@ public class MenuAnimation<T> implements Menu<T> {
     private List<MenuItem<T>> menuItemsList;
     private T ReturnVal;
 
+    public MenuAnimation(){
+        this.menuItemsList = new ArrayList<>();
+    }
     public void addSelection(String key, String message, T returnVal) {
         this.menuItemsList.add(new MenuItem(key, message, returnVal));
     }
@@ -30,5 +35,9 @@ public class MenuAnimation<T> implements Menu<T> {
 
     public boolean shouldStop() {
         return isRunning;
+    }
+
+    public List<MenuItem<T>> getMenuItemsList() {
+        return menuItemsList;
     }
 }

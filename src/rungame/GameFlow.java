@@ -18,6 +18,7 @@ import gamecontrollers.LivesListener;
 import others.Counter;
 import gamecontrollers.ScoreTrackingListener;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -76,6 +77,10 @@ public class GameFlow {
                     DialogManager dialog = gameLevel.getAnimationRunner().getGui().getDialogManager();
                     String name = dialog.showQuestionDialog("Name", "What is your name?", "");
                     this.hst.add(new ScoreInfo(name, this.scoreTrackingListener.getScoreCounter().getValue()));
+                    try{
+                        this.hst.save(new File(""));
+                    }
+                    catch (IOException e){}
                 }
             }
             if (!this.isAlive) {
