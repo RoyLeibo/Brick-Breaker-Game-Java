@@ -1,7 +1,4 @@
-import animations.KeyPressStoppableAnimation;
-import animations.LoseScreen;
-import animations.PauseScreen;
-import animations.WinScreen;
+import animations.*;
 import backgrounds.CirclesBackground;
 import backgrounds.DirectHitBackground;
 import backgrounds.Emoji;
@@ -35,21 +32,24 @@ public class Ass6Game {
      * @param args the input arguments
      */
     public static void main(String[] args) {
-//        GameFlow gl = new GameFlow(args);
-//        gl.runLevels();
-        HighScoresTable HST = new HighScoresTable(2);
-        HST.add(new ScoreInfo("rotem", 10));
-        HST.add(new ScoreInfo("roy", 20));
-        try {
-            HST.save(new File("Test.txt"));
-            HighScoresTable HST1 = new HighScoresTable(2);
-            HST1.load(new File("Test.txt"));
-            for (int i = 0; i < 2; i++) {
-                System.out.println(HST1.getHighScores().get(i).getName() + " " + HST1.getHighScores().get(i).getScore());
-            }
-        } catch (IOException e) {
-            System.out.println("Something Went Wrong..");
-        }
+        GameFlow gl = new GameFlow(args);
+        gl.runLevels();
+//        HighScoresTable HST = new HighScoresTable(3);
+//        HST.add(new ScoreInfo("rotem", 10));
+//        HST.add(new ScoreInfo("roy", 20));
+//        HST.add(new ScoreInfo("nadav", 30));
+//        AnimationRunner ar = new AnimationRunner(10);
+//        ar.run(new KeyPressStoppableAnimation(ar.getGui().getKeyboardSensor(), "SPACE_KEY", new HighScoresAnimation(HST)));
+//        try {
+//            HST.save(new File("Test.txt"));
+//            HighScoresTable HST1 = new HighScoresTable(2);
+//            HST1.load(new File("Test.txt"));
+//            for (int i = 0; i < 2; i++) {
+//                System.out.println(HST1.getHighScores().get(i).getName() + " " + HST1.getHighScores().get(i).getScore());
+//            }
+//        } catch (IOException e) {
+//            System.out.println("Something Went Wrong..");
+//        }
 //        HST.add(new ScoreInfo("roy", 1));
 //        HST.add(new ScoreInfo("rotem", 3));
 //        System.out.println("HighScoreTable After Sort:");
