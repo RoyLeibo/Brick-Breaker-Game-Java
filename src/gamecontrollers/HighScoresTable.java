@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.DirectoryNotEmptyException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,10 +23,10 @@ public class HighScoresTable {
         this.size = size;
     }
 
-    static public List<String> parseLine(String line){
+    static public List<String> parseLine(String line) {
         List<String> lineData = new ArrayList<>();
         lineData.add(line.substring(0, line.indexOf("$")));
-        lineData.add(line.substring(line.indexOf("$")+1, line.lastIndexOf("$")));
+        lineData.add(line.substring(line.indexOf("$") + 1, line.lastIndexOf("$")));
         return lineData;
     }
 
@@ -32,7 +34,7 @@ public class HighScoresTable {
     // If the file does not exist, or there is a problem with
     // reading it, an empty table is returned.
     public static HighScoresTable loadFromFile(File filename) {
-        if(filename.exists()){
+        if (filename.exists()) {
             try {
                 List<String> lineData = new ArrayList<>();
                 List<String> fileLines = Files.readAllLines(filename.toPath());
@@ -42,12 +44,10 @@ public class HighScoresTable {
                     HST.add(new ScoreInfo(lineData.get(0), Integer.parseInt(lineData.get(1))));
                 }
                 return HST;
-            }
-            catch (IOException e){
+            } catch (IOException e) {
                 return new HighScoresTable(0);
             }
-        }
-        else {
+        } else {
             return new HighScoresTable(0);
         }
     }
@@ -103,7 +103,7 @@ public class HighScoresTable {
         this.fileName = filename;
         List<String> fileLines = Files.readAllLines(filename.toPath());
         List<String> lineData = new ArrayList();
-        for (String line: fileLines) {
+        for (String line : fileLines) {
             lineData = parseLine(line);
             this.scoreInfoList.add(new ScoreInfo(lineData.get(0), Integer.parseInt(lineData.get(1))));
         }
@@ -111,11 +111,14 @@ public class HighScoresTable {
 
     // Save table data to the specified file.
     public void save(File filename) throws IOException {
+        boolean exist;
         FileWriter FW;
         if(fileName.getName() == "") {
+            exist = this.fileName.delete();
             FW = new FileWriter(this.fileName, true);
         }
         else {
+            exist = fileName.delete();
             FW = new FileWriter(fileName.getName(), true);
         }
         for (int i = 0; i < this.scoreInfoList.size(); i++) {
@@ -127,7 +130,6 @@ public class HighScoresTable {
 
     public void createFile(String fileName) throws IOException {
         this.fileName = new File(fileName);
-        FileWriter FW = new FileWriter(fileName, true);
         this.load(this.fileName);
     }
 }

@@ -46,7 +46,7 @@ public class GameFlow {
      */
     public GameFlow(String[] input, HighScoresTable hst) {
         this.livesListener = new LivesListener(new Counter());
-        this.livesListener.getLivesCounter().setCounter(7);
+        this.livesListener.getLivesCounter().setCounter(1);
         this.scoreTrackingListener = new ScoreTrackingListener(new Counter());
         this.levelsMap = new HashMap<>();
         this.levelsMap.put(1, new FullLines());
@@ -72,7 +72,7 @@ public class GameFlow {
             gameLevel.playOneTurn();
             // if the player has been disqualified
             if (counter == this.levelsToRun.size()) {
-                if (this.hst.getRank(this.scoreTrackingListener.getScoreCounter().getValue()) >=
+                if (this.hst.getRank(this.scoreTrackingListener.getScoreCounter().getValue()) <=
                         this.hst.getHighScores().size()) {
                     DialogManager dialog = gameLevel.getAnimationRunner().getGui().getDialogManager();
                     String name = dialog.showQuestionDialog("Name", "What is your name?", "");

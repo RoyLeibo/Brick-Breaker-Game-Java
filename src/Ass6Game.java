@@ -30,7 +30,7 @@ public class Ass6Game {
      * @param args the input arguments
      */
     public static void main(String[] args) {
-        RunGame run = new RunGame(args, 3);
+        RunGame run = new RunGame(args, 2);
 //        GameFlow gl = new GameFlow(args, new HighScoresTable(3));
 //        gl.runLevels();
 //        HighScoresTable HST = new HighScoresTable(3);
