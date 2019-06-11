@@ -1,7 +1,7 @@
 package gamesprites;
 import biuoop.DrawSurface;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import others.Velocity;
@@ -23,7 +23,9 @@ import rungame.GameLevel;
 public class Block implements Collidable, Sprite, HitNotifier {
     private Rectangle blockRectangle;
     private Color backgroundColor;
+    private Image img;
     private Color fontColor;
+    private Color stroke;
     private String hitsLeft;
     private List<HitListener> hitListeners;
 
@@ -35,7 +37,6 @@ public class Block implements Collidable, Sprite, HitNotifier {
     public Block(Rectangle blockRectangle) {
         this.blockRectangle = blockRectangle;
         this.hitsLeft = "5";
-        this.backgroundColor = Color.CYAN;
         this.hitListeners = new ArrayList<HitListener>();
         this.setFontColor(Color.BLACK);
     }
@@ -53,6 +54,7 @@ public class Block implements Collidable, Sprite, HitNotifier {
         this.hitsLeft = hitsLeft;
         this.hitListeners = new ArrayList<HitListener>();
         this.setFontColor(Color.BLACK);
+        this.stroke = null;
     }
 
     /**
@@ -107,13 +109,29 @@ public class Block implements Collidable, Sprite, HitNotifier {
         // if the block is still alive, sets the drawing color and shapes
 //        if (this.isBlockAlive) {
         // draw a frame in color Black.
-        surface.setColor(Color.BLACK);
+        if(this.stroke == null){
+            surface.setColor(Color.BLACK);
+        }
+        else {
+            surface.setColor(this.stroke);
+        }
         surface.drawRectangle((int) blockRectangle.getUpperLeft().getX(), (int) blockRectangle.getUpperLeft().getY(),
                 (int) blockRectangle.getWidth(), (int) blockRectangle.getHeight());
         // draw the block it self using the color received by input (or the default)
-        surface.setColor(this.backgroundColor);
-        surface.fillRectangle((int) blockRectangle.getUpperLeft().getX(), (int) blockRectangle.getUpperLeft().getY(),
-                (int) blockRectangle.getWidth(), (int) blockRectangle.getHeight());
+        if(this.backgroundColor == null) {
+            surface.drawImage((int) blockRectangle.getUpperLeft().getX(), (int) blockRectangle.getUpperLeft().getY(),
+                    this.img);
+        }
+        else if(this.img == null){
+            surface.setColor(this.backgroundColor);
+            surface.fillRectangle((int) blockRectangle.getUpperLeft().getX(), (int) blockRectangle.getUpperLeft().getY(),
+                    (int) blockRectangle.getWidth(), (int) blockRectangle.getHeight());
+        }
+        else {
+            surface.setColor(Color.cyan);
+            surface.fillRectangle((int) blockRectangle.getUpperLeft().getX(), (int) blockRectangle.getUpperLeft().getY(),
+                    (int) blockRectangle.getWidth(), (int) blockRectangle.getHeight());
+        }
         // draw the number of hitsLeft in black
         surface.setColor(this.fontColor);
         surface.drawText((int) blockRectangle.getUpperLeft().getX() + (int) (0.5 * this.blockRectangle.getWidth()),
@@ -127,6 +145,10 @@ public class Block implements Collidable, Sprite, HitNotifier {
      */
     public void timePassed() {
 
+    }
+
+    public void setStroke(Color stroke) {
+        this.stroke = stroke;
     }
 
     /**
@@ -145,6 +167,12 @@ public class Block implements Collidable, Sprite, HitNotifier {
      */
     public void setBackgroundColor(Color color1) {
         this.backgroundColor = color1;
+        this.img = null;
+    }
+
+    public void setImg(Image img) {
+        this.img = img;
+        this.backgroundColor = null;
     }
 
     /**

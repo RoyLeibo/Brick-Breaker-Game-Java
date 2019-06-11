@@ -5,8 +5,13 @@ import backgrounds.Emoji;
 import biuoop.DrawSurface;
 import biuoop.GUI;
 import gamecontrollers.HighScoresTable;
+import gamecontrollers.LevelNameIndicator;
 import gamecontrollers.ScoreInfo;
+import gamesprites.Block;
 import interfaces.Animation;
+import interfaces.LevelInformation;
+import levelfromfile.BlocksFromSymbolsFactory;
+import levelfromfile.LevelSpecificationReader;
 import levels.DirectHit;
 import levels.FullLines;
 import levels.PartialLines;
@@ -15,6 +20,8 @@ import rungame.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class runs the game.
@@ -30,7 +37,25 @@ public class Ass6Game {
      * @param args the input arguments
      */
     public static void main(String[] args) {
-        RunGame run = new RunGame(args, 2);
+//        RunGame run = new RunGame(args, 2);
+        LevelSpecificationReader lsr = new LevelSpecificationReader();
+        List<LevelInformation> list1 = null;
+        try{
+            list1 = lsr.createLevelInformationList(new File("b.txt"));
+        }
+        catch (IOException e){}
+        List<Block> list = list1.get(0).blocks();
+        GUI gui = new GUI("",800,600);
+        DrawSurface d = gui.getDrawSurface();
+        while(true) {
+            for (Block b : list) {
+                b.drawOn(d);
+            }
+            gui.show(d);
+            d = gui.getDrawSurface();
+        }
+
+
 //        GameFlow gl = new GameFlow(args, new HighScoresTable(3));
 //        gl.runLevels();
 //        HighScoresTable HST = new HighScoresTable(3);

@@ -328,7 +328,6 @@ public class GameLevel implements Animation {
             this.environment.addCollidable(b);
             b.addHitListener(this.scoreTracker);
             b.addHitListener(this.blockRemover);
-
         }
     }
 }
