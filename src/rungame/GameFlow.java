@@ -37,6 +37,7 @@ public class GameFlow {
     private Map<Integer, LevelInformation> levelsMap;
     private List<Integer> levelsToRun;
     private HighScoresTable hst;
+    private AnimationRunner animationRunner;
 
     /**
      * Instantiates a new Game flow.
@@ -44,7 +45,7 @@ public class GameFlow {
      *
      * @param input the input
      */
-    public GameFlow(String[] input, HighScoresTable hst) {
+    public GameFlow(String[] input, HighScoresTable hst, AnimationRunner animationRunner) {
         this.livesListener = new LivesListener(new Counter());
         this.livesListener.getLivesCounter().setCounter(1);
         this.scoreTrackingListener = new ScoreTrackingListener(new Counter());
@@ -56,6 +57,19 @@ public class GameFlow {
         this.isAlive = true;
         this.levelsToRun = cleanArguments(input);
         this.hst = hst;
+        this.animationRunner = animationRunner;
+    }
+
+    public GameFlow(Map<Integer, LevelInformation> levelsMap, String[] input, HighScoresTable hst,
+                    AnimationRunner animationRunner) {
+        this.livesListener = new LivesListener(new Counter());
+        this.livesListener.getLivesCounter().setCounter(1);
+        this.scoreTrackingListener = new ScoreTrackingListener(new Counter());
+        this.levelsMap = levelsMap;
+        this.isAlive = true;
+        this.levelsToRun = cleanArguments(input);
+        this.hst = hst;
+        this.animationRunner = animationRunner;
     }
 
     /**
@@ -68,7 +82,8 @@ public class GameFlow {
         for (Integer levelIndex : this.levelsToRun) {
             counter++;
             levelInformation = this.levelsMap.get(levelIndex);
-            gameLevel = new GameLevel(levelInformation, this.scoreTrackingListener, this.livesListener, this);
+            gameLevel = new GameLevel(levelInformation, this.scoreTrackingListener, this.livesListener, this,
+                    this.animationRunner);
             gameLevel.playOneTurn();
             // if the player has been disqualified
             if (counter == this.levelsToRun.size()) {

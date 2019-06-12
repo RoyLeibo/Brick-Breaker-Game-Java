@@ -37,23 +37,23 @@ public class Ass6Game {
      * @param args the input arguments
      */
     public static void main(String[] args) {
-//        RunGame run = new RunGame(args, 2);
-        LevelSpecificationReader lsr = new LevelSpecificationReader();
-        List<LevelInformation> list1 = null;
-        try{
-            list1 = lsr.createLevelInformationList(new File("b.txt"));
-        }
-        catch (IOException e){}
-        List<Block> list = list1.get(0).blocks();
-        GUI gui = new GUI("",800,600);
-        DrawSurface d = gui.getDrawSurface();
-        while(true) {
-            for (Block b : list) {
-                b.drawOn(d);
-            }
-            gui.show(d);
-            d = gui.getDrawSurface();
-        }
+        RunGame run = new RunGame(args, 2);
+//        LevelSpecificationReader lsr = new LevelSpecificationReader();
+//        List<LevelInformation> list1 = null;
+//        try{
+//            list1 = lsr.createLevelInformationList(new File("b.txt"));
+//        }
+//        catch (IOException e){}
+//        List<Block> list = list1.get(0).blocks();
+//        GUI gui = new GUI("",800,600);
+//        DrawSurface d = gui.getDrawSurface();
+//        while(true) {
+//            for (Block b : list) {
+//                b.drawOn(d);
+//            }
+//            gui.show(d);
+//            d = gui.getDrawSurface();
+//        }
 
 
 //        GameFlow gl = new GameFlow(args, new HighScoresTable(3));

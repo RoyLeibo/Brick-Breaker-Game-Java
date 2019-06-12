@@ -2,8 +2,14 @@ package gamesprites;
 import biuoop.DrawSurface;
 
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import levelfromfile.ColorParser;
 import others.Velocity;
 import interfaces.Collidable;
 import interfaces.Sprite;
@@ -14,6 +20,8 @@ import geometryprimitives.Point;
 import geometryprimitives.Line;
 import rungame.GameLevel;
 
+import javax.imageio.ImageIO;
+
 /**
  * The type Block.
  * This is the Block class which implements the Collidable and Sprite interfaces and defines a Block.
@@ -22,39 +30,55 @@ import rungame.GameLevel;
  */
 public class Block implements Collidable, Sprite, HitNotifier {
     private Rectangle blockRectangle;
-    private Color backgroundColor;
-    private Image img;
     private Color fontColor;
     private Color stroke;
     private String hitsLeft;
     private List<HitListener> hitListeners;
+    private Map<Integer, String> backgroundMap;
+    private Color backgroundColor;
 
     /**
      * Instantiates a new Block.
      *
      * @param blockRectangle the block rectangle
      */
-    public Block(Rectangle blockRectangle) {
+    public Block(Rectangle blockRectangle, Map<Integer,String> backgroundMap, String hitPoint, Color stroke) {
         this.blockRectangle = blockRectangle;
-        this.hitsLeft = "5";
+        this.hitsLeft = hitPoint;
         this.hitListeners = new ArrayList<HitListener>();
         this.setFontColor(Color.BLACK);
+        this.backgroundMap = backgroundMap;
+        this.stroke = stroke;
+
+    }
+
+    public Block(Rectangle blockRectangle, Color stroke, String hitPoint) {
+        this.blockRectangle = blockRectangle;
+        this.hitsLeft = hitPoint;
+        this.hitListeners = new ArrayList<HitListener>();
+        this.setFontColor(Color.BLACK);
+        this.backgroundMap = backgroundMap;
+        this.stroke = stroke;
+    }
+
+    public Block(Rectangle blockRectangle){
+        this.blockRectangle = blockRectangle;
+        this.hitsLeft="3";
     }
 
     /**
      * Instantiates a new Block.
      *
      * @param blockRectangle the block rectangle
-     * @param color          the color
      * @param hitsLeft       the hits left
      */
-    public Block(Rectangle blockRectangle, Color color, String hitsLeft) {
+    public Block(Rectangle blockRectangle, String hitsLeft) {
         this.blockRectangle = blockRectangle;
-        this.backgroundColor = color;
         this.hitsLeft = hitsLeft;
         this.hitListeners = new ArrayList<HitListener>();
         this.setFontColor(Color.BLACK);
         this.stroke = null;
+        this.backgroundMap = new HashMap<>();
     }
 
     /**
@@ -64,6 +88,10 @@ public class Block implements Collidable, Sprite, HitNotifier {
      */
     public Rectangle getCollisionRectangle() {
         return this.blockRectangle;
+    }
+
+    public void setBackgroundMap(Map<Integer, String> backgroundMap) {
+        this.backgroundMap = backgroundMap;
     }
 
     /**
@@ -100,6 +128,10 @@ public class Block implements Collidable, Sprite, HitNotifier {
         return currentVelocity;
     }
 
+    public void setBackgroundColor(Color backgroundColor) {
+        this.backgroundColor = backgroundColor;
+    }
+
     /**
      * The drawOne method is used to draw this block to screen.
      *
@@ -118,17 +150,28 @@ public class Block implements Collidable, Sprite, HitNotifier {
         surface.drawRectangle((int) blockRectangle.getUpperLeft().getX(), (int) blockRectangle.getUpperLeft().getY(),
                 (int) blockRectangle.getWidth(), (int) blockRectangle.getHeight());
         // draw the block it self using the color received by input (or the default)
-        if(this.backgroundColor == null) {
-            surface.drawImage((int) blockRectangle.getUpperLeft().getX(), (int) blockRectangle.getUpperLeft().getY(),
-                    this.img);
+        try {
+            String background = this.backgroundMap.get(Integer.valueOf(this.hitsLeft));
+            if (background.charAt(0) == 'c') {
+                surface.setColor(new ColorParser().colorFromString(background.substring
+                        (background.indexOf('(') + 1, background.indexOf(")") + 1)));
+                surface.fillRectangle((int) blockRectangle.getUpperLeft().getX(), (int) blockRectangle.getUpperLeft().getY(),
+                        (int) blockRectangle.getWidth(), (int) blockRectangle.getHeight());
+            } else {
+                try {
+                    surface.drawImage((int) blockRectangle.getUpperLeft().getX(),
+                            (int) blockRectangle.getUpperLeft().getY(),
+                            ImageIO.read(new File(background.substring(background.indexOf("(") + 1
+                                    , background.indexOf(")")))));
+                } catch (IOException e) {
+                    surface.setColor(Color.BLACK);
+                    surface.fillRectangle((int) blockRectangle.getUpperLeft().getX(), (int) blockRectangle.getUpperLeft().getY(),
+                            (int) blockRectangle.getWidth(), (int) blockRectangle.getHeight());
+                }
+            }
         }
-        else if(this.img == null){
+        catch (Exception e){
             surface.setColor(this.backgroundColor);
-            surface.fillRectangle((int) blockRectangle.getUpperLeft().getX(), (int) blockRectangle.getUpperLeft().getY(),
-                    (int) blockRectangle.getWidth(), (int) blockRectangle.getHeight());
-        }
-        else {
-            surface.setColor(Color.cyan);
             surface.fillRectangle((int) blockRectangle.getUpperLeft().getX(), (int) blockRectangle.getUpperLeft().getY(),
                     (int) blockRectangle.getWidth(), (int) blockRectangle.getHeight());
         }
@@ -149,30 +192,6 @@ public class Block implements Collidable, Sprite, HitNotifier {
 
     public void setStroke(Color stroke) {
         this.stroke = stroke;
-    }
-
-    /**
-     * Gets color.
-     *
-     * @return the color
-     */
-    public Color getBackgroundColor() {
-        return this.backgroundColor;
-    }
-
-    /**
-     * Sets color.
-     *
-     * @param color1 the color.
-     */
-    public void setBackgroundColor(Color color1) {
-        this.backgroundColor = color1;
-        this.img = null;
-    }
-
-    public void setImg(Image img) {
-        this.img = img;
-        this.backgroundColor = null;
     }
 
     /**

@@ -64,7 +64,7 @@ public class GameLevel implements Animation {
      * @param gameFlow              the game flow
      */
     public GameLevel(LevelInformation levelInformation, ScoreTrackingListener scoreTrackingListener,
-                     LivesListener livesListener, GameFlow gameFlow) {
+                     LivesListener livesListener, GameFlow gameFlow, AnimationRunner animationRunner) {
         this.sprites = new SpriteCollection();
         this.environment = new GameEnvironment();
         this.blockRemover = new BlockRemover(this, new Counter());
@@ -75,7 +75,7 @@ public class GameLevel implements Animation {
         this.livesIndicator = new LivesIndicator(this.livesListener.getLivesCounter());
         this.listBalls = new ArrayList<>();
         this.levelInformation = levelInformation;
-        this.animationRunner = new AnimationRunner(60);
+        this.animationRunner = animationRunner;
         this.gameFlow = gameFlow;
         this.levelNameIndicator = new LevelNameIndicator(this.levelInformation.levelName());
     }

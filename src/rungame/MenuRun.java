@@ -1,11 +1,11 @@
 package rungame;
 
 import animations.HighScoresAnimation;
-import animations.MenuAnimation;
 import biuoop.DrawSurface;
 import biuoop.KeyboardSensor;
 import gamecontrollers.HighScoresTable;
 import interfaces.Animation;
+import interfaces.Menu;
 import interfaces.Task;
 import others.MenuItem;
 import tasks.GameFlowTask;
@@ -13,43 +13,103 @@ import tasks.HighScoresTaks;
 import tasks.QuitTask;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-public class MenuRun implements Animation {
-    private HighScoresTable hst;
+/**
+ * The type Menu run.
+ *
+ * @param <T> the type parameter
+ */
+public class MenuRun<T> implements Animation, Menu<T> {
     private String[] args;
-    private MenuAnimation menuAnimation;
-    private boolean isRunning;
     private AnimationRunner animationRunner;
+    private boolean isRunning;
+    private List<MenuItem<T>> menuItemsList;
+    private T ReturnVal;
 
+    /**
+     * Instantiates a new Menu run.
+     *
+     * @param args            the args
+     * @param size            the size
+     * @param animationRunner the animation runner
+     */
     public MenuRun(String[] args, int size, AnimationRunner animationRunner) {
         this.isRunning = true;
         this.animationRunner = animationRunner;
-        this.hst = new HighScoresTable(size);
-        try {
-            this.hst.createFile("highscores.txt");
-        } catch (IOException e) {
-        }
         this.args = args;
-        this.menuAnimation = new MenuAnimation<Task<Void>>();
-        this.menuAnimation.addSelection("s", "Start New Game", new GameFlowTask<Void>(args, this.hst));
-        this.menuAnimation.addSelection("h", "High Scores Table", new HighScoresTaks<Void>
-                (this.animationRunner, new HighScoresAnimation(this.hst)));
-        this.menuAnimation.addSelection("q", "Quit Game", new QuitTask<Void>());
+        this.menuItemsList = new ArrayList<>();
     }
 
+    /**
+     * returns T.
+     *
+     * @return T value
+     */
+
+    public T getStatus() {
+        return this.ReturnVal;
+    }
+
+    /**
+     * Return isRunning.
+     *
+     * @return boolean isRunning
+     */
     public boolean shouldStop() {
         return isRunning;
     }
 
+    /**
+     * Add a menu selection.
+     *
+     * @param key
+     * @param message
+     * @param returnVal
+     */
+    public void addSelection(String key, String message, T returnVal) {
+        this.menuItemsList.add(new MenuItem(key, message, returnVal));
+    }
+
+    /**
+     * Draws the menu.
+     *
+     * @param d the drawsurface
+     */
     public void doOneFrame(DrawSurface d) {
-        this.menuAnimation.doOneFrame(d);
-        List<MenuItem<Task<Void>>> menuItemList = this.menuAnimation.getMenuItemsList();
-        for (MenuItem<Task<Void>> menu: menuItemList) {
-            if(this.animationRunner.getGui().getKeyboardSensor().isPressed(menu.getKey())){
-                this.isRunning = false;
-                menu.getReturnValue().run();
-            }
+        d.drawText(70, 100, "Welcome To Arkanoid!", 40);
+        for (int i = 0; i < this.menuItemsList.size(); i++) {
+            d.drawText(100, 120 + (i + 1) * 30, "(" + this.menuItemsList.get(i).getKey() + ")  "
+                    + this.menuItemsList.get(i).getMessage(), 30);
         }
+    }
+
+    /**
+     * Adding subMenu.
+     *
+     * @param key
+     * @param message
+     * @param subMenu
+     */
+    public void addSubMenu(String key, String message, Menu<T> subMenu) {
+    }
+
+    /**
+     * Gets menu items list.
+     *
+     * @return the menu items list
+     */
+    public List<MenuItem<T>> getMenuItemsList() {
+        return menuItemsList;
+    }
+
+    /**
+     * Sets running.
+     *
+     * @param running the running
+     */
+    public void setRunning(boolean running) {
+        isRunning = running;
     }
 }
