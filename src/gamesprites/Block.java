@@ -1,4 +1,5 @@
 package gamesprites;
+
 import biuoop.DrawSurface;
 
 import java.awt.*;
@@ -36,20 +37,21 @@ public class Block implements Collidable, Sprite, HitNotifier {
     private List<HitListener> hitListeners;
     private Map<Integer, String> backgroundMap;
     private Color backgroundColor;
+    private Image img;
 
     /**
      * Instantiates a new Block.
      *
      * @param blockRectangle the block rectangle
      */
-    public Block(Rectangle blockRectangle, Map<Integer,String> backgroundMap, String hitPoint, Color stroke) {
+    public Block(Rectangle blockRectangle, Map<Integer, String> backgroundMap, String hitPoint, Color stroke) {
         this.blockRectangle = blockRectangle;
         this.hitsLeft = hitPoint;
         this.hitListeners = new ArrayList<HitListener>();
         this.setFontColor(Color.BLACK);
         this.backgroundMap = backgroundMap;
         this.stroke = stroke;
-
+        this.setFontColor(Color.BLACK);
     }
 
     public Block(Rectangle blockRectangle, Color stroke, String hitPoint) {
@@ -61,9 +63,11 @@ public class Block implements Collidable, Sprite, HitNotifier {
         this.stroke = stroke;
     }
 
-    public Block(Rectangle blockRectangle){
+    public Block(Rectangle blockRectangle) {
         this.blockRectangle = blockRectangle;
-        this.hitsLeft="3";
+        this.hitsLeft = "3";
+        this.hitListeners = new ArrayList<HitListener>();
+        this.setFontColor(Color.BLACK);
     }
 
     /**
@@ -141,10 +145,9 @@ public class Block implements Collidable, Sprite, HitNotifier {
         // if the block is still alive, sets the drawing color and shapes
 //        if (this.isBlockAlive) {
         // draw a frame in color Black.
-        if(this.stroke == null){
+        if (this.stroke == null) {
             surface.setColor(Color.BLACK);
-        }
-        else {
+        } else {
             surface.setColor(this.stroke);
         }
         surface.drawRectangle((int) blockRectangle.getUpperLeft().getX(), (int) blockRectangle.getUpperLeft().getY(),
@@ -159,18 +162,19 @@ public class Block implements Collidable, Sprite, HitNotifier {
                         (int) blockRectangle.getWidth(), (int) blockRectangle.getHeight());
             } else {
                 try {
+                    if (this.img == null) {
+                        this.img = ImageIO.read(new File(background.substring(background.indexOf("(") + 1
+                                , background.indexOf(")"))));
+                    }
                     surface.drawImage((int) blockRectangle.getUpperLeft().getX(),
-                            (int) blockRectangle.getUpperLeft().getY(),
-                            ImageIO.read(new File(background.substring(background.indexOf("(") + 1
-                                    , background.indexOf(")")))));
+                            (int) blockRectangle.getUpperLeft().getY(), this.img);
                 } catch (IOException e) {
                     surface.setColor(Color.BLACK);
                     surface.fillRectangle((int) blockRectangle.getUpperLeft().getX(), (int) blockRectangle.getUpperLeft().getY(),
                             (int) blockRectangle.getWidth(), (int) blockRectangle.getHeight());
                 }
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             surface.setColor(this.backgroundColor);
             surface.fillRectangle((int) blockRectangle.getUpperLeft().getX(), (int) blockRectangle.getUpperLeft().getY(),
                     (int) blockRectangle.getWidth(), (int) blockRectangle.getHeight());

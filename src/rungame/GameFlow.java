@@ -63,7 +63,7 @@ public class GameFlow {
     public GameFlow(Map<Integer, LevelInformation> levelsMap, String[] input, HighScoresTable hst,
                     AnimationRunner animationRunner) {
         this.livesListener = new LivesListener(new Counter());
-        this.livesListener.getLivesCounter().setCounter(1);
+        this.livesListener.getLivesCounter().setCounter(3);
         this.scoreTrackingListener = new ScoreTrackingListener(new Counter());
         this.levelsMap = levelsMap;
         this.isAlive = true;
