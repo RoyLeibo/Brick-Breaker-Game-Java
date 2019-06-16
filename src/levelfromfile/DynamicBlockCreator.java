@@ -4,22 +4,39 @@ import gamesprites.Block;
 import geometryprimitives.Point;
 import interfaces.BlockCreator;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
+import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The type Dynamic block creator.
+ *
+ * @author Roy Leibovitz <royleibo212@gmail.com>
+ */
 public class DynamicBlockCreator implements BlockCreator {
     private Map<String, String> defaultBlockMap;
     private Map<String, String> blockDefinitionsMap;
 
+    /**
+     * Instantiates a new Dynamic block creator.
+     *
+     * @param defaultBlock        the default block
+     * @param blockDefinitionsMap the block definitions map
+     */
     public DynamicBlockCreator(Map<String, String> defaultBlock, Map<String, String> blockDefinitionsMap) {
         this.defaultBlockMap = defaultBlock;
         this.blockDefinitionsMap = blockDefinitionsMap;
     }
 
+    /**
+     * This function creates a single block.
+     * The function checks for each information about the block at the definitionMap.
+     * If it doesn't contains the data needed, the imformation takes from the default map.
+     *
+     * @param xpos upper left x
+     * @param ypos upper left y
+     * @return block
+     */
     public Block create(int xpos, int ypos) {
         int width;
         if (blockDefinitionsMap.containsKey("width")) {
@@ -45,13 +62,22 @@ public class DynamicBlockCreator implements BlockCreator {
         } else {
             hitPoints = defaultBlockMap.get("hit_points");
         }
+        Map<Integer, String> backgroundMap = createBackgroundMap(Integer.parseInt(hitPoints));
         Block b = new Block(new geometryprimitives.Rectangle(new Point(xpos, ypos), width, height),
-                createBackgroundMap(Integer.parseInt(hitPoints)), hitPoints, stroke);
+                createImgMap(backgroundMap), createColorsFromMap(backgroundMap), hitPoints, stroke);
         return b;
     }
 
+    /**
+     * Create backgroundMap map.
+     * for each fill-i (0 < i <= hitPoints) the function will add the color to a map as a string.
+     *
+     * @param hitPoints the hit points
+     * @return the map
+     */
     public Map<Integer, String> createBackgroundMap(int hitPoints) {
         Map<Integer, String> backgroundMap = new HashMap<>();
+        // define a "master key" which is the default background when it's not defined.
         String masterKey = "fill";
         String masterValue = "";
         if (this.blockDefinitionsMap.containsKey(masterKey)) {
@@ -69,6 +95,45 @@ public class DynamicBlockCreator implements BlockCreator {
                 backgroundMap.put(i + 1, masterValue);
             }
         }
+
         return backgroundMap;
+    }
+
+    /**
+     * Create imgMap for each fill-i as defined.
+     *
+     * @param imgsMap the imgs map
+     * @return the map
+     */
+    public Map<Integer, String> createImgMap(Map<Integer, String> imgsMap) {
+        Map<Integer, String> imgMap = new HashMap<>();
+        for (Map.Entry<Integer, String> entry : imgsMap.entrySet()) {
+            // if the value is a image
+            if (entry.getValue().charAt(0) != 'c') {
+                imgMap.put(entry.getKey(), entry.getValue());
+            }
+        }
+        return imgMap;
+    }
+
+    /**
+     * Create colorsFromMap for each fill-i as defined.
+     *
+     * @param backgroundMap the background map
+     * @return the map
+     */
+    public Map<Integer, Color> createColorsFromMap(Map<Integer, String> backgroundMap) {
+        Map<Integer, Color> newBackgroundMap = new HashMap<>();
+        ColorParser cp = new ColorParser();
+        String temp;
+        for (Map.Entry<Integer, String> entry : backgroundMap.entrySet()) {
+            temp = entry.getValue();
+            // if the value is a color
+            if (entry.getValue().charAt(0) == 'c') {
+                newBackgroundMap.put(entry.getKey(), cp.colorFromString(temp.substring(
+                        temp.indexOf('(') + 1, temp.indexOf(")") + 1)));
+            }
+        }
+        return newBackgroundMap;
     }
 }

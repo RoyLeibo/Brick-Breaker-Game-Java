@@ -13,7 +13,7 @@ import java.io.IOException;
 
 public class RunGame {
     public RunGame(String[] args, int size) {
-        AnimationRunner animationRunner = new AnimationRunner(10);
+        AnimationRunner animationRunner = new AnimationRunner(60);
         HighScoresTable hst = new HighScoresTable(size);
         try {
             hst.createFile("highscores.txt");
@@ -23,6 +23,7 @@ public class RunGame {
         DrawSurface d;
         MenuRun<Task<Void>> menuRun = new MenuRun(args, size, animationRunner);
         menuRun.addSelection("s", "Start New Game", new LevelsFromFileTask<Void>(animationRunner, hst, gui));
+//        menuRun.addSelection("s", "Start New Game", new GameFlowTask<Void>(args, hst, animationRunner));
         menuRun.addSelection("h", "High Scores Table", new HighScoresTaks<Void>
                 (animationRunner, new HighScoresAnimation(hst), gui));
         menuRun.addSelection("q", "Quit Game", new QuitTask<Void>());

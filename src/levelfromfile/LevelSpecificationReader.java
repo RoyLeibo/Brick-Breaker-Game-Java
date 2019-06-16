@@ -223,7 +223,7 @@ public class LevelSpecificationReader {
             }
 
             public Color getBallsColor() {
-                return Color.white;
+                return Color.RED;
             }
         };
     }
@@ -265,7 +265,8 @@ public class LevelSpecificationReader {
     public Velocity createVelocity(String line) {
         for (int i = 0; i < line.length(); i++) {
             if (line.charAt(i) == ',') {
-                return new Velocity(Double.parseDouble(line.substring(0, i)), Double.parseDouble(line.substring(i + 1)));
+                return Velocity.fromAngleAndSpeed(Double.parseDouble(line.substring(0, i)),
+                        Double.parseDouble(line.substring(i + 1)));
             }
         }
         return new Velocity(Double.parseDouble(line), Double.parseDouble(line));
