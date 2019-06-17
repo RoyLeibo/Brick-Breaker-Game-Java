@@ -43,7 +43,9 @@ public class GameFlow {
      * Instantiates a new Game flow.
      * The constructor creates the levels list to run.
      *
-     * @param input the input
+     * @param input           the input
+     * @param hst             the hst
+     * @param animationRunner the animation runner
      */
     public GameFlow(String[] input, HighScoresTable hst, AnimationRunner animationRunner) {
         this.livesListener = new LivesListener(new Counter());
@@ -60,6 +62,14 @@ public class GameFlow {
         this.animationRunner = animationRunner;
     }
 
+    /**
+     * Instantiates a new Game flow.
+     *
+     * @param levelsMap       the levels map
+     * @param input           the input
+     * @param hst             the hst
+     * @param animationRunner the animation runner
+     */
     public GameFlow(Map<Integer, LevelInformation> levelsMap, String[] input, HighScoresTable hst,
                     AnimationRunner animationRunner) {
         this.livesListener = new LivesListener(new Counter());
@@ -85,40 +95,48 @@ public class GameFlow {
             gameLevel = new GameLevel(levelInformation, this.scoreTrackingListener, this.livesListener, this,
                     this.animationRunner);
             gameLevel.playOneTurn();
-            // if the player has been disqualified
-            if (counter == this.levelsToRun.size()) {
-                if (this.hst.getRank(this.scoreTrackingListener.getScoreCounter().getValue()) <=
-                        this.hst.getHighScores().size()) {
-                    DialogManager dialog = gameLevel.getAnimationRunner().getGui().getDialogManager();
-                    String name = dialog.showQuestionDialog("Name", "What is your name?", "");
-                    this.hst.add(new ScoreInfo(name, this.scoreTrackingListener.getScoreCounter().getValue()));
-                    try{
-                        this.hst.save(new File(""));
-                    }
-                    catch (IOException e){}
-                }
-            }
             if (!this.isAlive) {
                 // print "Game Over!"
+                addPlayerToHST(gameLevel);
                 gameLevel.getAnimationRunner().run(new KeyPressStoppableAnimation(
                         gameLevel.getAnimationRunner().getGui().getKeyboardSensor(), "SPACE_KEY", new LoseScreen()));
-                gameLevel.getAnimationRunner().run(new KeyPressStoppableAnimation
-                        (gameLevel.getAnimationRunner().getGui().getKeyboardSensor(), "SPACE_KEY",
-                                new HighScoresAnimation(this.hst)));
+                gameLevel.getAnimationRunner().run(new KeyPressStoppableAnimation(
+                        gameLevel.getAnimationRunner().getGui().getKeyboardSensor(), "SPACE_KEY",
+                        new HighScoresAnimation(this.hst)));
                 gameLevel.getAnimationRunner().getGui().close();
                 return;
             }
             // if the player finished all the game levels
             if (counter == levelsToRun.size() && this.isAlive) {
                 // print "You Win! Your Score Is: X"
+                addPlayerToHST(gameLevel);
                 gameLevel.getAnimationRunner().run(new KeyPressStoppableAnimation(
                         gameLevel.getAnimationRunner().getGui().getKeyboardSensor(), "SPACE_KEY", new WinScreen(
                         this.scoreTrackingListener)));
-                gameLevel.getAnimationRunner().run(new KeyPressStoppableAnimation
-                        (gameLevel.getAnimationRunner().getGui().getKeyboardSensor(), "SPACE_KEY",
-                                new HighScoresAnimation(this.hst)));
+                gameLevel.getAnimationRunner().run(new KeyPressStoppableAnimation(
+                        gameLevel.getAnimationRunner().getGui().getKeyboardSensor(), "SPACE_KEY",
+                        new HighScoresAnimation(this.hst)));
                 gameLevel.getAnimationRunner().getGui().close();
                 return;
+            }
+        }
+    }
+
+    /**
+     * Add player to hst.
+     *
+     * @param gameLevel game level
+     */
+    public void addPlayerToHST(GameLevel gameLevel) {
+        int rank = this.hst.getRank(this.scoreTrackingListener.getScoreCounter().getValue());
+        if (rank <= this.hst.getSize()) {
+            DialogManager dialog = gameLevel.getAnimationRunner().getGui().getDialogManager();
+            String name = dialog.showQuestionDialog("Name", "What is your name?", "");
+            this.hst.add(new ScoreInfo(name, this.scoreTrackingListener.getScoreCounter().getValue()));
+            try {
+                this.hst.save(new File(""));
+            } catch (IOException e) {
+                System.out.println();
             }
         }
     }

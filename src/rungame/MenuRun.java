@@ -1,18 +1,10 @@
 package rungame;
 
-import animations.HighScoresAnimation;
 import biuoop.DrawSurface;
-import biuoop.KeyboardSensor;
-import gamecontrollers.HighScoresTable;
 import interfaces.Animation;
 import interfaces.Menu;
-import interfaces.Task;
 import others.MenuItem;
-import tasks.GameFlowTask;
-import tasks.HighScoresTaks;
-import tasks.QuitTask;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +18,7 @@ public class MenuRun<T> implements Animation, Menu<T> {
     private AnimationRunner animationRunner;
     private boolean isRunning;
     private List<MenuItem<T>> menuItemsList;
-    private T ReturnVal;
+    private T returnVal;
 
     /**
      * Instantiates a new Menu run.
@@ -49,7 +41,7 @@ public class MenuRun<T> implements Animation, Menu<T> {
      */
 
     public T getStatus() {
-        return this.ReturnVal;
+        return this.returnVal;
     }
 
     /**
@@ -64,12 +56,12 @@ public class MenuRun<T> implements Animation, Menu<T> {
     /**
      * Add a menu selection.
      *
-     * @param key
-     * @param message
-     * @param returnVal
+     * @param key key
+     * @param message message
+     * @param returnValue return value
      */
-    public void addSelection(String key, String message, T returnVal) {
-        this.menuItemsList.add(new MenuItem(key, message, returnVal));
+    public void addSelection(String key, String message, T returnValue) {
+        this.menuItemsList.add(new MenuItem(key, message, returnValue));
     }
 
     /**
@@ -88,9 +80,9 @@ public class MenuRun<T> implements Animation, Menu<T> {
     /**
      * Adding subMenu.
      *
-     * @param key
-     * @param message
-     * @param subMenu
+     * @param key key
+     * @param message message
+     * @param subMenu subMenu
      */
     public void addSubMenu(String key, String message, Menu<T> subMenu) {
     }

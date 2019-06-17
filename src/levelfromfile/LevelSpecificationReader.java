@@ -4,11 +4,11 @@ import biuoop.DrawSurface;
 import gamesprites.Block;
 import interfaces.LevelInformation;
 import interfaces.Sprite;
-import levelfromfile.ColorParser;
 import others.Velocity;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.Image;
+import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -26,7 +26,7 @@ public class LevelSpecificationReader {
     /**
      * The Level information list.
      */
-    List<LevelInformation> levelInformationList;
+    private List<LevelInformation> levelInformationList;
 
     /**
      * Create level information list list.
@@ -48,9 +48,9 @@ public class LevelSpecificationReader {
                             // find where the block definitions ends
                             if (fileLines.get(k).equals("END_BLOCKS")) {
                                 // create level information
-                                this.levelInformationList.add(createLevelInformation(parseLevelInformation
-                                        (fileLines.subList(i + 1, j)), fileLines.subList(j + 1, k)));
-                                i += k + 1;
+                                this.levelInformationList.add(createLevelInformation(parseLevelInformation(
+                                        fileLines.subList(i + 1, j)), fileLines.subList(j + 1, k)));
+                                i = k + 1;
                                 break;
                             }
                         }
@@ -137,6 +137,8 @@ public class LevelSpecificationReader {
                 case "row_height":
                     rowHeight = Integer.parseInt(entry.getValue());
                     break;
+                default:
+                    break;
             }
         }
         // copy each data to a final variable
@@ -159,6 +161,7 @@ public class LevelSpecificationReader {
         // create new implementation for a LevelInformation using the data from the map
         return new LevelInformation() {
             private Image img;
+
             public int numberOfBalls() {
                 return finalNumberOfBalls;
             }
@@ -185,15 +188,15 @@ public class LevelSpecificationReader {
                         // check if the background is a color or image
                         if (finalBackground.charAt(0) == 'c') {
                             // parse color
-                            surface.setColor(new ColorParser().colorFromString(finalBackground.substring
-                                    (finalBackground.indexOf('(') + 1, finalBackground.indexOf(")") + 1)));
+                            surface.setColor(new ColorParser().colorFromString(finalBackground.substring(
+                                    finalBackground.indexOf('(') + 1, finalBackground.indexOf(")") + 1)));
                             surface.fillRectangle(0, 0, 800, 600);
                         } else if (finalBackground.charAt(0) == 'i') {
                             try {
                                 // import image
-                                if(img == null) {
-                                    img = ImageIO.read(new File(finalBackground.substring
-                                            (finalBackground.indexOf("(") + 1, finalBackground.indexOf(")"))));
+                                if (img == null) {
+                                    img = ImageIO.read(new File(finalBackground.substring(
+                                            finalBackground.indexOf("(") + 1, finalBackground.indexOf(")"))));
                                 }
                                 surface.drawImage(0, 0, img); // draw the image at location 0, 0.
                             } catch (IOException e) {
@@ -241,11 +244,10 @@ public class LevelSpecificationReader {
         for (int i = 0; i < line.length(); i++) {
             if (line.charAt(i) == ',') {
                 separator = line.indexOf(' ', startIndex);
-                if(separator == -1) {
+                if (separator == -1) {
                     velocityList.add(createVelocity(line.substring(startIndex)));
                     break;
-                }
-                else {
+                } else {
                     velocityList.add(createVelocity(line.substring(startIndex, separator)));
                 }
                 startIndex = separator + 1;

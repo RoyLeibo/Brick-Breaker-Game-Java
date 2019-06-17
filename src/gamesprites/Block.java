@@ -2,15 +2,14 @@ package gamesprites;
 
 import biuoop.DrawSurface;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import levelfromfile.ColorParser;
 import others.Velocity;
 import interfaces.Collidable;
 import interfaces.Sprite;
@@ -44,6 +43,10 @@ public class Block implements Collidable, Sprite, HitNotifier {
      * Instantiates a new Block.
      *
      * @param blockRectangle the block rectangle
+     * @param imgsMap        the imgs map
+     * @param colorMap       the color map
+     * @param hitPoint       the hit point
+     * @param stroke         the stroke
      */
     public Block(Rectangle blockRectangle, Map<Integer, String> imgsMap, Map<Integer, Color> colorMap,
                  String hitPoint, Color stroke) {
@@ -58,16 +61,28 @@ public class Block implements Collidable, Sprite, HitNotifier {
         this.backgroundColor = Color.CYAN;
     }
 
-    public Block(Rectangle blockRectangle, Color stroke, String hitPoint) {
+    /**
+     * Instantiates a new Block.
+     *
+     * @param blockRectangle the block rectangle
+     * @param stroke1         the stroke
+     * @param hitPoint       the hit point
+     */
+    public Block(Rectangle blockRectangle, Color stroke1, String hitPoint) {
         this.blockRectangle = blockRectangle;
         this.hitsLeft = hitPoint;
         this.hitListeners = new ArrayList<HitListener>();
         this.setFontColor(Color.BLACK);
         this.colorMap = colorMap;
-        this.stroke = stroke;
+        this.stroke = stroke1;
         this.backgroundColor = Color.CYAN;
     }
 
+    /**
+     * Instantiates a new Block.
+     *
+     * @param blockRectangle the block rectangle
+     */
     public Block(Rectangle blockRectangle) {
         this.blockRectangle = blockRectangle;
         this.hitsLeft = "3";
@@ -101,12 +116,22 @@ public class Block implements Collidable, Sprite, HitNotifier {
         return this.blockRectangle;
     }
 
-    public void setBackgroundMap(Map<Integer, String> imgMap) {
-        this.imgMap = imgMap;
+    /**
+     * Sets background map.
+     *
+     * @param imgMap1 the img map
+     */
+    public void setBackgroundMap(Map<Integer, String> imgMap1) {
+        this.imgMap = imgMap1;
     }
 
-    public void setColorMap(Map<Integer, Color> colorMap) {
-        this.colorMap = colorMap;
+    /**
+     * Sets color map.
+     *
+     * @param colorMap1 the color map
+     */
+    public void setColorMap(Map<Integer, Color> colorMap1) {
+        this.colorMap = colorMap1;
     }
 
     /**
@@ -143,8 +168,13 @@ public class Block implements Collidable, Sprite, HitNotifier {
         return currentVelocity;
     }
 
-    public void setBackgroundColor(Color backgroundColor) {
-        this.backgroundColor = backgroundColor;
+    /**
+     * Sets background color.
+     *
+     * @param backgroundColor1 the background color
+     */
+    public void setBackgroundColor(Color backgroundColor1) {
+        this.backgroundColor = backgroundColor1;
     }
 
     /**
@@ -166,11 +196,12 @@ public class Block implements Collidable, Sprite, HitNotifier {
         // draw the block it self using the color received by input (or the default)
         try {
             int index = Integer.valueOf(this.hitsLeft);
-            if (this.colorMap.containsKey(index)){
+            if (this.colorMap.containsKey(index)) {
                 Color background = this.colorMap.get(index);
                 surface.setColor(background);
-                surface.fillRectangle((int) blockRectangle.getUpperLeft().getX(), (int) blockRectangle.getUpperLeft().getY(),
-                        (int) blockRectangle.getWidth(), (int) blockRectangle.getHeight());
+                surface.fillRectangle((int) blockRectangle.getUpperLeft().getX(),
+                        (int) blockRectangle.getUpperLeft().getY(), (int) blockRectangle.getWidth(),
+                        (int) blockRectangle.getHeight());
             } else {
                 try {
                     if (this.img == null) {
@@ -182,13 +213,15 @@ public class Block implements Collidable, Sprite, HitNotifier {
                             (int) blockRectangle.getUpperLeft().getY(), this.img);
                 } catch (IOException e) {
                     surface.setColor(Color.BLACK);
-                    surface.fillRectangle((int) blockRectangle.getUpperLeft().getX(), (int) blockRectangle.getUpperLeft().getY(),
-                            (int) blockRectangle.getWidth(), (int) blockRectangle.getHeight());
+                    surface.fillRectangle((int) blockRectangle.getUpperLeft().getX(),
+                            (int) blockRectangle.getUpperLeft().getY(), (int) blockRectangle.getWidth(),
+                            (int) blockRectangle.getHeight());
                 }
             }
         } catch (Exception e) {
             surface.setColor(this.backgroundColor);
-            surface.fillRectangle((int) blockRectangle.getUpperLeft().getX(), (int) blockRectangle.getUpperLeft().getY(),
+            surface.fillRectangle((int) blockRectangle.getUpperLeft().getX(),
+                    (int) blockRectangle.getUpperLeft().getY(),
                     (int) blockRectangle.getWidth(), (int) blockRectangle.getHeight());
         }
         // draw the number of hitsLeft in black
@@ -205,8 +238,13 @@ public class Block implements Collidable, Sprite, HitNotifier {
 
     }
 
-    public void setStroke(Color stroke) {
-        this.stroke = stroke;
+    /**
+     * Sets stroke.
+     *
+     * @param stroke1 the stroke
+     */
+    public void setStroke(Color stroke1) {
+        this.stroke = stroke1;
     }
 
     /**

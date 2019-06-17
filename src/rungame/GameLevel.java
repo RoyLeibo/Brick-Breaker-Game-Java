@@ -62,6 +62,7 @@ public class GameLevel implements Animation {
      * @param scoreTrackingListener the score tracking listener
      * @param livesListener         the lives listener
      * @param gameFlow              the game flow
+     * @param animationRunner       the animation runner
      */
     public GameLevel(LevelInformation levelInformation, ScoreTrackingListener scoreTrackingListener,
                      LivesListener livesListener, GameFlow gameFlow, AnimationRunner animationRunner) {
@@ -185,7 +186,8 @@ public class GameLevel implements Animation {
                 // if there is more lives left
                 this.numberOfBallsToCreate = this.numberOfBallsInGame;
                 this.isStageCompleted = true;
-                this.paddle.setPaddleRectangle(new Rectangle(new Point(300, 565), 200, 25));
+                this.paddle.setPaddleRectangle(new Rectangle(new Point(300, 565),
+                        this.levelInformation.paddleWidth(), 25));
                 createBalls(this.numberOfBallsToCreate);
             }
         } else {

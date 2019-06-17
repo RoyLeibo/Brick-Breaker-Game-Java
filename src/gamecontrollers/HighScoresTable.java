@@ -1,28 +1,39 @@
 package gamecontrollers;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.DirectoryNotEmptyException;
 import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
-import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * The type High scores table.
+ *
+ * @author Roy Leibovitz <royleibo212@gmail.com>
+ */
 public class HighScoresTable {
     private List<ScoreInfo> scoreInfoList;
     private int size;
     private File fileName;
 
+    /**
+     * Instantiates a new High scores table.
+     *
+     * @param size the size
+     */
     public HighScoresTable(int size) {
         this.scoreInfoList = new ArrayList<>();
         this.size = size;
     }
 
+    /**
+     * Parse line list.
+     *
+     * @param line the line
+     * @return the list
+     */
     static public List<String> parseLine(String line) {
         List<String> lineData = new ArrayList<>();
         lineData.add(line.substring(0, line.indexOf("$")));
@@ -30,9 +41,12 @@ public class HighScoresTable {
         return lineData;
     }
 
-    // Read a table from file and return it.
-    // If the file does not exist, or there is a problem with
-    // reading it, an empty table is returned.
+    /**
+     * Load from file high scores table.
+     *
+     * @param filename the filename
+     * @return the high scores table
+     */
     public static HighScoresTable loadFromFile(File filename) {
         if (filename.exists()) {
             try {
@@ -52,7 +66,11 @@ public class HighScoresTable {
         }
     }
 
-    // Add a high-score.
+    /**
+     * Add.
+     *
+     * @param score the score
+     */
     public void add(ScoreInfo score) {
         if (this.scoreInfoList.size() == this.size) {
             if (this.scoreInfoList.get(this.scoreInfoList.size() - 1).getScore() <= score.getScore()) {
@@ -65,24 +83,30 @@ public class HighScoresTable {
         this.scoreInfoList.sort(Comparator.comparing(ScoreInfo::getScore).reversed());
     }
 
-    // Return table size.
+    /**
+     * Size int.
+     *
+     * @return the int
+     */
     public int size() {
         return this.size;
     }
 
-    // Return the current high scores.
-    // The list is sorted such that the highest
-    // scores come first.
+    /**
+     * Gets high scores.
+     *
+     * @return the high scores
+     */
     public List<ScoreInfo> getHighScores() {
         return this.scoreInfoList;
     }
 
-    // return the rank of the current score: where will it
-    // be on the list if added?
-    // Rank 1 means the score will be highest on the list.
-    // Rank `size` means the score will be lowest.
-    // Rank > `size` means the score is too low and will not
-    //      be added to the list.
+    /**
+     * Gets rank.
+     *
+     * @param score the score
+     * @return the rank
+     */
     public int getRank(int score) {
         for (int i = 0; i < this.scoreInfoList.size(); i++) {
             if (this.scoreInfoList.get(i).getScore() <= score) {
@@ -92,13 +116,19 @@ public class HighScoresTable {
         return this.scoreInfoList.size() + 1;
     }
 
-    // Clears the table
+    /**
+     * Clear.
+     */
     public void clear() {
         this.scoreInfoList.clear();
     }
 
-    // Load table data from file.
-    // Current table data is cleared.
+    /**
+     * Load.
+     *
+     * @param filename the filename
+     * @throws IOException the io exception
+     */
     public void load(File filename) throws IOException {
         this.fileName = filename;
         List<String> fileLines = Files.readAllLines(filename.toPath());
@@ -109,15 +139,19 @@ public class HighScoresTable {
         }
     }
 
-    // Save table data to the specified file.
+    /**
+     * Save.
+     *
+     * @param filename the filename
+     * @throws IOException the io exception
+     */
     public void save(File filename) throws IOException {
         boolean exist;
         FileWriter FW;
-        if(fileName.getName() == "") {
+        if (fileName.getName() == "") {
             exist = this.fileName.delete();
             FW = new FileWriter(this.fileName, true);
-        }
-        else {
+        } else {
             exist = fileName.delete();
             FW = new FileWriter(fileName.getName(), true);
         }
@@ -128,8 +162,23 @@ public class HighScoresTable {
         FW.flush();
     }
 
+    /**
+     * Create file.
+     *
+     * @param fileName the file name
+     * @throws IOException the io exception
+     */
     public void createFile(String fileName) throws IOException {
         this.fileName = new File(fileName);
         this.load(this.fileName);
+    }
+
+    /**
+     * Gets size.
+     *
+     * @return the size
+     */
+    public int getSize() {
+        return size;
     }
 }

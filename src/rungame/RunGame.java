@@ -1,31 +1,44 @@
 package rungame;
 
 import animations.HighScoresAnimation;
-import animations.KeyPressStoppableAnimation;
 import biuoop.DrawSurface;
 import biuoop.GUI;
 import gamecontrollers.HighScoresTable;
 import interfaces.Task;
 import others.MenuItem;
-import tasks.*;
+import tasks.HighScoresTask;
+import tasks.LevelsFromFileTask;
+import tasks.QuitTask;
 
 import java.io.IOException;
 
+/**
+ * The type Run game.
+ *
+ * @author Roy Leibovitz <royleibo212@gmail.com> Roy Leibovitz
+ */
 public class RunGame {
+    /**
+     * Instantiates a new Run game.
+     *
+     * @param args the args
+     * @param size the size
+     */
     public RunGame(String[] args, int size) {
         AnimationRunner animationRunner = new AnimationRunner(60);
         HighScoresTable hst = new HighScoresTable(size);
         try {
             hst.createFile("highscores.txt");
         } catch (IOException e) {
+            System.out.println();
         }
         GUI gui = animationRunner.getGui();
         DrawSurface d;
         MenuRun<Task<Void>> menuRun = new MenuRun(args, size, animationRunner);
         menuRun.addSelection("s", "Start New Game", new LevelsFromFileTask<Void>(animationRunner, hst, gui));
 //        menuRun.addSelection("s", "Start New Game", new GameFlowTask<Void>(args, hst, animationRunner));
-        menuRun.addSelection("h", "High Scores Table", new HighScoresTaks<Void>
-                (animationRunner, new HighScoresAnimation(hst), gui));
+        menuRun.addSelection("h", "High Scores Table", new HighScoresTask<Void>(animationRunner
+                , new HighScoresAnimation(hst), gui));
         menuRun.addSelection("q", "Quit Game", new QuitTask<Void>());
         d = gui.getDrawSurface();
         menuRun.doOneFrame(d);

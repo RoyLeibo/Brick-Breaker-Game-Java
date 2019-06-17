@@ -38,11 +38,14 @@ public class LevelSetChooseTask implements Animation {
                 linesMap.put(this.fileLines.get(i).charAt(0), i + 1);
             }
         } catch (IOException e) {
+            System.out.println();
         }
     }
 
     /**
-     * DoOneFrame function, prints the menu
+     * DoOneFrame function, prints the menu.
+     *
+     * @param d drawsurface
      */
     public void doOneFrame(DrawSurface d) {
         String line;

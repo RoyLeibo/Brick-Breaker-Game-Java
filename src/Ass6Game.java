@@ -37,7 +37,7 @@ public class Ass6Game {
      * @param args the input arguments
      */
     public static void main(String[] args) {
-        RunGame run = new RunGame(args, 2);
+        RunGame run = new RunGame(args, 3);
 //        LevelSpecificationReader lsr = new LevelSpecificationReader();
 //        List<LevelInformation> list1 = null;
 //        try{
