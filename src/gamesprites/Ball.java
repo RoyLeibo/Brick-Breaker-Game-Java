@@ -107,6 +107,15 @@ public class Ball implements Sprite {
     }
 
     /**
+     * Sets color.
+     *
+     * @param color the color
+     */
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    /**
      * Get color color.
      *
      * @return the color

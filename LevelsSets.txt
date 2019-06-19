@@ -1,4 +1,0 @@
-e:Easy
-EasySet.txt
-h:Hard
-HardSet.txt

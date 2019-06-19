@@ -34,8 +34,15 @@ public class RunGame {
         }
         GUI gui = animationRunner.getGui();
         DrawSurface d;
+        String levelsSetPath;
+        if (args.length == 0) {
+            levelsSetPath = "level_sets.txt";
+        } else {
+            levelsSetPath = args[0];
+        }
         MenuRun<Task<Void>> menuRun = new MenuRun(args, size, animationRunner);
-        menuRun.addSelection("s", "Start New Game", new LevelsFromFileTask<Void>(animationRunner, hst, gui));
+        menuRun.addSelection("s", "Start New Game", new LevelsFromFileTask<Void>(animationRunner, hst, gui
+                , levelsSetPath));
 //        menuRun.addSelection("s", "Start New Game", new GameFlowTask<Void>(args, hst, animationRunner));
         menuRun.addSelection("h", "High Scores Table", new HighScoresTask<Void>(animationRunner
                 , new HighScoresAnimation(hst), gui));

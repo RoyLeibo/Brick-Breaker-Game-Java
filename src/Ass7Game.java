@@ -28,7 +28,7 @@ import java.util.List;
  *
  * @author Roy Leibovitz <royleibo212@gmail.com> Roy Leibovitz
  */
-public class Ass6Game {
+public class Ass7Game {
 
     /**
      * This is the main method which creates an instance of GameLevel and call
@@ -37,7 +37,7 @@ public class Ass6Game {
      * @param args the input arguments
      */
     public static void main(String[] args) {
-        RunGame run = new RunGame(args, 3);
+        RunGame run = new RunGame(args, 6);
 //        LevelSpecificationReader lsr = new LevelSpecificationReader();
 //        List<LevelInformation> list1 = null;
 //        try{

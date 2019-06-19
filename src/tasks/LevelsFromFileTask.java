@@ -27,6 +27,7 @@ public class LevelsFromFileTask<T> implements Task<T> {
     private GUI gui;
     private LevelSetChooseTask levelSetChooseTask;
     private AnimationRunner animationRunner;
+    private String path;
 
     /**
      * Instantiates a new Levels from file task.
@@ -34,12 +35,14 @@ public class LevelsFromFileTask<T> implements Task<T> {
      * @param animationRunner the animation runner
      * @param hst             the hst
      * @param gui             the gui
+     * @param filePath        the path
      */
-    public LevelsFromFileTask(AnimationRunner animationRunner, HighScoresTable hst, GUI gui) {
+    public LevelsFromFileTask(AnimationRunner animationRunner, HighScoresTable hst, GUI gui, String filePath) {
         this.hst = hst;
         this.gui = gui;
-        this.levelSetChooseTask = new LevelSetChooseTask(this.gui);
+        this.levelSetChooseTask = new LevelSetChooseTask(this.gui, filePath);
         this.animationRunner = animationRunner;
+        this.path = filePath;
     }
 
     /**
@@ -68,11 +71,11 @@ public class LevelsFromFileTask<T> implements Task<T> {
             }
         }
         // finding the matching path to the chosen option from the LevelSets file
-        String path = this.levelSetChooseTask.getLine(lineNum);
+        String filePath = this.levelSetChooseTask.getLine(lineNum);
         try {
             // creates LevelInformation list from the path specified.
             List<LevelInformation> setLevels = new LevelSpecificationReader()
-                    .createLevelInformationList(new File(path));
+                    .createLevelInformationList(new File(filePath));
             Map<Integer, LevelInformation> levelsMap = new HashMap<>();
             String[] levelsOrder = new String[setLevels.size()];
             for (int i = 0; i < setLevels.size(); i++) {

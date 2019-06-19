@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import others.Velocity;
 import interfaces.Collidable;
 import interfaces.Sprite;
@@ -34,9 +35,8 @@ public class Block implements Collidable, Sprite, HitNotifier {
     private Color stroke;
     private String hitsLeft;
     private List<HitListener> hitListeners;
-    private Map<Integer, String> imgMap;
+    private Map<Integer, Image> imgMap;
     private Color backgroundColor;
-    private Image img;
     private Map<Integer, Color> colorMap;
 
     /**
@@ -50,7 +50,7 @@ public class Block implements Collidable, Sprite, HitNotifier {
      */
     public Block(Rectangle blockRectangle, Map<Integer, String> imgsMap, Map<Integer, Color> colorMap,
                  String hitPoint, Color stroke) {
-        this.imgMap = imgsMap;
+        this.imgMap = createImagesMap(imgsMap);
         this.blockRectangle = blockRectangle;
         this.hitsLeft = hitPoint;
         this.hitListeners = new ArrayList<HitListener>();
@@ -65,7 +65,7 @@ public class Block implements Collidable, Sprite, HitNotifier {
      * Instantiates a new Block.
      *
      * @param blockRectangle the block rectangle
-     * @param stroke1         the stroke
+     * @param stroke1        the stroke
      * @param hitPoint       the hit point
      */
     public Block(Rectangle blockRectangle, Color stroke1, String hitPoint) {
@@ -108,21 +108,33 @@ public class Block implements Collidable, Sprite, HitNotifier {
     }
 
     /**
+     * This function creates images map
+     *
+     * @param imgPathMap image path map
+     * @return image map
+     */
+    private Map<Integer, Image> createImagesMap(Map<Integer, String> imgPathMap) {
+        Map<Integer, Image> imgsMap = new HashMap<>();
+        String background;
+        for (Map.Entry<Integer, String> entry : imgPathMap.entrySet()) {
+            background = entry.getValue();
+            try {
+                imgsMap.put(entry.getKey(), ImageIO.read(new File(background.substring(background.indexOf("(") + 1
+                        , background.indexOf(")")))));
+            } catch (IOException e) {
+                System.out.println();
+            }
+        }
+        return imgsMap;
+    }
+
+    /**
      * Getter for the Block's rectangle.
      *
      * @return blockRectangle
      */
     public Rectangle getCollisionRectangle() {
         return this.blockRectangle;
-    }
-
-    /**
-     * Sets background map.
-     *
-     * @param imgMap1 the img map
-     */
-    public void setBackgroundMap(Map<Integer, String> imgMap1) {
-        this.imgMap = imgMap1;
     }
 
     /**
@@ -203,19 +215,15 @@ public class Block implements Collidable, Sprite, HitNotifier {
                         (int) blockRectangle.getUpperLeft().getY(), (int) blockRectangle.getWidth(),
                         (int) blockRectangle.getHeight());
             } else {
-                try {
-                    if (this.img == null) {
-                        String background = this.imgMap.get(index);
-                        this.img = ImageIO.read(new File(background.substring(background.indexOf("(") + 1
-                                , background.indexOf(")"))));
-                    }
+                if (this.imgMap != null) {
                     surface.drawImage((int) blockRectangle.getUpperLeft().getX(),
-                            (int) blockRectangle.getUpperLeft().getY(), this.img);
-                } catch (IOException e) {
+                            (int) blockRectangle.getUpperLeft().getY(), this.imgMap.get(index));
+                } else {
                     surface.setColor(Color.BLACK);
                     surface.fillRectangle((int) blockRectangle.getUpperLeft().getX(),
                             (int) blockRectangle.getUpperLeft().getY(), (int) blockRectangle.getWidth(),
                             (int) blockRectangle.getHeight());
+
                 }
             }
         } catch (Exception e) {

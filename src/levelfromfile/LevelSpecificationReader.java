@@ -226,7 +226,7 @@ public class LevelSpecificationReader {
             }
 
             public Color getBallsColor() {
-                return Color.RED;
+                return new Color((int)(Math.random() * 0x1000000));
             }
         };
     }

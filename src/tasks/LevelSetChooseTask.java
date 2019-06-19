@@ -21,19 +21,22 @@ public class LevelSetChooseTask implements Animation {
     private boolean isRunning;
     private List<String> fileLines;
     private Map<Character, Integer> linesMap;
+    private String path;
 
 
     /**
      * Instantiates a new Level set choose task.
      *
      * @param gui the gui
+     * @param filePath  the file's path
      */
-    public LevelSetChooseTask(GUI gui) {
+    public LevelSetChooseTask(GUI gui, String filePath) {
         this.linesMap = new HashMap<>();
         this.gui = gui;
         this.isRunning = true;
+        this.path = filePath;
         try {
-            this.fileLines = Files.readAllLines(new File("LevelsSets.txt").toPath());
+            this.fileLines = Files.readAllLines(new File(filePath).toPath());
             for (int i = 0; i < this.fileLines.size(); i += 2) {
                 linesMap.put(this.fileLines.get(i).charAt(0), i + 1);
             }

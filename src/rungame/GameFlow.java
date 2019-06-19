@@ -103,8 +103,7 @@ public class GameFlow {
                 gameLevel.getAnimationRunner().run(new KeyPressStoppableAnimation(
                         gameLevel.getAnimationRunner().getGui().getKeyboardSensor(), "SPACE_KEY",
                         new HighScoresAnimation(this.hst)));
-                gameLevel.getAnimationRunner().getGui().close();
-                return;
+                break;
             }
             // if the player finished all the game levels
             if (counter == levelsToRun.size() && this.isAlive) {
@@ -116,8 +115,7 @@ public class GameFlow {
                 gameLevel.getAnimationRunner().run(new KeyPressStoppableAnimation(
                         gameLevel.getAnimationRunner().getGui().getKeyboardSensor(), "SPACE_KEY",
                         new HighScoresAnimation(this.hst)));
-                gameLevel.getAnimationRunner().getGui().close();
-                return;
+                break;
             }
         }
     }

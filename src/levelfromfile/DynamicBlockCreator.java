@@ -41,26 +41,34 @@ public class DynamicBlockCreator implements BlockCreator {
         int width;
         if (blockDefinitionsMap.containsKey("width")) {
             width = Integer.parseInt(blockDefinitionsMap.get("width"));
-        } else {
+        } else if (defaultBlockMap.containsKey("width")) {
             width = Integer.parseInt(defaultBlockMap.get("width"));
+        } else {
+            width = 100;
         }
         int height;
         if (blockDefinitionsMap.containsKey("height")) {
             height = Integer.parseInt(blockDefinitionsMap.get("height"));
-        } else {
+        } else if (defaultBlockMap.containsKey("height")) {
             height = Integer.parseInt(defaultBlockMap.get("height"));
+        } else {
+            height = 100;
         }
         Color stroke;
         if (blockDefinitionsMap.containsKey("stroke")) {
             stroke = new ColorParser().colorFromString(blockDefinitionsMap.get("stroke"));
-        } else {
+        } else if (defaultBlockMap.containsKey("stroke")) {
             stroke = new ColorParser().colorFromString(defaultBlockMap.get("stroke"));
+        } else {
+            stroke = Color.BLACK;
         }
         String hitPoints;
         if (blockDefinitionsMap.containsKey("hit_points")) {
             hitPoints = blockDefinitionsMap.get("hit_points");
-        } else {
+        } else if (defaultBlockMap.containsKey("hit_points")) {
             hitPoints = defaultBlockMap.get("hit_points");
+        } else {
+            hitPoints = "3";
         }
         Map<Integer, String> backgroundMap = createBackgroundMap(Integer.parseInt(hitPoints));
         Block b = new Block(new geometryprimitives.Rectangle(new Point(xpos, ypos), width, height),

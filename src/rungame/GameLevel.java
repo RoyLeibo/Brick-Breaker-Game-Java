@@ -241,7 +241,7 @@ public class GameLevel implements Animation {
         int x = 400 - this.levelInformation.paddleWidth() / 2;
         // creates paddle
         this.paddle = new Paddle(new Rectangle(new Point(x, 565), this.levelInformation.paddleWidth()
-                , 25), this.animationRunner.getGui(), Color.MAGENTA, this.levelInformation.paddleSpeed(), 0.1);
+                , 25), this.animationRunner.getGui(), new Color((int)(Math.random() * 0x1000000)), this.levelInformation.paddleSpeed(), 0.1);
         this.environment.addCollidable(this.paddle);
         this.sprites.addSprite(this.paddle);
     }
