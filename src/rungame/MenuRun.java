@@ -5,6 +5,10 @@ import interfaces.Animation;
 import interfaces.Menu;
 import others.MenuItem;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,8 +60,8 @@ public class MenuRun<T> implements Animation, Menu<T> {
     /**
      * Add a menu selection.
      *
-     * @param key key
-     * @param message message
+     * @param key         key
+     * @param message     message
      * @param returnValue return value
      */
     public void addSelection(String key, String message, T returnValue) {
@@ -70,9 +74,17 @@ public class MenuRun<T> implements Animation, Menu<T> {
      * @param d the drawsurface
      */
     public void doOneFrame(DrawSurface d) {
-        d.drawText(70, 100, "Welcome To Arkanoid!", 40);
+        String background = "image(background_images/main_menu_background.jpg)";
+        try {
+            d.drawImage(0, 0, ImageIO.read(new File(background.substring(background.indexOf("(") + 1
+                    , background.indexOf(")")))));
+        } catch (IOException e) {
+            System.out.println();
+        }
+        d.setColor(Color.cyan);
+        d.drawText(20, 100, "Welcome To Arkanoid!", 40);
         for (int i = 0; i < this.menuItemsList.size(); i++) {
-            d.drawText(100, 120 + (i + 1) * 30, "(" + this.menuItemsList.get(i).getKey() + ")  "
+            d.drawText(50, 120 + (i + 1) * 30, "(" + this.menuItemsList.get(i).getKey() + ")  "
                     + this.menuItemsList.get(i).getMessage(), 30);
         }
     }
@@ -80,7 +92,7 @@ public class MenuRun<T> implements Animation, Menu<T> {
     /**
      * Adding subMenu.
      *
-     * @param key key
+     * @param key     key
      * @param message message
      * @param subMenu subMenu
      */

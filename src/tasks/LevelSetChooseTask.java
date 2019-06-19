@@ -4,6 +4,8 @@ import biuoop.DrawSurface;
 import biuoop.GUI;
 import interfaces.Animation;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -51,12 +53,22 @@ public class LevelSetChooseTask implements Animation {
      * @param d drawsurface
      */
     public void doOneFrame(DrawSurface d) {
-        String line;
-        d.drawText(70, 100, "Please Choose Game Level:", 40);
-        for (int i = 0; i < this.fileLines.size(); i += 2) {
-            line = this.fileLines.get(i);
-            d.drawText(100, 160 + (i + 1) * 25, "Press " + line, 30);
+        String background = "image(background_images/start_game_background.jpg)";
+        try {
+            d.drawImage(0, 0, ImageIO.read(new File(background.substring(background.indexOf("(") + 1
+                    , background.indexOf(")")))));
+        } catch (IOException e) {
+            System.out.println();
         }
+        String line;
+        d.setColor(Color.cyan);
+        d.drawText(20, 100, "Please Choose Game Level:", 40);
+        int i;
+        for (i = 0; i < this.fileLines.size(); i += 2) {
+            line = this.fileLines.get(i);
+            d.drawText(50, 160 + (i + 1) * 25, "Press " + line, 30);
+        }
+        d.drawText(20, 160 + (i + 5) * 25, "Press SPACE To Return To Main Menu", 15);
     }
 
     /**

@@ -69,7 +69,11 @@ public class LevelsFromFileTask<T> implements Task<T> {
                     break;
                 }
             }
+            if(ks.isPressed(ks.SPACE_KEY)){
+                return null;
+            }
         }
+        this.levelSetChooseTask.setRunning(true);
         // finding the matching path to the chosen option from the LevelSets file
         String filePath = this.levelSetChooseTask.getLine(lineNum);
         try {

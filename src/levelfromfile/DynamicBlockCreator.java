@@ -70,9 +70,15 @@ public class DynamicBlockCreator implements BlockCreator {
         } else {
             hitPoints = "3";
         }
+        String isText;
+        if (defaultBlockMap.containsKey("text")) {
+            isText = "false";
+        } else {
+            isText = "true";
+        }
         Map<Integer, String> backgroundMap = createBackgroundMap(Integer.parseInt(hitPoints));
         Block b = new Block(new geometryprimitives.Rectangle(new Point(xpos, ypos), width, height),
-                createImgMap(backgroundMap), createColorsFromMap(backgroundMap), hitPoints, stroke);
+                createImgMap(backgroundMap), createColorsFromMap(backgroundMap), hitPoints, stroke, isText);
         return b;
     }
 

@@ -38,6 +38,7 @@ public class Block implements Collidable, Sprite, HitNotifier {
     private Map<Integer, Image> imgMap;
     private Color backgroundColor;
     private Map<Integer, Color> colorMap;
+    private boolean isTextShow;
 
     /**
      * Instantiates a new Block.
@@ -49,7 +50,7 @@ public class Block implements Collidable, Sprite, HitNotifier {
      * @param stroke         the stroke
      */
     public Block(Rectangle blockRectangle, Map<Integer, String> imgsMap, Map<Integer, Color> colorMap,
-                 String hitPoint, Color stroke) {
+                 String hitPoint, Color stroke, String isText) {
         this.imgMap = createImagesMap(imgsMap);
         this.blockRectangle = blockRectangle;
         this.hitsLeft = hitPoint;
@@ -59,6 +60,12 @@ public class Block implements Collidable, Sprite, HitNotifier {
         this.stroke = stroke;
         this.setFontColor(Color.BLACK);
         this.backgroundColor = Color.CYAN;
+        if (isText.equals("false")) {
+            this.isTextShow = false;
+        }
+        else {
+            this.isTextShow = true;
+        }
     }
 
     /**
@@ -234,9 +241,11 @@ public class Block implements Collidable, Sprite, HitNotifier {
         }
         // draw the number of hitsLeft in black
         surface.setColor(this.fontColor);
-        surface.drawText((int) blockRectangle.getUpperLeft().getX() + (int) (0.5 * this.blockRectangle.getWidth()),
-                (int) blockRectangle.getUpperLeft().getY() + (int) (0.6 * this.blockRectangle.getHeight()),
-                hitsLeft, 20);
+        if (this.isTextShow) {
+            surface.drawText((int) blockRectangle.getUpperLeft().getX() + (int) (0.5 * this.blockRectangle.getWidth()),
+                    (int) blockRectangle.getUpperLeft().getY() + (int) (0.6 * this.blockRectangle.getHeight()),
+                    hitsLeft, 20);
+        }
     }
 
     /**
