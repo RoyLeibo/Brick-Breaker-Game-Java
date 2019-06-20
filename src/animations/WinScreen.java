@@ -4,6 +4,11 @@ import biuoop.DrawSurface;
 import gamecontrollers.ScoreTrackingListener;
 import interfaces.Animation;
 
+import javax.imageio.ImageIO;
+import java.awt.Color;
+import java.awt.Image;
+import java.io.IOException;
+
 /**
  * The type Win screen.
  *
@@ -11,6 +16,7 @@ import interfaces.Animation;
  */
 public class WinScreen implements Animation {
     private ScoreTrackingListener scoreTrackingListener;
+    private Image img;
 
     /**
      * Instantiates a new Win screen.
@@ -37,8 +43,17 @@ public class WinScreen implements Animation {
      * @param d the d
      */
     public void doOneFrame(DrawSurface d) {
-        // prints "YOU WIN! YOUR SCORE IS: X" message
-        d.drawText(80, 300, "You Win! Your Score Is: " + scoreTrackingListener.getScoreCounter().getValue()
-                , 50);
+        if (this.img == null) {
+            String background = "image(background_images/you_win.jpg)";
+            try {
+                this.img = ImageIO.read(ClassLoader.getSystemClassLoader().getResourceAsStream(
+                        background.substring(background.indexOf("(") + 1, background.indexOf(")"))));
+            } catch (IOException e) {
+                System.out.println();
+            }
+        }
+        d.drawImage(0, 0, this.img);
+        d.setColor(Color.BLACK);
+        d.drawText(550, 550, "Press SPACE To Continue", 20);
     }
 }

@@ -4,7 +4,6 @@ import biuoop.DrawSurface;
 
 import java.awt.Color;
 import java.awt.Image;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,6 +47,7 @@ public class Block implements Collidable, Sprite, HitNotifier {
      * @param colorMap       the color map
      * @param hitPoint       the hit point
      * @param stroke         the stroke
+     * @param isText         is text should be draw
      */
     public Block(Rectangle blockRectangle, Map<Integer, String> imgsMap, Map<Integer, Color> colorMap,
                  String hitPoint, Color stroke, String isText) {
@@ -62,8 +62,7 @@ public class Block implements Collidable, Sprite, HitNotifier {
         this.backgroundColor = Color.CYAN;
         if (isText.equals("false")) {
             this.isTextShow = false;
-        }
-        else {
+        } else {
             this.isTextShow = true;
         }
     }
@@ -115,7 +114,7 @@ public class Block implements Collidable, Sprite, HitNotifier {
     }
 
     /**
-     * This function creates images map
+     * This function creates images map.
      *
      * @param imgPathMap image path map
      * @return image map
@@ -126,8 +125,9 @@ public class Block implements Collidable, Sprite, HitNotifier {
         for (Map.Entry<Integer, String> entry : imgPathMap.entrySet()) {
             background = entry.getValue();
             try {
-                imgsMap.put(entry.getKey(), ImageIO.read(new File(background.substring(background.indexOf("(") + 1
-                        , background.indexOf(")")))));
+                imgsMap.put(entry.getKey(), ImageIO.read(ClassLoader.getSystemClassLoader().getResourceAsStream(
+                        "block_images/" + background.substring(background.indexOf("(") + 1,
+                                background.indexOf(")")))));
             } catch (IOException e) {
                 System.out.println();
             }

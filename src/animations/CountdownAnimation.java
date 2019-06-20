@@ -4,6 +4,12 @@ import biuoop.DrawSurface;
 import interfaces.Animation;
 import rungame.SpriteCollection;
 
+import javax.imageio.ImageIO;
+import java.awt.Color;
+import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
+
 /**
  * The type Countdown animation.
  *
@@ -15,6 +21,7 @@ public class CountdownAnimation implements Animation {
     private int originalCountFrom;
     private SpriteCollection gameScreen;
     private boolean stop;
+    private Image img;
 
     /**
      * Instantiates a new Countdown animation.
@@ -29,6 +36,14 @@ public class CountdownAnimation implements Animation {
         this.gameScreen = gameScreen;
         this.stop = true;
         this.originalCountFrom = countFrom;
+        String background = "image(resources/background_images/countdown_image.jpg)";
+        try {
+            this.img = ImageIO.read(new File(background.substring(background.indexOf("(") + 1
+                    , background.indexOf(")"))));
+        } catch (IOException e) {
+            System.out.println();
+        }
+
     }
 
     /**
@@ -37,8 +52,10 @@ public class CountdownAnimation implements Animation {
      * @param d the d
      */
     public void doOneFrame(DrawSurface d) {
+        d.drawImage(0, 0, this.img);
         String string = this.countFrom + "...";
-        d.drawText(350, 70, string, 50);
+        d.setColor(Color.black);
+        d.drawText(350, 320, string, 50);
         if (this.countFrom == 1) {
             this.stop = false;
         } else {

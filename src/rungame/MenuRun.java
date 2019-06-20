@@ -6,8 +6,8 @@ import interfaces.Menu;
 import others.MenuItem;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
-import java.io.File;
+import java.awt.Color;
+import java.awt.Image;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +23,7 @@ public class MenuRun<T> implements Animation, Menu<T> {
     private boolean isRunning;
     private List<MenuItem<T>> menuItemsList;
     private T returnVal;
+    private Image img;
 
     /**
      * Instantiates a new Menu run.
@@ -74,17 +75,20 @@ public class MenuRun<T> implements Animation, Menu<T> {
      * @param d the drawsurface
      */
     public void doOneFrame(DrawSurface d) {
-        String background = "image(background_images/main_menu_background.jpg)";
-        try {
-            d.drawImage(0, 0, ImageIO.read(new File(background.substring(background.indexOf("(") + 1
-                    , background.indexOf(")")))));
-        } catch (IOException e) {
-            System.out.println();
+        if (this.img == null) {
+            String background = "image(background_images/main_menu_background.jpg)";
+            try {
+                this.img = ImageIO.read(ClassLoader.getSystemClassLoader().getResourceAsStream(
+                        background.substring(background.indexOf("(") + 1, background.indexOf(")"))));
+            } catch (IOException e) {
+                System.out.println();
+            }
         }
+        d.drawImage(0, 0, this.img);
         d.setColor(Color.cyan);
         d.drawText(20, 100, "Welcome To Arkanoid!", 40);
         for (int i = 0; i < this.menuItemsList.size(); i++) {
-            d.drawText(50, 120 + (i + 1) * 30, "(" + this.menuItemsList.get(i).getKey() + ")  "
+            d.drawText(50, 120 + (i + 1) * 35, "(" + this.menuItemsList.get(i).getKey() + ")  "
                     + this.menuItemsList.get(i).getMessage(), 30);
         }
     }

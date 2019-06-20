@@ -90,21 +90,23 @@ public class HighScoresTable {
      * @param filename the filename
      * @throws IOException the io exception
      */
-    public void save(File filename) throws IOException {
-        boolean exist;
+    public void save(String filename) throws IOException {
         FileWriter fW;
-        if (fileName.getName() == "") {
-            exist = this.fileName.delete();
+        if (filename.equals("")) {
+            File file = new File(this.fileName.toPath().toString());
+            file.delete();
             fW = new FileWriter(this.fileName, true);
         } else {
-            exist = fileName.delete();
-            fW = new FileWriter(fileName.getName(), true);
+            File file = new File(filename);
+            file.delete();
+            fW = new FileWriter(filename, true);
         }
         for (int i = 0; i < this.scoreInfoList.size(); i++) {
             fW.write(this.scoreInfoList.get(i).getName() + "$" + this.scoreInfoList.get(i).getScore() + "$");
             fW.write(System.lineSeparator());
         }
         fW.flush();
+        fW.close();
     }
 
     /**
@@ -155,12 +157,18 @@ public class HighScoresTable {
      */
     public void load(File filename) throws IOException {
         this.fileName = filename;
-        List<String> fileLines = Files.readAllLines(filename.toPath());
-        List<String> lineData = new ArrayList();
-        for (String line : fileLines) {
-            lineData = parseLine(line);
-            this.scoreInfoList.add(new ScoreInfo(lineData.get(0), Integer.parseInt(lineData.get(1))));
+        try {
+            List<String> fileLines = Files.readAllLines(filename.toPath());
+            List<String> lineData = new ArrayList();
+            for (String line : fileLines) {
+                lineData = parseLine(line);
+                this.scoreInfoList.add(new ScoreInfo(lineData.get(0), Integer.parseInt(lineData.get(1))));
+            }
+        } catch (Exception e) {
+            FileWriter fw = new FileWriter(fileName);
         }
+        File file = new File(fileName.toPath().toString());
+        file.delete();
     }
 
     /**

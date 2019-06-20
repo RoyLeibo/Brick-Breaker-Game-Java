@@ -5,8 +5,8 @@ import gamecontrollers.HighScoresTable;
 import interfaces.Animation;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
-import java.io.File;
+import java.awt.Color;
+import java.awt.Image;
 import java.io.IOException;
 
 /**
@@ -17,6 +17,7 @@ import java.io.IOException;
 public class HighScoresAnimation implements Animation {
     private HighScoresTable hst;
     private boolean isRunning;
+    private Image img;
 
     /**
      * Instantiates a new High scores animation.
@@ -26,6 +27,7 @@ public class HighScoresAnimation implements Animation {
     public HighScoresAnimation(HighScoresTable hst) {
         this.isRunning = true;
         this.hst = hst;
+        this.img = null;
     }
 
     /**
@@ -34,13 +36,16 @@ public class HighScoresAnimation implements Animation {
      * @param d the d
      */
     public void doOneFrame(DrawSurface d) {
-        String background = "image(background_images/high_score_background.jpg)";
-        try {
-            d.drawImage(0, 0, ImageIO.read(new File(background.substring(background.indexOf("(") + 1
-                    , background.indexOf(")")))));
-        } catch (IOException e) {
-            System.out.println();
+        if (this.img == null) {
+            String background = "image(background_images/high_score_background.jpg)";
+            try {
+                this.img = ImageIO.read(ClassLoader.getSystemClassLoader().getResourceAsStream(
+                        background.substring(background.indexOf("(") + 1, background.indexOf(")"))));
+            } catch (IOException e) {
+                System.out.println();
+            }
         }
+        d.drawImage(0, 0, this.img);
         d.setColor(Color.cyan);
         d.drawText(20, 100, "High Scores Table:", 40);
         int i;
@@ -49,7 +54,7 @@ public class HighScoresAnimation implements Animation {
                     + ":   ", 30);
             d.drawText(200, 120 + (i + 1) * 30, String.valueOf(this.hst.getHighScores().get(i).getScore()), 30);
         }
-        d.drawText(20, 160 + (i + 5) * 25, "Press SPACE To Return To Main Menu", 15);
+        d.drawText(20, 500, "Press SPACE To Return To Main Menu", 15);
     }
 
     /**

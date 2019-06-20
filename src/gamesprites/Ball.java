@@ -109,10 +109,10 @@ public class Ball implements Sprite {
     /**
      * Sets color.
      *
-     * @param color the color
+     * @param color1 the color
      */
-    public void setColor(Color color) {
-        this.color = color;
+    public void setColor(Color color1) {
+        this.color = color1;
     }
 
     /**

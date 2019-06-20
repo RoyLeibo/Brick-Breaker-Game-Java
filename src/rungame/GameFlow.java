@@ -1,7 +1,5 @@
 package rungame;
 
-//import animations.EndScreen;
-
 import animations.HighScoresAnimation;
 import animations.KeyPressStoppableAnimation;
 import animations.LoseScreen;
@@ -18,7 +16,6 @@ import gamecontrollers.LivesListener;
 import others.Counter;
 import gamecontrollers.ScoreTrackingListener;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -73,7 +70,7 @@ public class GameFlow {
     public GameFlow(Map<Integer, LevelInformation> levelsMap, String[] input, HighScoresTable hst,
                     AnimationRunner animationRunner) {
         this.livesListener = new LivesListener(new Counter());
-        this.livesListener.getLivesCounter().setCounter(3);
+        this.livesListener.getLivesCounter().setCounter(6);
         this.scoreTrackingListener = new ScoreTrackingListener(new Counter());
         this.levelsMap = levelsMap;
         this.isAlive = true;
@@ -132,7 +129,7 @@ public class GameFlow {
             String name = dialog.showQuestionDialog("Name", "What is your name?", "");
             this.hst.add(new ScoreInfo(name, this.scoreTrackingListener.getScoreCounter().getValue()));
             try {
-                this.hst.save(new File(""));
+                this.hst.save("");
             } catch (IOException e) {
                 System.out.println();
             }

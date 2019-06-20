@@ -69,7 +69,7 @@ public class LevelsFromFileTask<T> implements Task<T> {
                     break;
                 }
             }
-            if(ks.isPressed(ks.SPACE_KEY)){
+            if (ks.isPressed(ks.SPACE_KEY)) {
                 return null;
             }
         }

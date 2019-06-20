@@ -82,8 +82,8 @@ public class Paddle implements Collidable, Sprite {
      * @return new velocity after change.
      */
     public Velocity hit(Ball hitter, Point collisionPoint, Velocity currentVelocity) {
-        hitter.setColor(new Color((int)(Math.random() * 0x1000000)));
-        this.color = new Color((int)(Math.random() * 0x1000000));
+        hitter.setColor(new Color((int) (Math.random() * 0x1000000)));
+        this.color = new Color((int) (Math.random() * 0x1000000));
         // the next line creates the top line of the paddle.
         Line up = new Line(this.paddleRectangle.getUpperLeft(), this.paddleRectangle.getUpperRight());
         Line left = new Line(this.paddleRectangle.getUpperLeft(), this.paddleRectangle.getDownLeft());

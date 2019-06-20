@@ -9,13 +9,16 @@ import others.Velocity;
 import javax.imageio.ImageIO;
 import java.awt.Image;
 import java.awt.Color;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static java.lang.System.exit;
 
 /**
  * The type Level specification reader.
@@ -37,7 +40,7 @@ public class LevelSpecificationReader {
      */
     public List<LevelInformation> createLevelInformationList(File filename) throws IOException {
         this.levelInformationList = new ArrayList<>();
-        List<String> fileLines = Files.readAllLines(filename.toPath());
+        List<String> fileLines = this.getListFromFile(filename.toPath().toString());
         for (int i = 0; i < fileLines.size(); i++) {
             // find where the level definitions starts
             if (fileLines.get(i).equals("START_LEVEL")) {
@@ -61,6 +64,40 @@ public class LevelSpecificationReader {
         }
         return levelInformationList;
     }
+
+    /**
+     * Gets list from file.
+     *
+     * @param file the file
+     * @return the list from file
+     */
+    public List<String> getListFromFile(String file) {
+        List<String> fileLines = new ArrayList<>();
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new InputStreamReader(
+                    ClassLoader.getSystemClassLoader().getResourceAsStream(file)));
+            String line;
+            if (reader != null) {
+                try {
+                    while ((line = reader.readLine()) != null) {
+                        fileLines.add(line);
+                    }
+                } catch (IOException e) {
+                    System.out.println();
+                }
+            }
+        } catch (Exception e) {
+            System.out.println();
+        }
+        try {
+            reader.close();
+        } catch (IOException e) {
+            System.out.println();
+        }
+        return fileLines;
+    }
+
 
     /**
      * Parse level information list to a map.
@@ -93,142 +130,148 @@ public class LevelSpecificationReader {
      * @return the level information
      */
     public LevelInformation createLevelInformation(Map<String, String> levelInformationMap, List<String> blocksOrder) {
-        String levelName = "";
-        List<Velocity> ballVelocities = null;
-        String background = "";
-        int paddleSpeed = 200;
-        int paddleWidth = 200;
-        int numOfBlocks = 10;
-        String blocksDefinitions = "";
-        int startX = 0;
-        int startY = 0;
-        int rowHeight = 20;
-        // for each key-value from the definition map
-        for (Map.Entry<String, String> entry : levelInformationMap.entrySet()) {
-            // check the matching data
-            switch (entry.getKey()) {
-                case "level_name":
-                    levelName = entry.getValue();
-                    break;
-                case "ball_velocities":
-                    ballVelocities = createVelocityList(entry.getValue());
-                    break;
-                case "background":
-                    background = entry.getValue();
-                    break;
-                case "paddle_speed":
-                    paddleSpeed = Integer.parseInt(entry.getValue());
-                    break;
-                case "paddle_width":
-                    paddleWidth = Integer.parseInt(entry.getValue());
-                    break;
-                case "num_blocks":
-                    numOfBlocks = Integer.parseInt(entry.getValue());
-                    break;
-                case "block_definitions":
-                    blocksDefinitions = entry.getValue();
-                    break;
-                case "blocks_start_x":
-                    startX = Integer.parseInt(entry.getValue());
-                    break;
-                case "blocks_start_y":
-                    startY = Integer.parseInt(entry.getValue());
-                    break;
-                case "row_height":
-                    rowHeight = Integer.parseInt(entry.getValue());
-                    break;
-                default:
-                    break;
+        try {
+            String levelName = "";
+            List<Velocity> ballVelocities = null;
+            String background = "";
+            int paddleSpeed = 200;
+            int paddleWidth = 200;
+            int numOfBlocks = 10;
+            String blocksDefinitions = "";
+            int startX = 0;
+            int startY = 0;
+            int rowHeight = 20;
+            // for each key-value from the definition map
+            for (Map.Entry<String, String> entry : levelInformationMap.entrySet()) {
+                // check the matching data
+                switch (entry.getKey()) {
+                    case "level_name":
+                        levelName = entry.getValue();
+                        break;
+                    case "ball_velocities":
+                        ballVelocities = createVelocityList(entry.getValue());
+                        break;
+                    case "background":
+                        background = entry.getValue();
+                        break;
+                    case "paddle_speed":
+                        paddleSpeed = Integer.parseInt(entry.getValue());
+                        break;
+                    case "paddle_width":
+                        paddleWidth = Integer.parseInt(entry.getValue());
+                        break;
+                    case "num_blocks":
+                        numOfBlocks = Integer.parseInt(entry.getValue());
+                        break;
+                    case "block_definitions":
+                        blocksDefinitions = "definitions/" + entry.getValue();
+                        break;
+                    case "blocks_start_x":
+                        startX = Integer.parseInt(entry.getValue());
+                        break;
+                    case "blocks_start_y":
+                        startY = Integer.parseInt(entry.getValue());
+                        break;
+                    case "row_height":
+                        rowHeight = Integer.parseInt(entry.getValue());
+                        break;
+                    default:
+                        break;
+                }
             }
-        }
-        // copy each data to a final variable
-        final String finalLevelName = levelName;
-        final List<Velocity> finalBallVelocities = ballVelocities;
-        final String finalBackground = background;
-        final int finalPaddleSpeed = paddleSpeed;
-        final int finalPaddleWidth = paddleWidth;
-        final int finalNumOfBlocks = numOfBlocks;
-        final int finalNumberOfBalls;
-        if (ballVelocities != null) {
-            finalNumberOfBalls = ballVelocities.size();
-        } else {
-            finalNumberOfBalls = 1;
-        }
-        final String finalBlockDefinitions = blocksDefinitions;
-        final int finalStartX = startX;
-        final int finalStartY = startY;
-        final int finalRowHeight = rowHeight;
-        // create new implementation for a LevelInformation using the data from the map
-        return new LevelInformation() {
-            private Image img;
-
-            public int numberOfBalls() {
-                return finalNumberOfBalls;
+            // copy each data to a final variable
+            final String finalLevelName = levelName;
+            final List<Velocity> finalBallVelocities = ballVelocities;
+            final String finalBackground = background;
+            final int finalPaddleSpeed = paddleSpeed;
+            final int finalPaddleWidth = paddleWidth;
+            final int finalNumOfBlocks = numOfBlocks;
+            final int finalNumberOfBalls;
+            if (ballVelocities != null) {
+                finalNumberOfBalls = ballVelocities.size();
+            } else {
+                finalNumberOfBalls = 1;
             }
+            final String finalBlockDefinitions = blocksDefinitions;
+            final int finalStartX = startX;
+            final int finalStartY = startY;
+            final int finalRowHeight = rowHeight;
+            // create new implementation for a LevelInformation using the data from the map
+            return new LevelInformation() {
+                private Image img;
 
-            public List<Velocity> initialBallVelocities() {
-                return finalBallVelocities;
-            }
+                public int numberOfBalls() {
+                    return finalNumberOfBalls;
+                }
 
-            public int paddleSpeed() {
-                return finalPaddleSpeed;
-            }
+                public List<Velocity> initialBallVelocities() {
+                    return finalBallVelocities;
+                }
 
-            public int paddleWidth() {
-                return finalPaddleWidth;
-            }
+                public int paddleSpeed() {
+                    return finalPaddleSpeed;
+                }
 
-            public String levelName() {
-                return finalLevelName;
-            }
+                public int paddleWidth() {
+                    return finalPaddleWidth;
+                }
 
-            public Sprite getBackground() {
-                return new Sprite() {
-                    public void drawOn(DrawSurface surface) {
-                        // check if the background is a color or image
-                        if (finalBackground.charAt(0) == 'c') {
-                            // parse color
-                            surface.setColor(new ColorParser().colorFromString(finalBackground.substring(
-                                    finalBackground.indexOf('(') + 1, finalBackground.indexOf(")") + 1)));
-                            surface.fillRectangle(0, 0, 800, 600);
-                        } else if (finalBackground.charAt(0) == 'i') {
-                            try {
+                public String levelName() {
+                    return finalLevelName;
+                }
+
+                public Sprite getBackground() {
+                    return new Sprite() {
+                        public void drawOn(DrawSurface surface) {
+                            // check if the background is a color or image
+                            if (finalBackground.charAt(0) == 'c') {
+                                // parse color
+                                surface.setColor(new ColorParser().colorFromString(finalBackground.substring(
+                                        finalBackground.indexOf('(') + 1, finalBackground.indexOf(")") + 1)));
+                                surface.fillRectangle(0, 0, 800, 600);
+                            } else if (finalBackground.charAt(0) == 'i') {
                                 // import image
                                 if (img == null) {
-                                    img = ImageIO.read(new File(finalBackground.substring(
-                                            finalBackground.indexOf("(") + 1, finalBackground.indexOf(")"))));
+                                    try {
+                                        img = ImageIO.read(ClassLoader.getSystemClassLoader().getResourceAsStream(
+                                                "background_images/" + finalBackground.substring(
+                                                        finalBackground.indexOf("(") + 1,
+                                                        finalBackground.indexOf(")"))));
+                                    } catch (IOException e) {
+                                        System.out.println();
+                                    }
                                 }
                                 surface.drawImage(0, 0, img); // draw the image at location 0, 0.
-                            } catch (IOException e) {
+                            } else {
                                 surface.setColor(Color.WHITE);
                                 surface.fillRectangle(0, 0, 800, 600);
                             }
-                        } else {
-                            surface.setColor(Color.WHITE);
-                            surface.fillRectangle(0, 0, 800, 600);
                         }
-                    }
 
-                    public void timePassed() {
-                    }
-                };
-            }
+                        public void timePassed() {
+                        }
+                    };
+                }
 
-            public List<Block> blocks() {
-                // create a list of block using the block factory
-                return new BlocksFromSymbolsFactory(finalStartX, finalStartY, finalRowHeight, finalBlockDefinitions,
-                        blocksOrder)
-                        .createBlocksList();
-            }
+                public List<Block> blocks() {
+                    // create a list of block using the block factory
+                    return new BlocksFromSymbolsFactory(finalStartX, finalStartY, finalRowHeight, finalBlockDefinitions,
+                            blocksOrder)
+                            .createBlocksList();
+                }
 
-            public int numberOfBlocksToRemove() {
-                return finalNumOfBlocks;
-            }
+                public int numberOfBlocksToRemove() {
+                    return finalNumOfBlocks;
+                }
 
-            public Color getBallsColor() {
-                return new Color((int)(Math.random() * 0x1000000));
-            }
-        };
+                public Color getBallsColor() {
+                    return new Color((int) (Math.random() * 0x1000000));
+                }
+            };
+        } catch (Exception e) {
+            exit(1);
+        }
+        return null;
     }
 
     /**
@@ -254,7 +297,6 @@ public class LevelSpecificationReader {
                 i = startIndex;
             }
         }
-
         return velocityList;
     }
 

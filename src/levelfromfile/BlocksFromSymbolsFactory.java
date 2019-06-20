@@ -3,9 +3,10 @@ package levelfromfile;
 import gamesprites.Block;
 import interfaces.BlockCreator;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -53,50 +54,45 @@ public class BlocksFromSymbolsFactory {
      */
     public void createBlocksByFileDefinition() {
         File file = new File(blockDefinition);
-        try {
-            // read all lines
-            List<String> fileLines = Files.readAllLines(file.toPath());
-            for (int i = 0; i < fileLines.size(); i++) {
-                if (fileLines.get(i).equals("")) {
-                    continue;
-                }
-                // find default definitions
-                if (fileLines.get(i).charAt(0) == 'd') {
-                    createDefaultMap(fileLines.get(i).substring(fileLines.get(i).indexOf("t") + 2));
-                } else if (fileLines.get(i).charAt(0) == 's') {
-                    // find spacers definitions
-                    List<String> sdefList = new ArrayList<>();
-                    for (int j = i; j < fileLines.size(); j++) {
-                        if (fileLines.get(j).equals("")) {
-                            i++;
-                            continue;
-                        }
-                        if (fileLines.get(j).charAt(0) == 's') {
-                            i++;
-                            sdefList.add(fileLines.get(j));
-                        }
-                    }
-                    createSpaceMap(sdefList);
-                } else if (fileLines.get(i).charAt(0) == 'b') {
-                    // find blocks definitions
-                    List<String> bdefList = new ArrayList<>();
-                    for (int j = i; j < fileLines.size(); j++) {
-                        if (fileLines.get(j).equals("")) {
-                            i++;
-                            continue;
-                        }
-                        if (fileLines.get(j).charAt(0) == 'b') {
-                            i++;
-                            bdefList.add(fileLines.get(j));
-                        }
-                    }
-                    createBlockCreatorMap(bdefList);
-                }
+        // read all lines
+        List<String> fileLines = this.getListFromFile(file.toPath().toString());
+        for (int i = 0; i < fileLines.size(); i++) {
+            if (fileLines.get(i).equals("")) {
+                continue;
             }
-        } catch (IOException e) {
-            System.out.println();
+            // find default definitions
+            if (fileLines.get(i).charAt(0) == 'd') {
+                createDefaultMap(fileLines.get(i).substring(fileLines.get(i).indexOf("t") + 2));
+            } else if (fileLines.get(i).charAt(0) == 's') {
+                // find spacers definitions
+                List<String> sdefList = new ArrayList<>();
+                for (int j = i; j < fileLines.size(); j++) {
+                    if (fileLines.get(j).equals("")) {
+                        i++;
+                        continue;
+                    }
+                    if (fileLines.get(j).charAt(0) == 's') {
+                        i++;
+                        sdefList.add(fileLines.get(j));
+                    }
+                }
+                createSpaceMap(sdefList);
+            } else if (fileLines.get(i).charAt(0) == 'b') {
+                // find blocks definitions
+                List<String> bdefList = new ArrayList<>();
+                for (int j = i; j < fileLines.size(); j++) {
+                    if (fileLines.get(j).equals("")) {
+                        i++;
+                        continue;
+                    }
+                    if (fileLines.get(j).charAt(0) == 'b') {
+                        i++;
+                        bdefList.add(fileLines.get(j));
+                    }
+                }
+                createBlockCreatorMap(bdefList);
+            }
         }
-
     }
 
     /**
@@ -160,7 +156,7 @@ public class BlocksFromSymbolsFactory {
             startIndex = tempLine.indexOf("f") + 2;
             this.spacerWidths.put(tempLine.substring(tempLine.indexOf(":", startIndex) + 1,
                     tempLine.indexOf(" ", startIndex)), Integer.parseInt(
-                            tempLine.substring(tempLine.lastIndexOf(":") + 1)));
+                    tempLine.substring(tempLine.lastIndexOf(":") + 1)));
         }
     }
 
@@ -211,6 +207,34 @@ public class BlocksFromSymbolsFactory {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Gets list from file.
+     *
+     * @param file the file
+     * @return the list from file
+     */
+    public List<String> getListFromFile(String file) {
+        List<String> fileLines = new ArrayList<>();
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new InputStreamReader(ClassLoader.getSystemClassLoader().
+                    getResourceAsStream(file)));
+            String line;
+            if (reader != null) {
+                try {
+                    while ((line = reader.readLine()) != null) {
+                        fileLines.add(line);
+                    }
+                } catch (IOException e) {
+                    System.out.println();
+                }
+            }
+        } catch (Exception e) {
+            System.out.println();
+        }
+        return fileLines;
     }
 
     /**
