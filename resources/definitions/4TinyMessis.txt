@@ -1,0 +1,7 @@
+default text:false
+
+#block definitions
+bdef symbol:l width:134 height:100 hit_points:3 fill:img(messi2-happy.jpg) stroke:color(black)
+
+#spacers definitions
+sdef symbol:- width:30

@@ -1,0 +1,63 @@
+START_LEVEL
+level_name:4 Tiny Messis
+ball_velocities:45,5 70,7
+background:image(campnou.jpg)
+paddle_speed:10
+paddle_width:200
+block_definitions:4TinyMessis.txt
+blocks_start_x:25
+blocks_start_y:80
+row_height:100
+num_blocks:4
+START_BLOCKS
+----------l-l--
+-
+--l-l--
+END_BLOCKS
+END_LEVEL
+START_LEVEL
+level_name:Messi Is The Best
+ball_velocities:4,5 -5,5 -3,5
+background:image(messi10.jpg)
+paddle_speed:15
+paddle_width:300
+block_definitions:MessiIsHappy.txt
+blocks_start_x:25
+blocks_start_y:80
+row_height:25
+num_blocks:26
+START_BLOCKS
+-
+-
+-
+-
+-lllllllllllll--
+-zzzzzzzzzzzzz--
+END_BLOCKS
+END_LEVEL
+START_LEVEL
+level_name:Happy Messi
+ball_velocities:45,5 10,3 20,4
+background:image(messi_happy.jpg)
+paddle_width:500
+paddle_speed:10
+block_definitions:MessiIsSad.txt
+blocks_start_x:25
+blocks_start_y:80
+row_height:25
+num_blocks:63
+START_BLOCKS
+-
+-
+-
+-
+-
+GGGGGGGGGGGGGGG
+--rrrrrrrrrrrrr-
+----yyyyyyyyyyy--
+-----ggggggggg---
+-------wwwwwww----
+---------ppppp-----
+-----------ccc------
+END_BLOCKS
+END_LEVEL

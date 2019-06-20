@@ -1,0 +1,14 @@
+# default values for blocks
+default stroke:color(black) hit_points:1 text:false
+
+# block definitions
+bdef symbol:G width:50 height:19 fill:image(messi_shirt_1.jpg)
+bdef symbol:y width:50 height:27 fill:image(messi_shirt_6.jpg)
+bdef symbol:r width:50 height:23 fill:image(messi_shirt_3.jpg)
+bdef symbol:g width:50 height:23 fill:image(messi_shirt_4.jpg)
+bdef symbol:p width:50 height:20 fill:image(messi_shirt_7.jpg)
+bdef symbol:w width:50 height:18 fill:image(messi_shirt_5.jpg)
+bdef symbol:c width:50 height:23 fill:image(messi_shirt_2.jpg)
+
+# spacers definitions
+sdef symbol:- width:30
