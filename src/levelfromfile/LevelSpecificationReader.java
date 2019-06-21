@@ -164,7 +164,7 @@ public class LevelSpecificationReader {
                         numOfBlocks = Integer.parseInt(entry.getValue());
                         break;
                     case "block_definitions":
-                        blocksDefinitions = "definitions/" + entry.getValue();
+                        blocksDefinitions = entry.getValue();
                         break;
                     case "blocks_start_x":
                         startX = Integer.parseInt(entry.getValue());
@@ -234,8 +234,7 @@ public class LevelSpecificationReader {
                                 if (img == null) {
                                     try {
                                         img = ImageIO.read(ClassLoader.getSystemClassLoader().getResourceAsStream(
-                                                "background_images/" + finalBackground.substring(
-                                                        finalBackground.indexOf("(") + 1,
+                                                finalBackground.substring(finalBackground.indexOf("(") + 1,
                                                         finalBackground.indexOf(")"))));
                                     } catch (IOException e) {
                                         System.out.println();

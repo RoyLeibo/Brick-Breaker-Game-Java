@@ -1,8 +1,10 @@
 package gamecontrollers;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -92,14 +94,15 @@ public class HighScoresTable {
      */
     public void save(String filename) throws IOException {
         FileWriter fW;
+        String filePath = "resources/" + filename;
         if (filename.equals("")) {
-            File file = new File(this.fileName.toPath().toString());
+            File file = new File("resources/" + this.fileName.toPath().toString());
             file.delete();
-            fW = new FileWriter(this.fileName, true);
+            fW = new FileWriter("resources/" + this.fileName, true);
         } else {
-            File file = new File(filename);
+            File file = new File(filePath);
             file.delete();
-            fW = new FileWriter(filename, true);
+            fW = new FileWriter(filePath, true);
         }
         for (int i = 0; i < this.scoreInfoList.size(); i++) {
             fW.write(this.scoreInfoList.get(i).getName() + "$" + this.scoreInfoList.get(i).getScore() + "$");
@@ -158,7 +161,7 @@ public class HighScoresTable {
     public void load(File filename) throws IOException {
         this.fileName = filename;
         try {
-            List<String> fileLines = Files.readAllLines(filename.toPath());
+            List<String> fileLines = this.getListFromFile(filename.toPath().toString());
             List<String> lineData = new ArrayList();
             for (String line : fileLines) {
                 lineData = parseLine(line);
@@ -170,6 +173,40 @@ public class HighScoresTable {
         File file = new File(fileName.toPath().toString());
         file.delete();
     }
+
+    /**
+     * Gets list from file.
+     *
+     * @param file the file
+     * @return the list from file
+     */
+    public List<String> getListFromFile(String file) {
+        List<String> fileLines = new ArrayList<>();
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new InputStreamReader(
+                    ClassLoader.getSystemClassLoader().getResourceAsStream(file)));
+            String line;
+            if (reader != null) {
+                try {
+                    while ((line = reader.readLine()) != null) {
+                        fileLines.add(line);
+                    }
+                } catch (IOException e) {
+                    System.out.println();
+                }
+            }
+        } catch (Exception e) {
+            System.out.println();
+        }
+        try {
+            reader.close();
+        } catch (IOException e) {
+            System.out.println();
+        }
+        return fileLines;
+    }
+
 
     /**
      * Create file.

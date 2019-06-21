@@ -28,7 +28,7 @@ public class RunGame {
         AnimationRunner animationRunner = new AnimationRunner(60);
         HighScoresTable hst = new HighScoresTable(size);
         try {
-            hst.createFile("resources/highscores.txt");
+            hst.createFile("highscores.txt");
         } catch (IOException e) {
             System.out.println();
         }

@@ -126,8 +126,7 @@ public class Block implements Collidable, Sprite, HitNotifier {
             background = entry.getValue();
             try {
                 imgsMap.put(entry.getKey(), ImageIO.read(ClassLoader.getSystemClassLoader().getResourceAsStream(
-                        "block_images/" + background.substring(background.indexOf("(") + 1,
-                                background.indexOf(")")))));
+                        background.substring(background.indexOf("(") + 1, background.indexOf(")")))));
             } catch (IOException e) {
                 System.out.println();
             }
